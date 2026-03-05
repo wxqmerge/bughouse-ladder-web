@@ -198,6 +198,7 @@ export default function LadderForm({
       setIsWalkthrough(true);
       // Reset isRecalculating when starting walkthrough
       setIsRecalculating(false);
+      setWalkthroughIndex(0);
       // Set entryCell to first non-blank cell for highlighting
       const cells = getNonBlankCells();
       if (cells.length > 0) {
@@ -420,6 +421,37 @@ export default function LadderForm({
   };
 
   const handleCorrectionSubmit = (correctedString: string) => {
+    // In walkthrough mode, handle clearing cells without pendingPlayers
+    if (isWalkthrough && entryCell) {
+      if (!correctedString.trim()) {
+        // Clear the cell in players data
+        const updatedPlayers = players.map((p) => ({ ...p }));
+        const playerIdx = entryCell.playerRank - 1;
+        if (playerIdx >= 0 && playerIdx < updatedPlayers.length) {
+          const player = updatedPlayers[playerIdx];
+          if (player) {
+            const newGameResults = [...(player.gameResults || [])];
+            newGameResults[entryCell.round] = "";
+            player.gameResults = newGameResults;
+          }
+        }
+        setPlayers(updatedPlayers);
+
+        // Advance to next cell or close dialog
+        if (walkthroughIndex < getNonBlankCells().length - 1) {
+          const newIndex = walkthroughIndex + 1;
+          setWalkthroughIndex(newIndex);
+          const cell = getNonBlankCells()[newIndex];
+          if (cell) {
+            setEntryCell({ playerRank: cell.playerRank, round: cell.round });
+          }
+        } else {
+          setIsWalkthrough(false);
+        }
+      }
+      return;
+    }
+
     if (!pendingPlayers || !pendingMatches) return;
     // In recalculate mode, use entryCell or walkthroughErrors since currentError is null
     if (!currentError && !entryCell) return;
@@ -1406,10 +1438,9 @@ export default function LadderForm({
           </tbody>
         </table>
       </div>
-      {(isRecalculating ||
-        isWalkthrough ||
-        walkthroughIndex < walkthroughErrors.length) && (
+      {(isRecalculating || isWalkthrough) && (
         <ErrorDialog
+          key={`error-dialog-${isWalkthrough ? walkthroughIndex : "recalc"}`}
           error={isWalkthrough ? null : walkthroughErrors[walkthroughIndex]}
           players={players}
           mode={
@@ -1482,24 +1513,27 @@ export default function LadderForm({
           onUpdatePlayerData={handleUpdatePlayerData}
         />
       )}
-      {entryCell && !isRecalculating && walkthroughErrors.length === 0 && (
-        <ErrorDialog
-          error={null}
-          players={players}
-          mode="game-entry"
-          entryCell={entryCell}
-          existingValue={
-            players[entryCell.playerRank - 1]?.gameResults[entryCell.round] ||
-            undefined
-          }
-          onClose={() => {
-            setEntryCell(null);
-            setTempGameResult(null);
-          }}
-          onSubmit={handleGameEntrySubmit}
-          onUpdatePlayerData={handleUpdatePlayerData}
-        />
-      )}
+      {entryCell &&
+        !isRecalculating &&
+        !isWalkthrough &&
+        walkthroughErrors.length === 0 && (
+          <ErrorDialog
+            error={null}
+            players={players}
+            mode="game-entry"
+            entryCell={entryCell}
+            existingValue={
+              players[entryCell.playerRank - 1]?.gameResults[entryCell.round] ||
+              undefined
+            }
+            onClose={() => {
+              setEntryCell(null);
+              setTempGameResult(null);
+            }}
+            onSubmit={handleGameEntrySubmit}
+            onUpdatePlayerData={handleUpdatePlayerData}
+          />
+        )}
       {currentError && (
         <div
           style={{
