@@ -473,9 +473,11 @@ async function main() {
   try {
     const config = JSON.parse(await fs.readFile(configPath, "utf-8"));
 
-    // Default log file based on test name
-    if (!logFile && config.name) {
-      logFile = `test-cases/${config.name}.log`;
+    // Default log file based on config file name (without .json extension)
+    if (!logFile) {
+      const configFileName = configPath.split(/[\\/]/).pop();
+      const baseName = configFileName.replace(/\.json$/i, "");
+      logFile = `test-cases/${baseName}.log`;
     }
 
     console.log("\n=== Running test ===");
