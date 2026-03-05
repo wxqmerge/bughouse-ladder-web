@@ -408,7 +408,7 @@ export default function ErrorDialog({
               : isRecalculate
                 ? `Recalculate Error ${displayIndex + 1} of ${displayTotal}`
                 : isWalkthrough
-                  ? `Report Walkthrough - Error ${displayIndex + 1} of ${displayTotal}`
+                  ? `Report Walkthrough - Report ${displayIndex + 1} of ${displayTotal}`
                   : `Correction Required - Round ${displayCell.round + 1} of ${displayTotal}`}
           </h2>
           <button

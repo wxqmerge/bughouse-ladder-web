@@ -17,9 +17,8 @@ function App() {
   };
 
   const handleWalkThroughReports = () => {
-    if (recalculateRef.current) {
-      recalculateRef.current();
-    }
+    // Trigger walkthrough mode instead of recalculation
+    setTriggerWalkthrough(true);
   };
 
   const handleSetRecalculateRef = (ref: () => void) => {
