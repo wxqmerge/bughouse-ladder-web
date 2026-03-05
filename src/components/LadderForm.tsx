@@ -224,6 +224,9 @@ export default function LadderForm({
           setPlayers(playersWithResults);
           setHasData(true);
           setSortBy(null);
+          console.log(
+            `[LadderForm] Loaded ${playersWithResults.length} players from localStorage`,
+          );
           return;
         }
       } catch (err) {
@@ -231,6 +234,14 @@ export default function LadderForm({
       }
     }
     const samplePlayers = loadSampleData();
+    console.log(
+      `[LadderForm] Loaded ${samplePlayers.length} players from sample data`,
+    );
+    samplePlayers.forEach((player) => {
+      console.log(
+        `[LadderForm] Sample player: Rank=${player.rank}, Name=${player.firstName} ${player.lastName}, Rating=${player.rating}, Games=${player.games}`,
+      );
+    });
 
     setPlayers(samplePlayers);
     setHasData(false);
@@ -244,6 +255,7 @@ export default function LadderForm({
       return;
     }
 
+    console.log(`[LadderForm] Loading file: ${fileToLoad.name}`);
     const projectName = fileToLoad.name.replace(/\.[^.]+$/, "");
     setProjectName(projectName);
     setLastFile(fileToLoad);

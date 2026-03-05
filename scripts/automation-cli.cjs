@@ -96,11 +96,11 @@ async function runTest(config, rebuildApp = false, logFile = null) {
   };
 
   logLine("\n========================================");
-  logLine(`Running test: ${config.name}`);
+  logLine(`-- Running test: ${config.name}`);
   logLine("========================================\n");
 
   if (rebuildApp) {
-    logLine("Rebuilding app...");
+    logLine("-- Rebuilding app...");
     await new Promise((resolve, reject) => {
       exec("npm run build", (error) => {
         if (error) {
@@ -108,15 +108,15 @@ async function runTest(config, rebuildApp = false, logFile = null) {
           reject(error);
           return;
         }
-        logLine("Build completed successfully");
+        logLine("-- Build completed successfully");
         resolve();
       });
     });
   }
 
-  logLine("Starting HTTP server...");
+  logLine("-- Starting HTTP server...");
   const server = await startServer(5173, "dist", logLine);
-  logLine("Server is ready");
+  logLine("-- Server is ready");
 
   let browser;
   let outputContent = null;
@@ -132,18 +132,18 @@ async function runTest(config, rebuildApp = false, logFile = null) {
 
     page.on("download", async (download) => {
       const suggestedName = await download.suggestedFilename();
-      logLine(`Download detected: ${suggestedName}`);
+      logLine(`-- Download detected: ${suggestedName}`);
       try {
         const filePath = join(downloadsPath, suggestedName);
         await download.saveAs(filePath);
         outputContent = await fs.readFile(filePath, "utf-8");
-        logLine(`Download saved to: ${filePath}`);
+        logLine(`-- Download saved to: ${filePath}`);
       } catch (err) {
         logLine(`Failed to save download: ${err.message}`);
       }
     });
 
-    logLine("Loading app...");
+    logLine("-- Loading app...");
     await page.goto("http://localhost:5173", {
       waitUntil: "networkidle",
       timeout: 30000,
@@ -154,7 +154,7 @@ async function runTest(config, rebuildApp = false, logFile = null) {
       localStorage.clear();
     });
 
-    logLine(`Loading input file: ${config.inputFilePath}`);
+    logLine(`-- Loading input file: ${config.inputFilePath}`);
 
     const loadClicked = await page.evaluate(() => {
       const labels = document.querySelectorAll("label");
@@ -172,7 +172,7 @@ async function runTest(config, rebuildApp = false, logFile = null) {
     const fileInput = await page.$('input[type="file"]');
     if (fileInput) {
       await fileInput.setInputFiles(config.inputFilePath);
-      logLine(`File selected: ${config.inputFilePath}`);
+      logLine(`-- File selected: ${config.inputFilePath}`);
     }
 
     await sleep(3000);
@@ -181,7 +181,7 @@ async function runTest(config, rebuildApp = false, logFile = null) {
       const rows = document.querySelectorAll("tbody tr");
       return rows.length;
     });
-    logLine(`Player count after load: ${playerCount}`);
+    logLine(`-- Player count after load: ${playerCount}`);
 
     const firstPlayer = await page.evaluate(() => {
       const rows = document.querySelectorAll("tbody tr");
@@ -193,23 +193,23 @@ async function runTest(config, rebuildApp = false, logFile = null) {
       }
       return "unknown";
     });
-    logLine(`First player: ${firstPlayer}`);
+    logLine(`-- First player: ${firstPlayer}`);
 
     if (playerCount > 14 || !firstPlayer.includes("Garcia")) {
-      logLine(`Successfully loaded ${playerCount} players`);
+      logLine(`-- Successfully loaded ${playerCount} players`);
     } else {
-      logLine("Warning: Sample data loaded instead of input file");
+      logLine("-- Warning: Sample data loaded instead of input file");
     }
 
     // Handle actions array
     if (config.actions && config.actions.length > 0) {
       logLine(
-        `Executing actions: ${config.actions.map((a) => a.type).join(", ")}`,
+        `-- Executing actions: ${config.actions.map((a) => a.type).join(", ")}`,
       );
 
       for (const action of config.actions) {
         if (action.type === "openSettings") {
-          logLine("Opening settings...");
+          logLine("-- Opening settings...");
           await page.evaluate(() => {
             const buttons = Array.from(document.querySelectorAll("button"));
             const settingsBtn = buttons.find(
@@ -221,25 +221,25 @@ async function runTest(config, rebuildApp = false, logFile = null) {
         }
 
         if (action.type === "clearAllData") {
-          logLine("Clearing all data...");
+          logLine("-- Clearing all data...");
           await sleep(1000);
           const clearButton = await page.$('button:has-text("Clear All Data")');
           if (clearButton) {
             await clearButton.click();
-            logLine("Clicked Clear All Data button");
+            logLine("-- Clicked Clear All Data button");
             await sleep(2000);
 
             const okButton = await page.$('button:has-text("OK")');
             if (okButton) {
               await okButton.click();
-              logLine("Clicked OK on confirmation dialog");
+              logLine("-- Clicked OK on confirmation dialog");
               await sleep(2000);
             }
           }
         }
 
         if (action.type === "recalculateRatings") {
-          logLine("Clicking Recalculate Ratings...");
+          logLine("-- Clicking Recalculate Ratings...");
           await sleep(2000);
           await page.evaluate(() => {
             const buttons = Array.from(document.querySelectorAll("button"));
@@ -253,30 +253,30 @@ async function runTest(config, rebuildApp = false, logFile = null) {
         }
 
         if (action.type === "clearCell") {
-          logLine("Clearing cell...");
+          logLine("-- Clearing cell...");
           await sleep(1500);
           const clearButton = await page.$('button:has-text("Clear Cell")');
           if (clearButton) {
             await clearButton.click();
-            logLine("Clicked Clear Cell button");
+            logLine("-- Clicked Clear Cell button");
             await sleep(1500);
           }
         }
 
         if (action.type === "cancelDialog") {
-          logLine("Cancelling dialog...");
+          logLine("-- Cancelling dialog...");
           await sleep(1500);
           const cancelButton = await page.$('button:has-text("Cancel")');
           if (cancelButton) {
             await cancelButton.click();
-            logLine("Clicked Cancel button");
+            logLine("-- Clicked Cancel button");
             await sleep(1500);
           }
         }
 
         if (action.type === "fillGameResult") {
           logLine(
-            `Filling game result: player ${action.playerRank}, round ${action.round} = "${action.resultString}"`,
+            `-- Filling game result: player ${action.playerRank}, round ${action.round} = "${action.resultString}"`,
           );
 
           await page.evaluate(
@@ -318,7 +318,7 @@ async function runTest(config, rebuildApp = false, logFile = null) {
     }
 
     if (config.clickExportButton) {
-      logLine("Clicking Export button...");
+      logLine("-- Clicking Export button...");
       const exportClicked = await page.evaluate(() => {
         const buttons = Array.from(document.querySelectorAll("button"));
         const target = buttons.find(
@@ -331,22 +331,22 @@ async function runTest(config, rebuildApp = false, logFile = null) {
         return false;
       });
       if (!exportClicked) {
-        logLine("Warning: Could not find Export button");
+        logLine("-- Warning: Could not find Export button");
       }
       await sleep(5000);
     }
 
     const buttonsToClick = config.buttonsToClick || [];
-    logLine(`Clicking buttons: ${buttonsToClick.join(", ") || "none"}`);
+    logLine(`-- Clicking buttons: ${buttonsToClick.join(", ") || "none"}`);
 
     for (const btnText of buttonsToClick) {
-      logLine(`Searching for button: "${btnText}"`);
+      logLine(`-- Searching for button: "${btnText}"`);
       let clicked = false;
 
       try {
         const button = await page.getByText(btnText, { exact: false });
         if (button) {
-          logLine(`Found and clicking "${btnText}" via getByText`);
+          logLine(`-- Found and clicking "${btnText}" via getByText`);
           try {
             await button.click();
             clicked = true;
@@ -362,7 +362,7 @@ async function runTest(config, rebuildApp = false, logFile = null) {
           }
         }
       } catch (e) {
-        logLine(`getByText failed for "${btnText}", trying evaluate`);
+        logLine(`-- getByText failed for "${btnText}", trying evaluate`);
         const found = await page.evaluate((text) => {
           const buttons = Array.from(document.querySelectorAll("button"));
           return buttons.find(
@@ -382,9 +382,9 @@ async function runTest(config, rebuildApp = false, logFile = null) {
       }
 
       if (!clicked) {
-        logLine(`Warning: Could not click button "${btnText}"`);
+        logLine(`-- Warning: Could not click button "${btnText}"`);
       } else {
-        logLine(`Successfully clicked "${btnText}"`);
+        logLine(`-- Successfully clicked "${btnText}"`);
       }
       await sleep(2000);
     }
@@ -395,18 +395,18 @@ async function runTest(config, rebuildApp = false, logFile = null) {
       const files = await fs.readdir(downloadsPath);
       const txtFiles = files.filter((f) => f.endsWith(".txt"));
       if (txtFiles.length > 0) {
-        logLine(`Found ${txtFiles.length} downloaded file(s):`, txtFiles);
+        logLine(`-- Found ${txtFiles.length} downloaded file(s):`, txtFiles);
         outputContent = await fs.readFile(
           join(downloadsPath, txtFiles[0]),
           "utf-8",
         );
       } else {
-        logLine("No output file was generated!");
+        logLine("-- No output file was generated!");
         return false;
       }
     }
 
-    logLine("\nComparing output...");
+    logLine("\n-- Comparing output...");
     const expectedContent = await fs.readFile(
       config.expectedOutputFile,
       "utf-8",
@@ -414,17 +414,17 @@ async function runTest(config, rebuildApp = false, logFile = null) {
     const comparison = compareFiles(expectedContent, outputContent);
 
     if (comparison.match) {
-      logLine("Test PASSED - Output matches expected file!");
+      logLine("-- Test PASSED - Output matches expected file!");
       return true;
     } else {
-      logLine("Test FAILED - Output does not match");
+      logLine("-- Test FAILED - Output does not match");
       logLine("\n--- Diff ---");
       logLine(comparison.diff);
       logLine("--- End diff ---\n");
       return false;
     }
   } catch (error) {
-    logLine(`Test error: ${error.message}`);
+    logLine(`-- Test error: ${error.message}`);
     return false;
   } finally {
     if (browser) {
