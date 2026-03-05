@@ -1342,8 +1342,7 @@ export default function LadderForm({
       </div>
       {(isRecalculating || walkthroughIndex < walkthroughErrors.length) && (
         <ErrorDialog
-          key={`recalculate-${walkthroughIndex}-${Date.now()}`}
-          error={currentError || walkthroughErrors[walkthroughIndex]}
+          error={walkthroughErrors[walkthroughIndex]}
           players={players}
           mode={isRecalculating ? "recalculate" : "error-correction"}
           entryCell={{
@@ -1356,6 +1355,13 @@ export default function LadderForm({
                 ? walkthroughErrors[walkthroughIndex]?.resultIndex
                 : currentError?.resultIndex) || 0,
           }}
+          existingValue={
+            isRecalculating && walkthroughErrors[walkthroughIndex]
+              ? walkthroughErrors[
+                  walkthroughIndex
+                ].originalString?.toUpperCase()
+              : undefined
+          }
           walkthroughErrors={isRecalculating ? walkthroughErrors : undefined}
           walkthroughIndex={isRecalculating ? walkthroughIndex : undefined}
           onWalkthroughNext={
