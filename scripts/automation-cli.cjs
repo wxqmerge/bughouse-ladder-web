@@ -219,20 +219,13 @@ async function runTest(config, rebuildApp = false) {
           if (clearButton) {
             await clearButton.click();
             console.log("Clicked Clear All Data button");
-            await sleep(1500);
+            await sleep(2000);
 
             const okButton = await page.$('button:has-text("OK")');
             if (okButton) {
               await okButton.click();
-              console.log("Clicked first OK button");
-              await sleep(1000);
-
-              const okButton2 = await page.$('button:has-text("OK")');
-              if (okButton2) {
-                await okButton2.click();
-                console.log("Clicked second OK button");
-                await sleep(1500);
-              }
+              console.log("Clicked OK on confirmation dialog");
+              await sleep(2000);
             }
           }
         }

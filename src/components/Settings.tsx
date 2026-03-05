@@ -50,7 +50,6 @@ export default function Settings({
       localStorage.clear();
       onReset();
       onClose();
-      alert("Data has been reset to sample data.");
     }
   };
 
