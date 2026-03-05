@@ -394,6 +394,19 @@ export default function LadderForm({
     }
   }, [onSetRecalculateRef, recalculateRatings]);
 
+  const countNonBlankRounds = (): number => {
+    let count = 0;
+    for (const player of players) {
+      const gameResults = player.gameResults || [];
+      for (const result of gameResults) {
+        if (result && result.trim() !== "") {
+          count++;
+        }
+      }
+    }
+    return count;
+  };
+
   const handleCorrectionSubmit = (correctedString: string) => {
     if (!pendingPlayers || !pendingMatches) return;
     // In recalculate mode, use entryCell or walkthroughErrors since currentError is null
@@ -1362,7 +1375,9 @@ export default function LadderForm({
                 ].originalString?.toUpperCase()
               : undefined
           }
-          totalRounds={isRecalculating ? walkthroughErrors.length : 31}
+          totalRounds={
+            isRecalculating ? walkthroughErrors.length : countNonBlankRounds()
+          }
           walkthroughErrors={isRecalculating ? walkthroughErrors : undefined}
           walkthroughIndex={isRecalculating ? walkthroughIndex : undefined}
           onWalkthroughNext={
