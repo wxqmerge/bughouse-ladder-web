@@ -1,0 +1,22 @@
+<project>
+    <option name="editorconfig" value="true" />
+    <option name="codeInspections" value="true" />
+    <option name="deprecation" value="true" />
+    <option name="compilerName" value="Javac" />
+    <option name="sourcePath" value="" />
+    <option name="targetPath" value="" />
+    <option name="encoding" value="UTF-8" />
+    <option name="javadoc" value="true" />
+    <option name="debug" value="true" />
+    <option name="optimisation" value="true" />
+    <option name="compilerArgs">
+        <array>
+            <option value="-Xmaxerrs" />
+            <option value="100" />
+            <option value="-Xlint:all" />
+            <option value="-Xdoclint:all" />
+            <option value="-Xmaxwarnings" />
+            <option value="100" />
+        </array>
+    </option>
+</project>
