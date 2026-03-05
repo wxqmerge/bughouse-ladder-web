@@ -430,9 +430,10 @@ export default function LadderForm({
       setWalkthroughErrors(newWalkthroughErrors);
 
       if (newWalkthroughErrors.length > 0) {
-        const nextError = newWalkthroughErrors[walkthroughIndex];
+        const newIndex = walkthroughIndex + 1;
+        const nextError = newWalkthroughErrors[newIndex];
         if (nextError) {
-          setWalkthroughIndex(walkthroughIndex);
+          setWalkthroughIndex(newIndex);
           setEntryCell({
             playerRank: nextError.playerRank,
             round: nextError.resultIndex,
