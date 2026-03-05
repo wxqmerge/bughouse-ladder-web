@@ -397,6 +397,55 @@ export default function LadderForm({
   const handleCorrectionSubmit = (correctedString: string) => {
     if (!pendingPlayers || !pendingMatches || !currentError) return;
 
+    // Handle empty string from "Clear Cell" - treat as valid (no result)
+    if (!correctedString.trim()) {
+      const updatedPlayers = players.map((p) => ({ ...p }));
+      const pendingUpdatedPlayers = pendingPlayers.map((p) => ({ ...p }));
+
+      // Update the cell where the error was detected (entryCell)
+      if (entryCell) {
+        const playerIdx = entryCell.playerRank - 1;
+        if (playerIdx >= 0 && playerIdx < updatedPlayers.length) {
+          const player = updatedPlayers[playerIdx];
+          const pendingPlayer = pendingUpdatedPlayers[playerIdx];
+          if (player && pendingPlayer) {
+            const newGameResults = [...player.gameResults];
+            const newPendingGameResults = [...pendingPlayer.gameResults];
+            newGameResults[entryCell.round] = "";
+            newPendingGameResults[entryCell.round] = "";
+            player.gameResults = newGameResults;
+            pendingPlayer.gameResults = newPendingGameResults;
+          }
+        }
+      }
+
+      setPlayers(updatedPlayers);
+      setPendingPlayers(pendingUpdatedPlayers);
+      setCurrentError(null);
+      // Remove this error from the walkthrough errors list
+      const currentResultIndex = entryCell?.round ?? -1;
+      const newWalkthroughErrors = walkthroughErrors.filter(
+        (error) => error.resultIndex !== currentResultIndex,
+      );
+      setWalkthroughErrors(newWalkthroughErrors);
+
+      if (newWalkthroughErrors.length > 0) {
+        const nextError = newWalkthroughErrors[walkthroughIndex];
+        if (nextError) {
+          setWalkthroughIndex(walkthroughIndex);
+          setEntryCell({
+            playerRank: nextError.playerRank,
+            round: nextError.resultIndex,
+          });
+        } else {
+          completeRatingCalculation();
+        }
+      } else {
+        completeRatingCalculation();
+      }
+      return;
+    }
+
     const validation = updatePlayerGameData(correctedString, true);
 
     if (!validation.isValid) {
