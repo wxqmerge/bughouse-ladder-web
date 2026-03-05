@@ -1,0 +1,24 @@
+{
+  "name": "03-recalculate-ratings",
+  "inputFilePath": "kings_cross.tab",
+  "expectedOutputFile": "test-cases/recalculate_ratings.expected.txt",
+  "actions": [
+    {
+      "type": "openSettings"
+    },
+    {
+      "type": "clearAllData"
+    },
+    {
+      "type": "recalculateRatings"
+    },
+    {
+      "type": "clearCell"
+    },
+    {
+      "type": "cancelDialog"
+    }
+  ],
+  "clickExportButton": true,
+  "quitAfterExport": true
+}

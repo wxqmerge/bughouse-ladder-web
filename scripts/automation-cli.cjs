@@ -141,14 +141,12 @@ async function runTest(config, rebuildApp = false) {
     });
     await sleep(2000);
 
-    // Clear localStorage to ensure fresh state
     await page.evaluate(() => {
       localStorage.clear();
     });
 
     console.log(`Loading input file: ${config.inputFilePath}`);
 
-    // Click the green "Load" label/button
     const loadClicked = await page.evaluate(() => {
       const labels = document.querySelectorAll("label");
       for (const label of labels) {
@@ -162,18 +160,14 @@ async function runTest(config, rebuildApp = false) {
 
     await sleep(500);
 
-    // Use setInputFiles to select the file through native dialog
     const fileInput = await page.$('input[type="file"]');
     if (fileInput) {
       await fileInput.setInputFiles(config.inputFilePath);
       console.log(`File selected: ${config.inputFilePath}`);
-    } else {
-      console.error("Error: File input not found");
     }
 
     await sleep(3000);
 
-    // Verify file was loaded by checking player count and first player name
     const playerCount = await page.evaluate(() => {
       const rows = document.querySelectorAll("tbody tr");
       return rows.length;
@@ -198,6 +192,130 @@ async function runTest(config, rebuildApp = false) {
       console.log("Warning: Sample data loaded instead of input file");
     }
 
+    // Handle actions array
+    if (config.actions && config.actions.length > 0) {
+      console.log(
+        "Executing actions:",
+        config.actions.map((a) => a.type).join(", "),
+      );
+
+      for (const action of config.actions) {
+        if (action.type === "openSettings") {
+          console.log("Opening settings...");
+          await page.evaluate(() => {
+            const buttons = Array.from(document.querySelectorAll("button"));
+            const settingsBtn = buttons.find(
+              (b) => b.textContent && b.textContent.includes("Settings"),
+            );
+            if (settingsBtn) settingsBtn.click();
+          });
+          await sleep(1500);
+        }
+
+        if (action.type === "clearAllData") {
+          console.log("Clearing all data...");
+          await sleep(1000);
+          const clearButton = await page.$('button:has-text("Clear All Data")');
+          if (clearButton) {
+            await clearButton.click();
+            console.log("Clicked Clear All Data button");
+            await sleep(1500);
+
+            const okButton = await page.$('button:has-text("OK")');
+            if (okButton) {
+              await okButton.click();
+              console.log("Clicked first OK button");
+              await sleep(1000);
+
+              const okButton2 = await page.$('button:has-text("OK")');
+              if (okButton2) {
+                await okButton2.click();
+                console.log("Clicked second OK button");
+                await sleep(1500);
+              }
+            }
+          }
+        }
+
+        if (action.type === "recalculateRatings") {
+          console.log("Clicking Recalculate Ratings...");
+          await sleep(2000);
+          await page.evaluate(() => {
+            const buttons = Array.from(document.querySelectorAll("button"));
+            const target = buttons.find(
+              (b) =>
+                b.textContent && b.textContent.includes("Recalculate Ratings"),
+            );
+            if (target) target.click();
+          });
+          await sleep(3000);
+        }
+
+        if (action.type === "clearCell") {
+          console.log("Clearing cell...");
+          await sleep(1500);
+          const clearButton = await page.$('button:has-text("Clear Cell")');
+          if (clearButton) {
+            await clearButton.click();
+            console.log("Clicked Clear Cell button");
+            await sleep(1500);
+          }
+        }
+
+        if (action.type === "cancelDialog") {
+          console.log("Cancelling dialog...");
+          await sleep(1500);
+          const cancelButton = await page.$('button:has-text("Cancel")');
+          if (cancelButton) {
+            await cancelButton.click();
+            console.log("Clicked Cancel button");
+            await sleep(1500);
+          }
+        }
+
+        if (action.type === "fillGameResult") {
+          console.log(
+            `Filling game result: player ${action.playerRank}, round ${action.round} = "${action.resultString}"`,
+          );
+
+          await page.evaluate(
+            async ({ playerRank, round }) => {
+              const rows = Array.from(document.querySelectorAll("tbody tr"));
+              const targetRow = rows[playerRank - 1];
+              if (!targetRow) return;
+
+              const gameCell = targetRow.children[6 + round];
+              if (!gameCell) return;
+
+              gameCell.click();
+            },
+            { playerRank: action.playerRank, round: action.round },
+          );
+
+          await sleep(3000);
+
+          await page.evaluate(
+            async ({ resultString }) => {
+              const inputField = document.getElementById("correctedResult");
+              if (inputField) {
+                inputField.value = resultString;
+                inputField.dispatchEvent(new Event("input", { bubbles: true }));
+
+                const buttons = Array.from(document.querySelectorAll("button"));
+                const saveButton = buttons.find(
+                  (b) => b.textContent && b.textContent.includes("Save"),
+                );
+                if (saveButton) saveButton.click();
+              }
+            },
+            { resultString: action.resultString },
+          );
+
+          await sleep(2000);
+        }
+      }
+    }
+
     if (config.clickExportButton) {
       console.log("Clicking Export button...");
       const exportClicked = await page.evaluate(() => {
@@ -217,7 +335,6 @@ async function runTest(config, rebuildApp = false) {
       await sleep(5000);
     }
 
-    // If quitAfterExport is set and we have output, skip comparison and exit early
     if (config.quitAfterExport && outputContent) {
       console.log("quitAfterExport enabled - skipping comparison");
       await browser.close();
