@@ -130,6 +130,13 @@ async function runTest(config, rebuildApp = false, logFile = null) {
 
     const page = await context.newPage();
 
+    // Capture console.log from browser
+    page.on("console", (msg) => {
+      const type = msg.type();
+      const text = msg.text();
+      logLine(`>>> [${type.toUpperCase()}] ${text}`);
+    });
+
     page.on("download", async (download) => {
       const suggestedName = await download.suggestedFilename();
       logLine(`-- Download detected: ${suggestedName}`);
