@@ -81,7 +81,60 @@ export default function ErrorDialog({
     if (existingValue) {
       setCorrectedResult(existingValue.replace(/_$/, "").toUpperCase());
     } else if (error && error.originalString) {
-      setCorrectedResult(error.originalString.toUpperCase());
+      const original = error.originalString.toUpperCase();
+      setCorrectedResult(original);
+
+      // Parse the original string to show player info immediately
+      const validation = updatePlayerGameData(original, true);
+      if (validation.isValid && original !== "") {
+        setParseStatus({ isValid: true });
+
+        if (
+          (validation.parsedPlayer1Rank || 0) > 0 ||
+          (validation.parsedPlayer2Rank || 0) > 0 ||
+          (validation.parsedPlayer3Rank || 0) > 0 ||
+          (validation.parsedPlayer4Rank || 0) > 0
+        ) {
+          setParsedGameData({
+            player1Rank: validation.parsedPlayer1Rank || 0,
+            player2Rank: validation.parsedPlayer2Rank || 0,
+            player3Rank: validation.parsedPlayer3Rank || 0,
+            player4Rank: validation.parsedPlayer4Rank || 0,
+          });
+
+          const p1 =
+            (validation.parsedPlayer1Rank || 0) > 0 &&
+            (validation.parsedPlayer1Rank || 0) <= players.length
+              ? players[(validation.parsedPlayer1Rank || 0) - 1] || null
+              : null;
+          const p2 =
+            (validation.parsedPlayer2Rank || 0) > 0 &&
+            (validation.parsedPlayer2Rank || 0) <= players.length
+              ? players[(validation.parsedPlayer2Rank || 0) - 1] || null
+              : null;
+          const p3 =
+            (validation.parsedPlayer3Rank || 0) > 0 &&
+            (validation.parsedPlayer3Rank || 0) <= players.length
+              ? players[(validation.parsedPlayer3Rank || 0) - 1] || null
+              : null;
+          const p4 =
+            (validation.parsedPlayer4Rank || 0) > 0 &&
+            (validation.parsedPlayer4Rank || 0) <= players.length
+              ? players[(validation.parsedPlayer4Rank || 0) - 1] || null
+              : null;
+
+          setDisplayPlayer1(p1);
+          setDisplayPlayer2(p2);
+          setDisplayPlayer3(p3);
+          setDisplayPlayer4(p4);
+        }
+      } else if (validation.error) {
+        setParseStatus({
+          isValid: false,
+          error: validation.error,
+          message: validation.message || "Invalid format",
+        });
+      }
     } else {
       setCorrectedResult("");
     }
