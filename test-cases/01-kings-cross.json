@@ -1,0 +1,6 @@
+{
+  "name": "Kings Cross Test Case",
+  "inputFilePath": "kings_cross.tab",
+  "expectedOutputFile": "kings_cross.expected.txt",
+  "buttonsToClick": ["Run tests"]
+}
