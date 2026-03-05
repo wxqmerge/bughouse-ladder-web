@@ -395,7 +395,9 @@ export default function LadderForm({
   }, [onSetRecalculateRef, recalculateRatings]);
 
   const handleCorrectionSubmit = (correctedString: string) => {
-    if (!pendingPlayers || !pendingMatches || !currentError) return;
+    if (!pendingPlayers || !pendingMatches) return;
+    // In recalculate mode, use entryCell or walkthroughErrors since currentError is null
+    if (!currentError && !entryCell) return;
 
     // Handle empty string from "Clear Cell" - treat as valid (no result)
     if (!correctedString.trim()) {
@@ -421,16 +423,36 @@ export default function LadderForm({
 
       setPlayers(updatedPlayers);
       setPendingPlayers(pendingUpdatedPlayers);
-      setCurrentError(null);
+
       // Remove this error from the walkthrough errors list
-      const currentResultIndex = entryCell?.round ?? -1;
       const newWalkthroughErrors = walkthroughErrors.filter(
-        (error) => error.resultIndex !== currentResultIndex,
+        (error) =>
+          !(
+            error.playerRank === entryCell?.playerRank &&
+            error.resultIndex === entryCell?.round
+          ),
       );
       setWalkthroughErrors(newWalkthroughErrors);
 
       if (newWalkthroughErrors.length > 0) {
-        const newIndex = walkthroughIndex + 1;
+        // Find position of current error in original list, then use same index in filtered list
+        let currentIndex = -1;
+        for (let i = 0; i < walkthroughErrors.length; i++) {
+          if (
+            walkthroughErrors[i].playerRank === entryCell?.playerRank &&
+            walkthroughErrors[i].resultIndex === entryCell?.round
+          ) {
+            currentIndex = i;
+            break;
+          }
+        }
+
+        // Use currentIndex (or 0 if we're at the end) as the new index in filtered list
+        const newIndex =
+          currentIndex < newWalkthroughErrors.length
+            ? currentIndex
+            : newWalkthroughErrors.length - 1;
+
         const nextError = newWalkthroughErrors[newIndex];
         if (nextError) {
           setWalkthroughIndex(newIndex);
