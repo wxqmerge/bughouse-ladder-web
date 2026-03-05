@@ -150,10 +150,8 @@ export default function ErrorDialog({
       }
     } else if (mode === "recalculate" && onSubmit) {
       onSubmit("");
-      onClose();
     } else if (mode === "error-correction" && onSubmit) {
       onSubmit("");
-      onClose();
     } else if (mode === "game-entry" && onUpdatePlayerData && entryCell) {
       onUpdatePlayerData(entryCell.playerRank, entryCell.round, "");
       onClose();
