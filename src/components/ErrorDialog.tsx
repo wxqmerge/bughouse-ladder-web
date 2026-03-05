@@ -524,7 +524,9 @@ export default function ErrorDialog({
               MozUserSelect: "text",
               msUserSelect: "text",
             }}
-          />
+          >
+            field name: correctedResult
+          </p>
           {parseStatus && (
             <p
               style={{
