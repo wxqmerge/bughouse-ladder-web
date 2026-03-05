@@ -141,33 +141,62 @@ async function runTest(config, rebuildApp = false) {
     });
     await sleep(2000);
 
+    // Clear localStorage to ensure fresh state
+    await page.evaluate(() => {
+      localStorage.clear();
+    });
+
     console.log(`Loading input file: ${config.inputFilePath}`);
-    const inputContent = await fs.readFile(config.inputFilePath, "utf-8");
-    const inputFile = config.inputFilePath.split("/").pop();
 
-    const fileBlob = await page.evaluate(
-      async ({ content, filename }) => {
-        const blob = new Blob([content], { type: "text/plain" });
-        return { blob, filename };
-      },
-      { content: inputContent, filename: inputFile },
-    );
-
-    await page.evaluate(async (fileData) => {
-      const file = new File([fileData.blob], fileData.filename, {
-        type: "text/plain",
-      });
-      const dt = new DataTransfer();
-      dt.items.add(file);
-      const input = document.querySelector('input[type="file"]');
-      if (input) {
-        input.files = dt.files;
-        input.dispatchEvent(new Event("change", { bubbles: true }));
+    // Click the green "Load" label/button
+    const loadClicked = await page.evaluate(() => {
+      const labels = document.querySelectorAll("label");
+      for (const label of labels) {
+        if (label.textContent && label.textContent.includes("Load")) {
+          label.click();
+          return true;
+        }
       }
-    }, fileBlob);
+      return false;
+    });
 
-    await sleep(2000);
-    console.log("File loaded successfully");
+    await sleep(500);
+
+    // Use setInputFiles to select the file through native dialog
+    const fileInput = await page.$('input[type="file"]');
+    if (fileInput) {
+      await fileInput.setInputFiles(config.inputFilePath);
+      console.log(`File selected: ${config.inputFilePath}`);
+    } else {
+      console.error("Error: File input not found");
+    }
+
+    await sleep(3000);
+
+    // Verify file was loaded by checking player count and first player name
+    const playerCount = await page.evaluate(() => {
+      const rows = document.querySelectorAll("tbody tr");
+      return rows.length;
+    });
+    console.log(`Player count after load: ${playerCount}`);
+
+    const firstPlayer = await page.evaluate(() => {
+      const rows = document.querySelectorAll("tbody tr");
+      if (rows.length > 0) {
+        const cells = rows[0].querySelectorAll("td");
+        if (cells.length >= 4) {
+          return `${cells[2]?.textContent || ""} ${cells[3]?.textContent || ""}`;
+        }
+      }
+      return "unknown";
+    });
+    console.log(`First player: ${firstPlayer}`);
+
+    if (playerCount > 14 || !firstPlayer.includes("Garcia")) {
+      console.log(`Successfully loaded ${playerCount} players`);
+    } else {
+      console.log("Warning: Sample data loaded instead of input file");
+    }
 
     if (config.clickExportButton) {
       console.log("Clicking Export button...");
@@ -186,6 +215,14 @@ async function runTest(config, rebuildApp = false) {
         console.log("Warning: Could not find Export button");
       }
       await sleep(5000);
+    }
+
+    // If quitAfterExport is set and we have output, skip comparison and exit early
+    if (config.quitAfterExport && outputContent) {
+      console.log("quitAfterExport enabled - skipping comparison");
+      await browser.close();
+      await server.close();
+      return true;
     }
 
     const buttonsToClick = config.buttonsToClick || [];
