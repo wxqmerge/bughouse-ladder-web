@@ -456,6 +456,7 @@ export default function LadderForm({
         const nextError = newWalkthroughErrors[newIndex];
         if (nextError) {
           setWalkthroughIndex(newIndex);
+          setCurrentError(nextError);
           setEntryCell({
             playerRank: nextError.playerRank,
             round: nextError.resultIndex,
@@ -1341,6 +1342,7 @@ export default function LadderForm({
       </div>
       {(isRecalculating || walkthroughIndex < walkthroughErrors.length) && (
         <ErrorDialog
+          key={`recalculate-${walkthroughIndex}-${Date.now()}`}
           error={currentError || walkthroughErrors[walkthroughIndex]}
           players={players}
           mode={isRecalculating ? "recalculate" : "error-correction"}
