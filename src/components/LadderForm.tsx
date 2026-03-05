@@ -170,6 +170,7 @@ export default function LadderForm({
     null,
   );
   const [isRecalculating, setIsRecalculating] = useState(false);
+  const [isWalkthrough, setIsWalkthrough] = useState(false);
   const [walkthroughErrors, setWalkthroughErrors] = useState<
     ValidationResult[]
   >([]);
@@ -194,6 +195,9 @@ export default function LadderForm({
   useEffect(() => {
     if (triggerWalkthrough && setTriggerWalkthrough) {
       setTriggerWalkthrough(false);
+      setIsWalkthrough(true);
+      // Reset isRecalculating when starting walkthrough
+      setIsRecalculating(false);
     }
   }, [triggerWalkthrough, setTriggerWalkthrough]);
 
@@ -1353,31 +1357,23 @@ export default function LadderForm({
           </tbody>
         </table>
       </div>
-      {(isRecalculating || walkthroughIndex < walkthroughErrors.length) && (
+      {(isRecalculating || isWalkthrough || walkthroughIndex < walkthroughErrors.length) && (
         <ErrorDialog
-          error={walkthroughErrors[walkthroughIndex]}
+          error={isWalkthrough ? null : walkthroughErrors[walkthroughIndex]}
           players={players}
-          mode={isRecalculating ? "recalculate" : "error-correction"}
+          mode={isWalkthrough ? "walkthrough" : (isRecalculating ? "recalculate" : "error-correction")}
           entryCell={{
-            playerRank:
+            playerRank: isWalkthrough ? walkthroughIndex + 1 :
               (isRecalculating
                 ? walkthroughErrors[walkthroughIndex]?.playerRank
                 : currentError?.playerRank) || 0,
-            round:
+            round: isWalkthrough ? walkthroughIndex :
               (isRecalculating
                 ? walkthroughErrors[walkthroughIndex]?.resultIndex
                 : currentError?.resultIndex) || 0,
           }}
-          existingValue={
-            isRecalculating && walkthroughErrors[walkthroughIndex]
-              ? walkthroughErrors[
-                  walkthroughIndex
-                ].originalString?.toUpperCase()
-              : undefined
-          }
-          totalRounds={
-            isRecalculating ? walkthroughErrors.length : countNonBlankRounds()
-          }
+          existingValue={isWalkthrough ? (players[walkthroughIndex]?.gameResults?.[walkthroughIndex] || "") : (isRecalculating && walkthroughErrors[walkthroughIndex] ? walkthroughErrors[walkthroughIndex].originalString?.toUpperCase() : undefined)}
+          totalRounds={isWalkthrough ? countNonBlankRounds() : (isRecalculating ? walkthroughErrors.length : countNonBlankRounds())}
           walkthroughErrors={isRecalculating ? walkthroughErrors : undefined}
           walkthroughIndex={isRecalculating ? walkthroughIndex : undefined}
           onWalkthroughNext={
@@ -1386,7 +1382,7 @@ export default function LadderForm({
           onWalkthroughPrev={
             isRecalculating ? handleWalkthroughPrev : undefined
           }
-          onClose={handleCorrectionCancel}
+          onClose={() => { handleCorrectionCancel(); setIsWalkthrough(false); }}
           onSubmit={handleCorrectionSubmit}
           onUpdatePlayerData={handleUpdatePlayerData}
         />
