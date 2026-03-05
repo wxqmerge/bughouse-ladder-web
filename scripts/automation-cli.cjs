@@ -46,7 +46,7 @@ function compareFiles(expected, actual) {
   return { match: false, diff };
 }
 
-async function startServer(port, distDir) {
+async function startServer(port, distDir, logLine) {
   return new Promise((resolve, reject) => {
     const server = http.createServer(async (req, res) => {
       try {
@@ -78,36 +78,45 @@ async function startServer(port, distDir) {
     });
     server
       .listen(port, "127.0.0.1", () => {
-        console.log(`Server started on port ${port}`);
+        logLine(`Server started on port ${port}`);
         resolve(server);
       })
       .on("error", reject);
   });
 }
 
-async function runTest(config, rebuildApp = false) {
-  console.log("\n========================================");
-  console.log(`Running test: ${config.name}`);
-  console.log("========================================\n");
+let logStream = "";
+
+async function runTest(config, rebuildApp = false, logFile = null) {
+  logStream = `=== Test: ${config.name} ===\n\n`;
+
+  const logLine = (msg) => {
+    console.log(msg);
+    if (logFile) logStream += msg + "\n";
+  };
+
+  logLine("\n========================================");
+  logLine(`Running test: ${config.name}`);
+  logLine("========================================\n");
 
   if (rebuildApp) {
-    console.log("Rebuilding app...");
+    logLine("Rebuilding app...");
     await new Promise((resolve, reject) => {
       exec("npm run build", (error) => {
         if (error) {
-          console.error("Build failed:", error);
+          logLine(`Build failed: ${error}`);
           reject(error);
           return;
         }
-        console.log("Build completed successfully");
+        logLine("Build completed successfully");
         resolve();
       });
     });
   }
 
-  console.log("Starting HTTP server...");
-  const server = await startServer(5173, "dist");
-  console.log("Server is ready");
+  logLine("Starting HTTP server...");
+  const server = await startServer(5173, "dist", logLine);
+  logLine("Server is ready");
 
   let browser;
   let outputContent = null;
@@ -123,18 +132,18 @@ async function runTest(config, rebuildApp = false) {
 
     page.on("download", async (download) => {
       const suggestedName = await download.suggestedFilename();
-      console.log(`Download detected: ${suggestedName}`);
+      logLine(`Download detected: ${suggestedName}`);
       try {
         const filePath = join(downloadsPath, suggestedName);
         await download.saveAs(filePath);
         outputContent = await fs.readFile(filePath, "utf-8");
-        console.log(`Download saved to: ${filePath}`);
+        logLine(`Download saved to: ${filePath}`);
       } catch (err) {
-        console.error("Failed to save download:", err);
+        logLine(`Failed to save download: ${err.message}`);
       }
     });
 
-    console.log("Loading app...");
+    logLine("Loading app...");
     await page.goto("http://localhost:5173", {
       waitUntil: "networkidle",
       timeout: 30000,
@@ -145,7 +154,7 @@ async function runTest(config, rebuildApp = false) {
       localStorage.clear();
     });
 
-    console.log(`Loading input file: ${config.inputFilePath}`);
+    logLine(`Loading input file: ${config.inputFilePath}`);
 
     const loadClicked = await page.evaluate(() => {
       const labels = document.querySelectorAll("label");
@@ -163,7 +172,7 @@ async function runTest(config, rebuildApp = false) {
     const fileInput = await page.$('input[type="file"]');
     if (fileInput) {
       await fileInput.setInputFiles(config.inputFilePath);
-      console.log(`File selected: ${config.inputFilePath}`);
+      logLine(`File selected: ${config.inputFilePath}`);
     }
 
     await sleep(3000);
@@ -172,7 +181,7 @@ async function runTest(config, rebuildApp = false) {
       const rows = document.querySelectorAll("tbody tr");
       return rows.length;
     });
-    console.log(`Player count after load: ${playerCount}`);
+    logLine(`Player count after load: ${playerCount}`);
 
     const firstPlayer = await page.evaluate(() => {
       const rows = document.querySelectorAll("tbody tr");
@@ -184,24 +193,23 @@ async function runTest(config, rebuildApp = false) {
       }
       return "unknown";
     });
-    console.log(`First player: ${firstPlayer}`);
+    logLine(`First player: ${firstPlayer}`);
 
     if (playerCount > 14 || !firstPlayer.includes("Garcia")) {
-      console.log(`Successfully loaded ${playerCount} players`);
+      logLine(`Successfully loaded ${playerCount} players`);
     } else {
-      console.log("Warning: Sample data loaded instead of input file");
+      logLine("Warning: Sample data loaded instead of input file");
     }
 
     // Handle actions array
     if (config.actions && config.actions.length > 0) {
-      console.log(
-        "Executing actions:",
-        config.actions.map((a) => a.type).join(", "),
+      logLine(
+        `Executing actions: ${config.actions.map((a) => a.type).join(", ")}`,
       );
 
       for (const action of config.actions) {
         if (action.type === "openSettings") {
-          console.log("Opening settings...");
+          logLine("Opening settings...");
           await page.evaluate(() => {
             const buttons = Array.from(document.querySelectorAll("button"));
             const settingsBtn = buttons.find(
@@ -213,25 +221,25 @@ async function runTest(config, rebuildApp = false) {
         }
 
         if (action.type === "clearAllData") {
-          console.log("Clearing all data...");
+          logLine("Clearing all data...");
           await sleep(1000);
           const clearButton = await page.$('button:has-text("Clear All Data")');
           if (clearButton) {
             await clearButton.click();
-            console.log("Clicked Clear All Data button");
+            logLine("Clicked Clear All Data button");
             await sleep(2000);
 
             const okButton = await page.$('button:has-text("OK")');
             if (okButton) {
               await okButton.click();
-              console.log("Clicked OK on confirmation dialog");
+              logLine("Clicked OK on confirmation dialog");
               await sleep(2000);
             }
           }
         }
 
         if (action.type === "recalculateRatings") {
-          console.log("Clicking Recalculate Ratings...");
+          logLine("Clicking Recalculate Ratings...");
           await sleep(2000);
           await page.evaluate(() => {
             const buttons = Array.from(document.querySelectorAll("button"));
@@ -245,29 +253,29 @@ async function runTest(config, rebuildApp = false) {
         }
 
         if (action.type === "clearCell") {
-          console.log("Clearing cell...");
+          logLine("Clearing cell...");
           await sleep(1500);
           const clearButton = await page.$('button:has-text("Clear Cell")');
           if (clearButton) {
             await clearButton.click();
-            console.log("Clicked Clear Cell button");
+            logLine("Clicked Clear Cell button");
             await sleep(1500);
           }
         }
 
         if (action.type === "cancelDialog") {
-          console.log("Cancelling dialog...");
+          logLine("Cancelling dialog...");
           await sleep(1500);
           const cancelButton = await page.$('button:has-text("Cancel")');
           if (cancelButton) {
             await cancelButton.click();
-            console.log("Clicked Cancel button");
+            logLine("Clicked Cancel button");
             await sleep(1500);
           }
         }
 
         if (action.type === "fillGameResult") {
-          console.log(
+          logLine(
             `Filling game result: player ${action.playerRank}, round ${action.round} = "${action.resultString}"`,
           );
 
@@ -310,7 +318,7 @@ async function runTest(config, rebuildApp = false) {
     }
 
     if (config.clickExportButton) {
-      console.log("Clicking Export button...");
+      logLine("Clicking Export button...");
       const exportClicked = await page.evaluate(() => {
         const buttons = Array.from(document.querySelectorAll("button"));
         const target = buttons.find(
@@ -323,29 +331,22 @@ async function runTest(config, rebuildApp = false) {
         return false;
       });
       if (!exportClicked) {
-        console.log("Warning: Could not find Export button");
+        logLine("Warning: Could not find Export button");
       }
       await sleep(5000);
     }
 
-    if (config.quitAfterExport && outputContent) {
-      console.log("quitAfterExport enabled - skipping comparison");
-      await browser.close();
-      await server.close();
-      return true;
-    }
-
     const buttonsToClick = config.buttonsToClick || [];
-    console.log("Clicking buttons:", buttonsToClick.join(", ") || "none");
+    logLine(`Clicking buttons: ${buttonsToClick.join(", ") || "none"}`);
 
     for (const btnText of buttonsToClick) {
-      console.log(`Searching for button: "${btnText}"`);
+      logLine(`Searching for button: "${btnText}"`);
       let clicked = false;
 
       try {
         const button = await page.getByText(btnText, { exact: false });
         if (button) {
-          console.log(`Found and clicking "${btnText}" via getByText`);
+          logLine(`Found and clicking "${btnText}" via getByText`);
           try {
             await button.click();
             clicked = true;
@@ -361,7 +362,7 @@ async function runTest(config, rebuildApp = false) {
           }
         }
       } catch (e) {
-        console.log(`getByText failed for "${btnText}", trying evaluate`);
+        logLine(`getByText failed for "${btnText}", trying evaluate`);
         const found = await page.evaluate((text) => {
           const buttons = Array.from(document.querySelectorAll("button"));
           return buttons.find(
@@ -381,9 +382,9 @@ async function runTest(config, rebuildApp = false) {
       }
 
       if (!clicked) {
-        console.log(`Warning: Could not click button "${btnText}"`);
+        logLine(`Warning: Could not click button "${btnText}"`);
       } else {
-        console.log(`Successfully clicked "${btnText}"`);
+        logLine(`Successfully clicked "${btnText}"`);
       }
       await sleep(2000);
     }
@@ -394,18 +395,18 @@ async function runTest(config, rebuildApp = false) {
       const files = await fs.readdir(downloadsPath);
       const txtFiles = files.filter((f) => f.endsWith(".txt"));
       if (txtFiles.length > 0) {
-        console.log(`Found ${txtFiles.length} downloaded file(s):`, txtFiles);
+        logLine(`Found ${txtFiles.length} downloaded file(s):`, txtFiles);
         outputContent = await fs.readFile(
           join(downloadsPath, txtFiles[0]),
           "utf-8",
         );
       } else {
-        console.error("No output file was generated!");
+        logLine("No output file was generated!");
         return false;
       }
     }
 
-    console.log("\nComparing output...");
+    logLine("\nComparing output...");
     const expectedContent = await fs.readFile(
       config.expectedOutputFile,
       "utf-8",
@@ -413,17 +414,17 @@ async function runTest(config, rebuildApp = false) {
     const comparison = compareFiles(expectedContent, outputContent);
 
     if (comparison.match) {
-      console.log("Test PASSED - Output matches expected file!");
+      logLine("Test PASSED - Output matches expected file!");
       return true;
     } else {
-      console.log("Test FAILED - Output does not match");
-      console.log("\n--- Diff ---");
-      console.log(comparison.diff);
-      console.log("--- End diff ---\n");
+      logLine("Test FAILED - Output does not match");
+      logLine("\n--- Diff ---");
+      logLine(comparison.diff);
+      logLine("--- End diff ---\n");
       return false;
     }
   } catch (error) {
-    console.error("Test error:", error);
+    logLine(`Test error: ${error.message}`);
     return false;
   } finally {
     if (browser) {
@@ -432,6 +433,11 @@ async function runTest(config, rebuildApp = false) {
     try {
       await server.close();
     } catch (e) {}
+    // Write log to file if provided
+    if (logFile) {
+      await fs.writeFile(logFile, logStream, "utf-8");
+      console.log(`\nLog saved to: ${logFile}\n`);
+    }
   }
 }
 
@@ -445,6 +451,7 @@ async function main() {
 
   let configPath = "";
   let rebuild = false;
+  let logFile = null;
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "--config" && args[i + 1]) {
@@ -452,6 +459,9 @@ async function main() {
       i++;
     } else if (args[i] === "--rebuild") {
       rebuild = true;
+    } else if (args[i] === "--log" && args[i + 1]) {
+      logFile = args[i + 1];
+      i++;
     }
   }
 
@@ -463,8 +473,13 @@ async function main() {
   try {
     const config = JSON.parse(await fs.readFile(configPath, "utf-8"));
 
+    // Default log file based on test name
+    if (!logFile && config.name) {
+      logFile = `test-cases/${config.name}.log`;
+    }
+
     console.log("\n=== Running test ===");
-    const success = await runTest(config, rebuild);
+    const success = await runTest(config, rebuild, logFile);
 
     if (success) {
       console.log("Test completed successfully!");
