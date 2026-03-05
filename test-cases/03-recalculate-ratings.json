@@ -19,6 +19,5 @@
       "type": "cancelDialog"
     }
   ],
-  "clickExportButton": true,
-  "quitAfterExport": true
+  "clickExportButton": true
 }
