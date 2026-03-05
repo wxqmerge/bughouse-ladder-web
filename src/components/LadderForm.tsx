@@ -558,6 +558,7 @@ export default function LadderForm({
     setWalkthroughErrors([]);
     setWalkthroughIndex(0);
     setCurrentError(null);
+    setEntryCell(null);
     setIsRecalculating(false);
     console.log("Rating calculation complete");
   };
