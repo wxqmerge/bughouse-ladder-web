@@ -812,16 +812,6 @@ export default function LadderForm({
       console.error("Failed to save to localStorage:", err);
     }
   };
-  // simplified test helper now delegates to other buttons instead of performing custom parsing/IO
-  const runTests = () => {
-    console.log("runTests invoked, delegating to exportPlayers");
-    //fileInput.click();
-    const file = new File([], "kings_cross.tab");
-    loadPlayers(file);
-    console.log(`Loaded players from kings_cross.tab`);
-    recalculateRatings();
-    exportPlayers();
-  };
 
   const exportPlayers = () => {
     if (players.length === 0) {
@@ -1038,24 +1028,6 @@ export default function LadderForm({
             }}
           />
         </label>
-
-        <button
-          style={{
-            background: "#2563eb",
-            color: "white",
-            border: "none",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.25rem",
-            cursor: "pointer",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            fontSize: "0.875rem",
-          }}
-          onClick={runTests}
-        >
-          Run tests
-        </button>
 
         <button
           style={{
