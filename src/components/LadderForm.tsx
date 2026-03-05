@@ -198,6 +198,14 @@ export default function LadderForm({
       setIsWalkthrough(true);
       // Reset isRecalculating when starting walkthrough
       setIsRecalculating(false);
+      // Set entryCell to first non-blank cell for highlighting
+      const cells = getNonBlankCells();
+      if (cells.length > 0) {
+        setEntryCell({
+          playerRank: cells[0].playerRank,
+          round: cells[0].round,
+        });
+      }
     }
   }, [triggerWalkthrough, setTriggerWalkthrough]);
 
@@ -596,6 +604,47 @@ export default function LadderForm({
   const handleWalkthroughPrev = () => {
     if (walkthroughIndex > 0) {
       setWalkthroughIndex(walkthroughIndex - 1);
+    }
+  };
+
+  const getNonBlankCells = (): { playerRank: number; round: number }[] => {
+    const cells: { playerRank: number; round: number }[] = [];
+    for (let playerIdx = 0; playerIdx < players.length; playerIdx++) {
+      const gameResults = players[playerIdx]?.gameResults ?? [];
+      if (gameResults.length === 0) continue;
+      for (let roundIdx = 0; roundIdx < gameResults.length; roundIdx++) {
+        const result = gameResults[roundIdx];
+        if (result != null && result.trim() !== "") {
+          cells.push({ playerRank: playerIdx + 1, round: roundIdx });
+        }
+      }
+    }
+    return cells;
+  };
+
+  const handleWalkthroughNextForReview = () => {
+    if (isWalkthrough && walkthroughIndex < getNonBlankCells().length - 1) {
+      const newIndex = walkthroughIndex + 1;
+      setWalkthroughIndex(newIndex);
+      // Update entryCell to highlight the new cell
+      const cell = getNonBlankCells()[newIndex];
+      if (cell) {
+        setEntryCell({ playerRank: cell.playerRank, round: cell.round });
+      }
+    } else {
+      setIsWalkthrough(false);
+    }
+  };
+
+  const handleWalkthroughPrevForReview = () => {
+    if (isWalkthrough && walkthroughIndex > 0) {
+      const newIndex = walkthroughIndex - 1;
+      setWalkthroughIndex(newIndex);
+      // Update entryCell to highlight the new cell
+      const cell = getNonBlankCells()[newIndex];
+      if (cell) {
+        setEntryCell({ playerRank: cell.playerRank, round: cell.round });
+      }
     }
   };
 
@@ -1357,32 +1406,78 @@ export default function LadderForm({
           </tbody>
         </table>
       </div>
-      {(isRecalculating || isWalkthrough || walkthroughIndex < walkthroughErrors.length) && (
+      {(isRecalculating ||
+        isWalkthrough ||
+        walkthroughIndex < walkthroughErrors.length) && (
         <ErrorDialog
           error={isWalkthrough ? null : walkthroughErrors[walkthroughIndex]}
           players={players}
-          mode={isWalkthrough ? "walkthrough" : (isRecalculating ? "recalculate" : "error-correction")}
+          mode={
+            isWalkthrough
+              ? "walkthrough"
+              : isRecalculating
+                ? "recalculate"
+                : "error-correction"
+          }
           entryCell={{
-            playerRank: isWalkthrough ? walkthroughIndex + 1 :
-              (isRecalculating
-                ? walkthroughErrors[walkthroughIndex]?.playerRank
-                : currentError?.playerRank) || 0,
-            round: isWalkthrough ? walkthroughIndex :
-              (isRecalculating
-                ? walkthroughErrors[walkthroughIndex]?.resultIndex
-                : currentError?.resultIndex) || 0,
+            playerRank: isWalkthrough
+              ? getNonBlankCells()[walkthroughIndex]?.playerRank ||
+                walkthroughIndex + 1
+              : (isRecalculating
+                  ? walkthroughErrors[walkthroughIndex]?.playerRank
+                  : currentError?.playerRank) || 0,
+            round: isWalkthrough
+              ? (getNonBlankCells()[walkthroughIndex]?.round ??
+                walkthroughIndex)
+              : (isRecalculating
+                  ? walkthroughErrors[walkthroughIndex]?.resultIndex
+                  : currentError?.resultIndex) || 0,
           }}
-          existingValue={isWalkthrough ? (players[walkthroughIndex]?.gameResults?.[walkthroughIndex] || "") : (isRecalculating && walkthroughErrors[walkthroughIndex] ? walkthroughErrors[walkthroughIndex].originalString?.toUpperCase() : undefined)}
-          totalRounds={isWalkthrough ? countNonBlankRounds() : (isRecalculating ? walkthroughErrors.length : countNonBlankRounds())}
+          existingValue={
+            isWalkthrough
+              ? (() => {
+                  const cell = getNonBlankCells()[walkthroughIndex];
+                  if (!cell) return "";
+                  return (
+                    players[cell.playerRank - 1]?.gameResults?.[cell.round] ||
+                    ""
+                  );
+                })()
+              : isRecalculating && walkthroughErrors[walkthroughIndex]
+                ? walkthroughErrors[
+                    walkthroughIndex
+                  ].originalString?.toUpperCase()
+                : undefined
+          }
+          totalRounds={
+            isWalkthrough
+              ? countNonBlankRounds()
+              : isRecalculating
+                ? walkthroughErrors.length
+                : countNonBlankRounds()
+          }
           walkthroughErrors={isRecalculating ? walkthroughErrors : undefined}
-          walkthroughIndex={isRecalculating ? walkthroughIndex : undefined}
+          walkthroughIndex={
+            isWalkthrough || isRecalculating ? walkthroughIndex : undefined
+          }
           onWalkthroughNext={
-            isRecalculating ? handleWalkthroughNext : undefined
+            isWalkthrough || isRecalculating
+              ? isWalkthrough
+                ? handleWalkthroughNextForReview
+                : handleWalkthroughNext
+              : undefined
           }
           onWalkthroughPrev={
-            isRecalculating ? handleWalkthroughPrev : undefined
+            isWalkthrough || isRecalculating
+              ? isWalkthrough
+                ? handleWalkthroughPrevForReview
+                : handleWalkthroughPrev
+              : undefined
           }
-          onClose={() => { handleCorrectionCancel(); setIsWalkthrough(false); }}
+          onClose={() => {
+            handleCorrectionCancel();
+            setIsWalkthrough(false);
+          }}
           onSubmit={handleCorrectionSubmit}
           onUpdatePlayerData={handleUpdatePlayerData}
         />
