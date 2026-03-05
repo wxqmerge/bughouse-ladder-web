@@ -21,6 +21,7 @@ interface ErrorDialogProps {
     roundIndex: number,
     resultString: string,
   ) => void;
+  totalRounds?: number;
 }
 
 const ERROR_MESSAGES: Record<number, string> = {
@@ -50,6 +51,7 @@ export default function ErrorDialog({
   entryCell,
   existingValue,
   onUpdatePlayerData,
+  totalRounds,
 }: ErrorDialogProps) {
   const [correctedResult, setCorrectedResult] = useState<string>("");
   const [currentInputValue, setCurrentInputValue] = useState<string>("");
@@ -350,7 +352,7 @@ export default function ErrorDialog({
 
   const displayError = error;
   const displayIndex = walkthroughIndex ?? 0;
-  const displayTotal = walkthroughErrors?.length ?? 1;
+  const displayTotal = totalRounds ?? walkthroughErrors?.length ?? 1;
   const displayCell = entryCell ?? { playerRank: 0, round: 0 };
 
   return (
@@ -407,7 +409,7 @@ export default function ErrorDialog({
                 ? `Recalculate Error ${displayIndex + 1} of ${displayTotal}`
                 : isWalkthrough
                   ? `Report Walkthrough - Error ${displayIndex + 1} of ${displayTotal}`
-                  : "Validation Error"}
+                  : `Correction Required - Round ${displayCell.round + 1} of ${displayTotal}`}
           </h2>
           <button
             onClick={onClose}

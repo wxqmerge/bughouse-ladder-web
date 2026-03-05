@@ -1362,6 +1362,7 @@ export default function LadderForm({
                 ].originalString?.toUpperCase()
               : undefined
           }
+          totalRounds={isRecalculating ? walkthroughErrors.length : 31}
           walkthroughErrors={isRecalculating ? walkthroughErrors : undefined}
           walkthroughIndex={isRecalculating ? walkthroughIndex : undefined}
           onWalkthroughNext={
