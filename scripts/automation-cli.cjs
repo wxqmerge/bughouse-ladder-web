@@ -119,7 +119,6 @@ async function runTest(config, rebuildApp = false) {
     const downloadsPath = join(__dirname, "test-downloads");
     await fs.mkdir(downloadsPath, { recursive: true });
 
-
     const page = await context.newPage();
 
     page.on("download", async (download) => {
@@ -170,8 +169,27 @@ async function runTest(config, rebuildApp = false) {
     await sleep(2000);
     console.log("File loaded successfully");
 
-    const buttonsToClick = config.buttonsToClick || ["Run tests"];
-    console.log("Clicking buttons:", buttonsToClick.join(", "));
+    if (config.clickExportButton) {
+      console.log("Clicking Export button...");
+      const exportClicked = await page.evaluate(() => {
+        const buttons = Array.from(document.querySelectorAll("button"));
+        const target = buttons.find(
+          (b) => b.textContent && b.textContent.includes("Export"),
+        );
+        if (target) {
+          target.click();
+          return true;
+        }
+        return false;
+      });
+      if (!exportClicked) {
+        console.log("Warning: Could not find Export button");
+      }
+      await sleep(5000);
+    }
+
+    const buttonsToClick = config.buttonsToClick || [];
+    console.log("Clicking buttons:", buttonsToClick.join(", ") || "none");
 
     for (const btnText of buttonsToClick) {
       console.log(`Searching for button: "${btnText}"`);
@@ -298,28 +316,15 @@ async function main() {
   try {
     const config = JSON.parse(await fs.readFile(configPath, "utf-8"));
 
-    let attempt = 0;
-    const maxAttempts = 10;
+    console.log("\n=== Running test ===");
+    const success = await runTest(config, rebuild);
 
-    while (attempt < maxAttempts) {
-      attempt++;
-      console.log(`\n=== Attempt ${attempt}/${maxAttempts} ===`);
-
-      const success = await runTest(config, rebuild && attempt === 1);
-
-      if (success) {
-        console.log("\nTest completed successfully!");
-        process.exit(0);
-      } else {
-        if (attempt < maxAttempts) {
-          console.log(`\nTest failed. Modify code and try again.`);
-          await sleep(5000);
-          rebuild = true;
-        } else {
-          console.log("\nMax attempts reached.");
-          process.exit(1);
-        }
-      }
+    if (success) {
+      console.log("Test completed successfully!");
+      process.exit(0);
+    } else {
+      console.log("\nTest failed.");
+      process.exit(1);
     }
   } catch (error) {
     console.error("Error:", error);
