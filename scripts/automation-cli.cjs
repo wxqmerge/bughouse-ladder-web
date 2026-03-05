@@ -217,13 +217,18 @@ async function runTest(config, rebuildApp = false, logFile = null) {
       for (const action of config.actions) {
         if (action.type === "openSettings") {
           logLine("-- Opening settings...");
-          await page.evaluate(() => {
+          const clicked = await page.evaluate(() => {
             const buttons = Array.from(document.querySelectorAll("button"));
             const settingsBtn = buttons.find(
               (b) => b.textContent && b.textContent.includes("Settings"),
             );
-            if (settingsBtn) settingsBtn.click();
+            if (settingsBtn) {
+              settingsBtn.click();
+              return true;
+            }
+            return false;
           });
+          if (clicked) logLine(`-- Button pressed: Settings`);
           await sleep(1500);
         }
 
@@ -233,13 +238,13 @@ async function runTest(config, rebuildApp = false, logFile = null) {
           const clearButton = await page.$('button:has-text("Clear All Data")');
           if (clearButton) {
             await clearButton.click();
-            logLine("-- Clicked Clear All Data button");
+            logLine(`-- Button pressed: Clear All Data`);
             await sleep(2000);
 
             const okButton = await page.$('button:has-text("OK")');
             if (okButton) {
               await okButton.click();
-              logLine("-- Clicked OK on confirmation dialog");
+              logLine(`-- Button pressed: OK (confirmation)`);
               await sleep(2000);
             }
           }
@@ -248,14 +253,19 @@ async function runTest(config, rebuildApp = false, logFile = null) {
         if (action.type === "recalculateRatings") {
           logLine("-- Clicking Recalculate Ratings...");
           await sleep(2000);
-          await page.evaluate(() => {
+          const clicked = await page.evaluate(() => {
             const buttons = Array.from(document.querySelectorAll("button"));
             const target = buttons.find(
               (b) =>
                 b.textContent && b.textContent.includes("Recalculate Ratings"),
             );
-            if (target) target.click();
+            if (target) {
+              target.click();
+              return true;
+            }
+            return false;
           });
+          if (clicked) logLine(`-- Button pressed: Recalculate Ratings`);
           await sleep(3000);
         }
 
@@ -265,7 +275,7 @@ async function runTest(config, rebuildApp = false, logFile = null) {
           const clearButton = await page.$('button:has-text("Clear Cell")');
           if (clearButton) {
             await clearButton.click();
-            logLine("-- Clicked Clear Cell button");
+            logLine(`-- Button pressed: Clear Cell`);
             await sleep(1500);
           }
         }
@@ -276,7 +286,7 @@ async function runTest(config, rebuildApp = false, logFile = null) {
           const cancelButton = await page.$('button:has-text("Cancel")');
           if (cancelButton) {
             await cancelButton.click();
-            logLine("-- Clicked Cancel button");
+            logLine(`-- Button pressed: Cancel`);
             await sleep(1500);
           }
         }
@@ -337,7 +347,9 @@ async function runTest(config, rebuildApp = false, logFile = null) {
         }
         return false;
       });
-      if (!exportClicked) {
+      if (exportClicked) {
+        logLine(`-- Button pressed: Export`);
+      } else {
         logLine("-- Warning: Could not find Export button");
       }
       await sleep(5000);
@@ -356,16 +368,24 @@ async function runTest(config, rebuildApp = false, logFile = null) {
           logLine(`-- Found and clicking "${btnText}" via getByText`);
           try {
             await button.click();
+            logLine(`-- Button pressed: ${btnText}`);
             clicked = true;
           } catch (clickError) {
-            await page.evaluate((text) => {
+            const fallbackClicked = await page.evaluate((text) => {
               const buttons = Array.from(document.querySelectorAll("button"));
               const target = buttons.find(
                 (b) => b.textContent && b.textContent.includes(text),
               );
-              if (target) target.click();
+              if (target) {
+                target.click();
+                return true;
+              }
+              return false;
             }, btnText);
-            clicked = true;
+            if (fallbackClicked) {
+              logLine(`-- Button pressed: ${btnText}`);
+            }
+            clicked = fallbackClicked;
           }
         }
       } catch (e) {
@@ -377,14 +397,21 @@ async function runTest(config, rebuildApp = false, logFile = null) {
           );
         }, btnText);
         if (found) {
-          await page.evaluate((text) => {
+          const fallbackClicked = await page.evaluate((text) => {
             const buttons = Array.from(document.querySelectorAll("button"));
             const target = buttons.find(
               (b) => b.textContent && b.textContent.includes(text),
             );
-            if (target) target.click();
+            if (target) {
+              target.click();
+              return true;
+            }
+            return false;
           }, btnText);
-          clicked = true;
+          if (fallbackClicked) {
+            logLine(`-- Button pressed: ${btnText}`);
+          }
+          clicked = fallbackClicked;
         }
       }
 

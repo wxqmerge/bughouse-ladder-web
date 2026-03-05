@@ -33,6 +33,7 @@ export default function Settings({
   }, []);
 
   const handleSave = () => {
+    console.log(">>> [BUTTON PRESSED] Save (Settings)");
     const settings = {
       showRatings: [showRatings, showRatings, showRatings, showRatings],
     };
@@ -42,6 +43,7 @@ export default function Settings({
   };
 
   const handleClearAll = () => {
+    console.log(">>> [BUTTON PRESSED] Clear All Data");
     if (
       window.confirm(
         "Are you sure you want to reset all data to sample data? This will clear all loaded players and game results.",

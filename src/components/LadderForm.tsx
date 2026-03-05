@@ -376,6 +376,9 @@ export default function LadderForm({
   };
 
   const recalculateRatings = () => {
+    console.log(
+      `>>> [BUTTON PRESSED] Recalculate Ratings - ${players.length} players`,
+    );
     if (players.length === 0) {
       console.error("No players to process");
       return;
@@ -599,6 +602,7 @@ export default function LadderForm({
   };
 
   const handleCorrectionCancel = () => {
+    console.log(">>> [BUTTON PRESSED] Cancel");
     setCurrentError(null);
     setIsRecalculating(false);
     setPendingPlayers(null);
@@ -826,6 +830,7 @@ export default function LadderForm({
   };
 
   const exportPlayers = () => {
+    console.log(`>>> [BUTTON PRESSED] Export - ${players.length} players`);
     if (players.length === 0) {
       console.error("No players to export");
       return;
@@ -901,7 +906,10 @@ export default function LadderForm({
           </div>
           {setShowSettings && (
             <button
-              onClick={() => setShowSettings(true)}
+              onClick={() => {
+                console.log(">>> [BUTTON PRESSED] Settings");
+                setShowSettings(true);
+              }}
               style={{
                 background: "rgba(255, 255, 255, 0.1)",
                 color: "white",

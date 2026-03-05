@@ -228,6 +228,7 @@ export default function ErrorDialog({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(">>> [BUTTON PRESSED] Save (Game Result)");
     // Use the latest input value from state
     const rawValue = currentInputValue || "";
     const filteredValue = rawValue.toUpperCase().replace(/[^0-9WLD:]/g, "");
@@ -242,6 +243,7 @@ export default function ErrorDialog({
   };
 
   const handleClearCell = () => {
+    console.log(">>> [BUTTON PRESSED] Clear Cell");
     setCorrectedResult("");
     setCurrentInputValue("");
     setParseStatus(null);
