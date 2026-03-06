@@ -7,7 +7,7 @@ D	Brown	Emily	1068	5	1010	4th	2	2				10W9	3:8WW14:2
 E	Anderson	Thomas	1228	6	1088	4th	4	4				5:6LL7:4	11L13	9L12	3D1																											
 A1	Johnson	John	1000	7	1000	1th	2	2				1W2	12W13																													
 B	Wilson	Lisa	1031	8	1206	1th	3	3				13W12	3L4	2:14DW11:10																												
-B	White	Jennifer	1133	9	1276	7th	5	5				14:13DD12:11	7:9DW8:3	4:6WW5:1	2:10DD1:1	1W1																										
+B	White	Jennifer	1133	9	1276	7th	5	5				14:13DD12:11	7:9DW8:3	4:6WW5:1		1W1																										
 E	Davis	Michael	1207	10	1303	5th	2	2				2W3	1:12WW8:6																													
 	Thomas	Maria	1375	11	1358	5th	4	4				9:8DD7:10	4L1	2:3WD11:14	12D13																											
 D	Taylor	Anna	1203	12	1254	3th	3	3				14L13	8D1	5W10																												

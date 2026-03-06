@@ -279,6 +279,40 @@ async function runTest(config, rebuildApp = false, logFile = null) {
           await sleep(3000);
         }
 
+        if (action.type === "fillCorrection") {
+          logLine(`-- Filling correction: "${action.correctionValue}"`);
+          await sleep(1500);
+
+          // Fill the input box
+          const filled = await page.evaluate(
+            async ({ value }) => {
+              const inputField = document.getElementById("correctedResult");
+              if (inputField) {
+                inputField.value = value;
+                inputField.dispatchEvent(new Event("input", { bubbles: true }));
+                return true;
+              }
+              return false;
+            },
+            { value: action.correctionValue },
+          );
+
+          if (filled) logLine(`-- Text entered: ${action.correctionValue}`);
+          await sleep(1000);
+
+          // Click Submit Correction button
+          const submitButton = await page.$(
+            'button:has-text("Submit Correction")',
+          );
+          if (submitButton) {
+            await submitButton.click();
+            logLine(`-- Button pressed: Submit Correction`);
+            await sleep(2000);
+          } else {
+            logLine("-- Warning: Could not find Submit Correction button");
+          }
+        }
+
         if (action.type === "clearCell") {
           logLine("-- Clearing cell...");
           await sleep(1500);
