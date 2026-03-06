@@ -130,6 +130,12 @@ async function runTest(config, rebuildApp = false, logFile = null) {
 
     const page = await context.newPage();
 
+    // Handle confirm dialogs (e.g., Clear All Data confirmation)
+    page.on("dialog", async (dialog) => {
+      logLine(`-- Dialog: ${dialog.message()}`);
+      await dialog.accept();
+    });
+
     // Capture console.log from browser
     page.on("console", (msg) => {
       const type = msg.type();
@@ -241,12 +247,16 @@ async function runTest(config, rebuildApp = false, logFile = null) {
             logLine(`-- Button pressed: Clear All Data`);
             await sleep(2000);
 
-            const okButton = await page.$('button:has-text("OK")');
-            if (okButton) {
-              await okButton.click();
-              logLine(`-- Button pressed: OK (confirmation)`);
-              await sleep(2000);
-            }
+            // Wait for page reload triggered by window.location.reload()
+            logLine("-- Waiting for page reload...");
+            await page.waitForLoadState("networkidle", { timeout: 10000 });
+            await sleep(3000);
+
+            const playerCountAfter = await page.evaluate(() => {
+              const rows = document.querySelectorAll("tbody tr");
+              return rows.length;
+            });
+            logLine(`-- Player count after reload: ${playerCountAfter}`);
           }
         }
 
