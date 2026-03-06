@@ -278,12 +278,90 @@ export default function ErrorDialog({
     }
   };
 
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedText = e.clipboardData.getData("text");
+
+    // Check if paste contains tab-delimited results
+    const results = pastedText.split("\t").filter((r) => r.trim() !== "");
+
+    if (results.length > 1) {
+      // Multiple results detected - log and use first one
+      console.log(
+        `>>> [PASTE DETECTED] ${results.length} tab-delimited results`,
+      );
+      results.forEach((result, idx) => {
+        console.log(`>>> [PASTE RESULT] ${idx + 1}: "${result.trim()}"`);
+      });
+
+      // Use first result
+      const firstResult = results[0].toUpperCase().replace(/[^0-9WLD:]/g, "");
+      setCurrentInputValue(firstResult);
+      if (inputRef.current) {
+        inputRef.current.value = firstResult;
+      }
+
+      // Update validation
+      const validation = updatePlayerGameData(firstResult, true);
+      if (validation.isValid) {
+        setParseStatus({ isValid: true });
+      } else {
+        setParseStatus({ isValid: false, error: validation.error });
+      }
+
+      console.log(`>>> [PASTE RESULT] Pasted first result: "${firstResult}"`);
+    } else {
+      // Single value paste - use default browser behavior
+      const singleValue = pastedText.toUpperCase().replace(/[^0-9WLD:]/g, "");
+      setCurrentInputValue(singleValue);
+      if (inputRef.current) {
+        inputRef.current.value = singleValue;
+      }
+      console.log(`>>> [PASTE RESULT] Single value: "${singleValue}"`);
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Save cursor position before any changes
     const cursorPos = e.target.selectionStart || 0;
 
     // Filter the input for display purposes without changing value state
     const rawValue = e.target.value;
+
+    // Check for tab-delimited paste (fallback if onPaste didn't trigger)
+    if (rawValue.includes("\t")) {
+      const results = rawValue.split("\t").filter((r) => r.trim() !== "");
+      console.log(
+        `>>> [PASTE DETECTED] ${results.length} tab-delimited results`,
+      );
+      results.forEach((result, idx) => {
+        console.log(`>>> [PASTE RESULT] ${idx + 1}: "${result.trim()}"`);
+      });
+
+      // Use first result
+      const firstResult = results[0].toUpperCase().replace(/[^0-9WLD:]/g, "");
+      setCurrentInputValue(firstResult);
+      if (inputRef.current) {
+        inputRef.current.value = firstResult;
+      }
+      setCursorPosition(0);
+
+      // Update validation
+      const validation = updatePlayerGameData(firstResult, true);
+      if (validation.isValid) {
+        setParseStatus({ isValid: true });
+      } else {
+        setParseStatus({
+          isValid: false,
+          error: validation.error,
+          message: validation.message || "Invalid format",
+        });
+      }
+
+      console.log(`>>> [PASTE RESULT] Pasted first result: "${firstResult}"`);
+      return;
+    }
+
     setCurrentInputValue(rawValue);
     setCursorPosition(cursorPos);
     const filteredValue = rawValue.toUpperCase().replace(/[^0-9WLD:]/g, "");
@@ -604,6 +682,7 @@ export default function ErrorDialog({
             name="correctedResult"
             ref={inputRef}
             defaultValue={correctedResult}
+            onPaste={handlePaste}
             onChange={handleInputChange}
             onFocus={(e) => {
               // Select all on first open, then place cursor at end

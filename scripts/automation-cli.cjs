@@ -315,67 +315,69 @@ async function runTest(config, rebuildApp = false, logFile = null) {
 
         if (action.type === "pasteResults") {
           // Parse tab-delimited results into array
-          const results = action.results.split("\t").filter((r) => r.trim() !== "");
-          logLine(`-- Pasting ${results.length} results from clipboard`);
+          const results = action.results.split("	").filter((r) => r.trim() !== "");
+          logLine(`-- Pasting ${results.length} tab-delimited results`);
+          
+          // Log all results for debug output  
           results.forEach((result, idx) => {
             logLine(`>>> [RESULT] ${idx + 1}: "${result}"`);
           });
 
-          // Find empty cells and paste into them using clipboard
-          const filledCount = await page.evaluate(async ({ resultsList }) => {
-            const rows = Array.from(document.querySelectorAll("tbody tr"));
-            let filled = 0;
-            const maxRounds = 31;
+          // Fill each result into separate empty cells
+          let filledCount = 0;
+          for (const result of results) {
+            const placed = await page.evaluate((resultValue) => {
+              const rows = Array.from(document.querySelectorAll("tbody tr"));
+              const maxRounds = 31;
 
-            for (const result of resultsList) {
-              let placed = false;
-
-              // Search row by row, then round by round
-              for (let rowIdx = 0; rowIdx < rows.length && !placed; rowIdx++) {
+              // Find first empty cell
+              for (let rowIdx = 0; rowIdx < rows.length; rowIdx++) {
                 const row = rows[rowIdx];
-                for (let round = 0; round < maxRounds && !placed; round++) {
+                for (let round = 0; round < maxRounds; round++) {
                   const cell = row.children[6 + round];
                   if (cell && cell.textContent.trim() === "") {
-                    // Found empty cell, click to open dialog
                     cell.click();
-                    placed = true;
-
-                    // Wait for dialog
-                    await new Promise((resolve) => setTimeout(resolve, 500));
-
-                    const inputField = document.getElementById("correctedResult");
-                    if (inputField) {
-                      // Paste result into input field
-                      inputField.focus();
-                      inputField.value = result;
-                      inputField.dispatchEvent(new Event("input", { bubbles: true }));
-
-                      await new Promise((resolve) => setTimeout(resolve, 300));
-
-                      // Click Save button
-                      const buttons = Array.from(document.querySelectorAll("button"));
-                      const saveButton = buttons.find(
-                        (b) => b.textContent && b.textContent.includes("Save"),
-                      );
-                      if (saveButton) {
-                        saveButton.click();
-                      }
-                    }
+                    return { found: true, rowIdx, round };
                   }
                 }
               }
+              return { found: false };
+            });
 
-              if (placed) {
-                filled++;
-                await new Promise((resolve) => setTimeout(resolve, 1000));
+            if (placed.found) {
+              await sleep(500);
+
+              // Fill input and click Save
+              const saved = await page.evaluate((resultValue) => {
+                const inputField = document.getElementById("correctedResult");
+                if (inputField) {
+                  inputField.value = resultValue;
+                  inputField.dispatchEvent(new Event("input", { bubbles: true }));
+
+                  const buttons = Array.from(document.querySelectorAll("button"));
+                  const saveButton = buttons.find(
+                    (b) => b.textContent && b.textContent.includes("Save"),
+                  );
+                  if (saveButton) {
+                    saveButton.click();
+                    return true;
+                  }
+                }
+                return false;
+              }, result);
+
+              if (saved) {
+                filledCount++;
+                logLine(`-- Filled cell ${filledCount} with: "${result}"`);
               }
             }
-
-            return filled;
-          }, { resultsList: results });
+            await sleep(1000);
+          }
 
           logLine(`-- Pasted ${filledCount} of ${results.length} results`);
         }
+
+
 
         if (action.type === "clearCell") {
           logLine("-- Clearing cell...");
