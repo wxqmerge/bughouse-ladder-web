@@ -1,0 +1,18 @@
+{
+  "name": "04-paste-results",
+  "inputFilePath": "kings_cross.tab",
+  "expectedOutputFile": "test-cases/paste_results.expected.txt",
+  "actions": [
+    {
+      "type": "openSettings"
+    },
+    {
+      "type": "clearAllData"
+    },
+    {
+      "type": "pasteResults",
+      "results": "5W3\t7L2\t9D4\t11W6\t3L8"
+    }
+  ],
+  "clickExportButton": true
+}

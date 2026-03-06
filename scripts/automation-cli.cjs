@@ -313,6 +313,70 @@ async function runTest(config, rebuildApp = false, logFile = null) {
           }
         }
 
+        if (action.type === "pasteResults") {
+          // Parse tab-delimited results into array
+          const results = action.results.split("\t").filter((r) => r.trim() !== "");
+          logLine(`-- Pasting ${results.length} results from clipboard`);
+          results.forEach((result, idx) => {
+            logLine(`>>> [RESULT] ${idx + 1}: "${result}"`);
+          });
+
+          // Find empty cells and paste into them using clipboard
+          const filledCount = await page.evaluate(async ({ resultsList }) => {
+            const rows = Array.from(document.querySelectorAll("tbody tr"));
+            let filled = 0;
+            const maxRounds = 31;
+
+            for (const result of resultsList) {
+              let placed = false;
+
+              // Search row by row, then round by round
+              for (let rowIdx = 0; rowIdx < rows.length && !placed; rowIdx++) {
+                const row = rows[rowIdx];
+                for (let round = 0; round < maxRounds && !placed; round++) {
+                  const cell = row.children[6 + round];
+                  if (cell && cell.textContent.trim() === "") {
+                    // Found empty cell, click to open dialog
+                    cell.click();
+                    placed = true;
+
+                    // Wait for dialog
+                    await new Promise((resolve) => setTimeout(resolve, 500));
+
+                    const inputField = document.getElementById("correctedResult");
+                    if (inputField) {
+                      // Paste result into input field
+                      inputField.focus();
+                      inputField.value = result;
+                      inputField.dispatchEvent(new Event("input", { bubbles: true }));
+
+                      await new Promise((resolve) => setTimeout(resolve, 300));
+
+                      // Click Save button
+                      const buttons = Array.from(document.querySelectorAll("button"));
+                      const saveButton = buttons.find(
+                        (b) => b.textContent && b.textContent.includes("Save"),
+                      );
+                      if (saveButton) {
+                        saveButton.click();
+                      }
+                    }
+                  }
+                }
+              }
+
+              if (placed) {
+                filled++;
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+              }
+            }
+
+            return filled;
+          }, { resultsList: results });
+
+          logLine(`-- Pasted ${filledCount} of ${results.length} results`);
+        }
+
         if (action.type === "clearCell") {
           logLine("-- Clearing cell...");
           await sleep(1500);
