@@ -17,6 +17,7 @@
     "git:push": "powershell -ExecutionPolicy Bypass -File .\\git-auto.ps1 push",
     "git:full": "powershell -ExecutionPolicy Bypass -File .\\git-auto.ps1 full",
     "test:automation": "node scripts/automation-cli.cjs",
+    "test:automation:all": "node scripts/automation-cli.cjs --config test-cases/00-test_all.json",
     "test:automation:watch": "npm run test:automation -- --rebuild"
   },
   "dependencies": {

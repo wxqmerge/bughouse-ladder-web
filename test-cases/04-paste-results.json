@@ -1,7 +1,7 @@
 {
   "name": "04-paste-results",
   "inputFilePath": "kings_cross.tab",
-  "expectedOutputFile": "test-cases/paste_results.expected.txt",
+  "expectedOutputFile": "test-cases/paste_results.tab",
   "actions": [
     {
       "type": "openSettings"

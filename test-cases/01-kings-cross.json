@@ -1,6 +1,6 @@
 {
   "name": "01-kings-cross",
   "inputFilePath": "kings_cross.tab",
-  "expectedOutputFile": "test-cases/kings_cross_sample.expected.txt",
+  "expectedOutputFile": "test-cases/kings_cross.tab",
   "clickExportButton": true
 }

@@ -1,7 +1,7 @@
 {
   "name": "basic_File_IO",
   "inputFilePath": "basic_File_IO.txt",
-  "expectedOutputFile": "test-cases/basic_File_IO.expected.txt",
+  "expectedOutputFile": "test-cases/basic_File_IO.tab",
   "actions": [
     {
       "type": "openSettings"
