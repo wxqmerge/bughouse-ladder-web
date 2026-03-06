@@ -323,7 +323,7 @@ async function runTest(config, rebuildApp = false, logFile = null) {
             logLine(`>>> [RESULT] ${idx + 1}: "${result}"`);
           });
 
-          // Fill each result into separate empty cells
+          // Fill each result into separate empty cells (automation workaround)
           let filledCount = 0;
           for (const result of results) {
             const placed = await page.evaluate((resultValue) => {
@@ -376,6 +376,7 @@ async function runTest(config, rebuildApp = false, logFile = null) {
 
           logLine(`-- Pasted ${filledCount} of ${results.length} results`);
         }
+
 
 
 

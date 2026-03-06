@@ -721,6 +721,95 @@ export default function LadderForm({
         return updatedPlayers;
       });
     }
+
+    // Check for pending paste results and continue filling cells
+    const pasteResults = (window as any)?.__pasteResults;
+    if (
+      pasteResults &&
+      Array.isArray(pasteResults) &&
+      pasteResults.length > 1
+    ) {
+      console.log(
+        `>>> [PASTE CONTINUE] ${pasteResults.length - 1} results remaining`,
+      );
+
+      // Remove first result (just used)
+      const remaining = pasteResults.slice(1);
+      (window as any).__pasteResults = remaining;
+
+      // Find next empty cell starting from current position
+      let foundCell: { playerRank: number; round: number } | null = null;
+      const startRank = entryCell.playerRank;
+      const startRound = entryCell.round + 1;
+
+      for (let rank = startRank; rank <= players.length; rank++) {
+        const player = players[rank - 1];
+        if (!player) continue;
+
+        // If this is the starting rank, start from next round
+        const startR = rank === startRank ? startRound : 0;
+
+        for (let round = startR; round < 31; round++) {
+          const cellValue = player.gameResults[round];
+          if (!cellValue || cellValue.trim() === "") {
+            foundCell = { playerRank: rank, round };
+            console.log(
+              `>>> [PASTE CONTINUE] Found empty cell at Rank ${rank}, Round ${round + 1}`,
+            );
+            break;
+          }
+        }
+        if (foundCell) break;
+      }
+
+      // If no more cells found from current position, search from beginning
+      if (!foundCell) {
+        for (let rank = 1; rank <= players.length; rank++) {
+          const player = players[rank - 1];
+          if (!player) continue;
+
+          for (let round = 0; round < 31; round++) {
+            const cellValue = player.gameResults[round];
+            if (!cellValue || cellValue.trim() === "") {
+              foundCell = { playerRank: rank, round };
+              console.log(
+                `>>> [PASTE CONTINUE] Found empty cell at Rank ${rank}, Round ${round + 1}`,
+              );
+              break;
+            }
+          }
+          if (foundCell) break;
+        }
+      }
+
+      // Open dialog for next cell with next result
+      if (foundCell && remaining.length > 0) {
+        // Don't clear entryCell yet - will open next cell after brief delay
+        setTimeout(() => {
+          setEntryCell(null);
+          setTempGameResult(null);
+          setEntryCell(foundCell);
+          setTempGameResult({
+            playerRank: foundCell.playerRank,
+            round: foundCell.round,
+            resultString: remaining[0],
+            parsedPlayer1Rank: 0,
+            parsedPlayer2Rank: 0,
+          });
+          console.log(
+            `>>> [PASTE CONTINUE] Opening cell with result: "${remaining[0]}"`,
+          );
+        }, 100);
+        return;
+      } else {
+        // No more empty cells or results - clear the queue
+        (window as any).__pasteResults = undefined;
+        console.log(`>>> [PASTE CONTINUE] All results pasted!`);
+      }
+    } else {
+      (window as any).__pasteResults = undefined;
+    }
+
     setEntryCell(null);
     setTempGameResult(null);
   };

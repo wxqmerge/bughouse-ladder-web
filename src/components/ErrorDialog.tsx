@@ -286,16 +286,22 @@ export default function ErrorDialog({
     const results = pastedText.split("\t").filter((r) => r.trim() !== "");
 
     if (results.length > 1) {
-      // Multiple results detected - log and use first one
+      // Multiple results detected - log and store them
       console.log(
         `>>> [PASTE DETECTED] ${results.length} tab-delimited results`,
+      );
+      const cleanedResults = results.map((r) =>
+        r.toUpperCase().replace(/[^0-9WLD:]/g, ""),
       );
       results.forEach((result, idx) => {
         console.log(`>>> [PASTE RESULT] ${idx + 1}: "${result.trim()}"`);
       });
 
+      // Store in window for LadderForm to access
+      (window as any).__pasteResults = cleanedResults;
+
       // Use first result
-      const firstResult = results[0].toUpperCase().replace(/[^0-9WLD:]/g, "");
+      const firstResult = cleanedResults[0];
       setCurrentInputValue(firstResult);
       if (inputRef.current) {
         inputRef.current.value = firstResult;
@@ -309,7 +315,9 @@ export default function ErrorDialog({
         setParseStatus({ isValid: false, error: validation.error });
       }
 
-      console.log(`>>> [PASTE RESULT] Pasted first result: "${firstResult}"`);
+      console.log(
+        `>>> [PASTE RESULT] Pasted first result: "${firstResult}" (${cleanedResults.length - 1} remaining)`,
+      );
     } else {
       // Single value paste - use default browser behavior
       const singleValue = pastedText.toUpperCase().replace(/[^0-9WLD:]/g, "");
