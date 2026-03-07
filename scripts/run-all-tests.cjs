@@ -167,6 +167,19 @@ async function runTest(config, rebuildApp = false, logFile = null) {
       localStorage.clear();
     });
 
+    // Log default debug level after clearing localStorage
+    const defaultDebugLevel = await page.evaluate(() => {
+      try {
+        const savedSettings = localStorage.getItem("ladder_settings");
+        if (savedSettings) {
+          const parsed = JSON.parse(savedSettings);
+          return parsed.debugLevel ?? 5;
+        }
+      } catch (err) {}
+      return 5;
+    });
+    logLine(`-- Default debug level: ${defaultDebugLevel}`);
+
     logLine(`-- Loading input file: ${config.inputFilePath}`);
 
     const loadClicked = await page.evaluate(() => {

@@ -16,7 +16,9 @@ export function getDebugLevel(): number {
 }
 
 export function shouldLog(debugThreshold: number): boolean {
-  return getDebugLevel() < debugThreshold;
+  // Higher threshold = shows in more situations (more verbose)
+  // debugLevel 0 = most verbose (all logs), debugLevel 10+ = least verbose
+  return getDebugLevel() <= debugThreshold;
 }
 
 export function debugLog(

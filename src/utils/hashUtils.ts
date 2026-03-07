@@ -755,7 +755,7 @@ export function processGameResults(
         );
       }
     }
-    if (shouldLog(4)) {
+    if (shouldLog(5)) {
       console.log(`Total hash entries stored: ${hashResults.length}`);
       console.log(
         "Hash table results:",
