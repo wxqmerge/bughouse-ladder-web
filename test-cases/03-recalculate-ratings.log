@@ -1,0 +1,104 @@
+=== Test: 03-recalculate-ratings ===
+
+
+========================================
+-- Running test: 03-recalculate-ratings
+========================================
+
+-- Starting HTTP server...
+Server started on port 5173
+-- Server is ready
+-- Loading app...
+>>> [DEBUG] [vite] connecting...
+>>> [DEBUG] [vite] connected.
+>>> [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+>>> [LOG] [LadderForm] Loaded 14 players from sample data
+>>> [LOG] [LadderForm] Sample player: Rank=1, Name=Sarah Garcia, Rating=1351, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=2, Name=Jane Smith, Rating=1008, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=3, Name=James Moore, Rating=1061, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=4, Name=Daniel Jackson, Rating=1351, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=5, Name=Emily Brown, Rating=1068, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=6, Name=Thomas Anderson, Rating=1228, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=7, Name=John Johnson, Rating=1000, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=8, Name=Lisa Wilson, Rating=1031, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=9, Name=Jennifer White, Rating=1133, Games=5
+>>> [LOG] [LadderForm] Sample player: Rank=10, Name=Michael Davis, Rating=1207, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=11, Name=Maria Thomas, Rating=1375, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=12, Name=Anna Taylor, Rating=1203, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=13, Name=David Miller, Rating=1131, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=14, Name=Robert Williams, Rating=1066, Games=5
+>>> [LOG] [LadderForm] Loaded 14 players from sample data
+>>> [LOG] [LadderForm] Sample player: Rank=1, Name=Sarah Garcia, Rating=1351, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=2, Name=Jane Smith, Rating=1008, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=3, Name=James Moore, Rating=1061, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=4, Name=Daniel Jackson, Rating=1351, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=5, Name=Emily Brown, Rating=1068, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=6, Name=Thomas Anderson, Rating=1228, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=7, Name=John Johnson, Rating=1000, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=8, Name=Lisa Wilson, Rating=1031, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=9, Name=Jennifer White, Rating=1133, Games=5
+>>> [LOG] [LadderForm] Sample player: Rank=10, Name=Michael Davis, Rating=1207, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=11, Name=Maria Thomas, Rating=1375, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=12, Name=Anna Taylor, Rating=1203, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=13, Name=David Miller, Rating=1131, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=14, Name=Robert Williams, Rating=1066, Games=5
+-- Loading input file: kings_cross.tab
+>>> [LOG] [LadderForm] Loading file: kings_cross.tab
+-- File selected: kings_cross.tab
+-- Player count after load: 26
+-- First player: Cullano Dylan
+-- Successfully loaded 26 players
+-- Executing actions: openSettings, clearAllData, recalculateRatings, fillCorrection, submitCorrection, submitCorrection, clearCell, cancelDialog
+-- Opening settings...
+>>> [LOG] >>> [BUTTON PRESSED] Settings
+-- Button pressed: Settings
+-- Clearing all data...
+>>> [LOG] >>> [BUTTON PRESSED] Clear All Data
+-- Dialog: Are you sure you want to reset all data to sample data? This will clear all loaded players and game results.
+-- Button pressed: Clear All Data
+>>> [DEBUG] [vite] connecting...
+>>> [DEBUG] [vite] connected.
+>>> [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+>>> [LOG] [LadderForm] Loaded 14 players from localStorage
+>>> [LOG] [LadderForm] Loaded 14 players from localStorage
+-- Waiting for page reload...
+-- Player count after reload: 14
+-- Clicking Recalculate Ratings...
+>>> [LOG] >>> [BUTTON PRESSED] Recalculate Ratings - 14 players
+>>> [LOG] Starting rating calculation with VB6-style validation
+>>> [LOG] Processing 14 players
+>>> [LOG] Validated 20 matches, errors: 27
+>>> [WARNING] Errors detected. Opening dialog for correction.
+-- Button pressed: Recalculate Ratings
+-- Filling correction: "5W3"
+-- Text entered: 5W3
+-- Submitting correction...
+>>> [LOG] >>> [BUTTON PRESSED] Save (Game Result)
+-- Button pressed: Submit Correction
+-- Submitting correction...
+>>> [LOG] >>> [BUTTON PRESSED] Save (Game Result)
+-- Button pressed: Submit Correction
+-- Clearing cell...
+>>> [LOG] >>> [BUTTON PRESSED] Clear Cell
+-- Button pressed: Clear Cell
+-- Cancelling dialog...
+>>> [LOG] >>> [BUTTON PRESSED] Cancel
+-- Button pressed: Cancel
+-- Clicking Export button...
+>>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
+>>> [LOG] Exported 14 players to Export_Results_2026-03-07T00-16-30-657Z.tab
+-- Button pressed: Export
+-- Download detected: Export_Results_2026-03-07T00-16-30-657Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-07T00-16-30-657Z.tab
+-- Clicking buttons: none
+
+-- Comparing output...
+-- Test FAILED - Output does not match
+
+--- Diff ---
+Line 15:
+  Expected: "C	Williams	Robert	1066	14	1033	3th	5	5				7:6DD8:5	9:12WL11:10	13:14DL3:1	2:4WD1:1	1W1"
+  Actual:   "C	Williams	Robert	1066	14	1033	3th	5	5				7:6DD8:5	9:12WL11:10	13:14DL3:1		1W1"
+
+--- End diff ---
+

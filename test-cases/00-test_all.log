@@ -1,0 +1,46 @@
+=== Test: test_all ===
+
+
+========================================
+-- Running test: test_all
+========================================
+
+-- Starting HTTP server...
+Server started on port 5173
+-- Server is ready
+-- Loading app...
+>>> [DEBUG] [vite] connecting...
+>>> [DEBUG] [vite] connected.
+>>> [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+>>> [LOG] [LadderForm] Loaded 14 players from sample data
+>>> [LOG] [LadderForm] Sample player: Rank=1, Name=Sarah Garcia, Rating=1351, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=2, Name=Jane Smith, Rating=1008, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=3, Name=James Moore, Rating=1061, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=4, Name=Daniel Jackson, Rating=1351, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=5, Name=Emily Brown, Rating=1068, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=6, Name=Thomas Anderson, Rating=1228, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=7, Name=John Johnson, Rating=1000, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=8, Name=Lisa Wilson, Rating=1031, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=9, Name=Jennifer White, Rating=1133, Games=5
+>>> [LOG] [LadderForm] Sample player: Rank=10, Name=Michael Davis, Rating=1207, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=11, Name=Maria Thomas, Rating=1375, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=12, Name=Anna Taylor, Rating=1203, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=13, Name=David Miller, Rating=1131, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=14, Name=Robert Williams, Rating=1066, Games=5
+>>> [LOG] [LadderForm] Loaded 14 players from sample data
+>>> [LOG] [LadderForm] Sample player: Rank=1, Name=Sarah Garcia, Rating=1351, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=2, Name=Jane Smith, Rating=1008, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=3, Name=James Moore, Rating=1061, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=4, Name=Daniel Jackson, Rating=1351, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=5, Name=Emily Brown, Rating=1068, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=6, Name=Thomas Anderson, Rating=1228, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=7, Name=John Johnson, Rating=1000, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=8, Name=Lisa Wilson, Rating=1031, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=9, Name=Jennifer White, Rating=1133, Games=5
+>>> [LOG] [LadderForm] Sample player: Rank=10, Name=Michael Davis, Rating=1207, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=11, Name=Maria Thomas, Rating=1375, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=12, Name=Anna Taylor, Rating=1203, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=13, Name=David Miller, Rating=1131, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=14, Name=Robert Williams, Rating=1066, Games=5
+-- Loading input file: undefined
+-- Test error: Cannot read properties of undefined (reading 'buffer')

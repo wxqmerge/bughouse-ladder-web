@@ -260,13 +260,13 @@ export function parseEntry(
     // If colon used, must be 4-player format with all 4 players
     errorNum = 7; // Missing player 4
   } else if (entry === 2 && resultIndex > 2) {
-    // For 2-player games, allow up to 2 results 
+    // For 2-player games, allow up to 2 results
     errorNum = 5; // too many results
   } else if (entry === 4 && resultIndex < 1) {
     // For 4-player games, must have at least 1 result
     errorNum = 3; // Incomplete entry
   } else if (entry === 4 && resultIndex > 2) {
-        // For 4-player games, allow up to 2 results 
+    // For 4-player games, allow up to 2 results
     errorNum = 5; // too many results
   }
 
@@ -566,6 +566,7 @@ export function processGameResults(
       score2: number;
     }[]
   >();
+  const hashDebugKeys: string[] = []; // DEBUG: track hash keys
 
   hashInitialize();
 
@@ -653,6 +654,7 @@ export function processGameResults(
 
       const _matchKey = `${hashValue}_${round}`;
       dataHash(_matchKey, result, 0);
+      hashDebugKeys.push(_matchKey); // DEBUG: track keys
 
       results.push({
         player1: parsedPlayersList[0],
@@ -664,6 +666,35 @@ export function processGameResults(
       });
     }
   }
+
+  // DEBUG: Convert hash table back to results
+  console.log("\n=== HASH TABLE DEBUG ===");
+  const hashResults: { key: string; value: string }[] = [];
+  for (let i = 0; i < hashArray.length; i++) {
+    if (hashArray[i] !== "" && hashIndex[i] !== 0) {
+      hashResults.push({
+        key: hashDebugKeys[i] || `unknown_${i}`,
+        value: hashArray[i],
+      });
+      console.log(
+        `Hash[${i}]: key="${hashDebugKeys[i] || `unknown_${i}`}", value="${hashArray[i]}"`,
+      );
+    }
+  }
+  console.log(`Total hash entries: ${hashResults.length}`);
+  console.log(
+    "Hash table results:",
+    hashResults.map((h) => h.value).join(", "),
+  );
+  console.log("========================\n");
+
+  // DEBUG: Stop processing here
+  return {
+    matches: [],
+    hasErrors: false,
+    errorCount: 0,
+    errors: [],
+  };
 
   for (const [_, entries] of matchResults.entries()) {
     if (entries.length < 2) continue;

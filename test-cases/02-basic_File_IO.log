@@ -1,0 +1,138 @@
+=== Test: basic_File_IO ===
+
+
+========================================
+-- Running test: basic_File_IO
+========================================
+
+-- Starting HTTP server...
+Server started on port 5173
+-- Server is ready
+-- Loading app...
+>>> [DEBUG] [vite] connecting...
+>>> [DEBUG] [vite] connected.
+>>> [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+>>> [LOG] [LadderForm] Loaded 14 players from sample data
+>>> [LOG] [LadderForm] Sample player: Rank=1, Name=Sarah Garcia, Rating=1351, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=2, Name=Jane Smith, Rating=1008, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=3, Name=James Moore, Rating=1061, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=4, Name=Daniel Jackson, Rating=1351, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=5, Name=Emily Brown, Rating=1068, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=6, Name=Thomas Anderson, Rating=1228, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=7, Name=John Johnson, Rating=1000, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=8, Name=Lisa Wilson, Rating=1031, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=9, Name=Jennifer White, Rating=1133, Games=5
+>>> [LOG] [LadderForm] Sample player: Rank=10, Name=Michael Davis, Rating=1207, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=11, Name=Maria Thomas, Rating=1375, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=12, Name=Anna Taylor, Rating=1203, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=13, Name=David Miller, Rating=1131, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=14, Name=Robert Williams, Rating=1066, Games=5
+>>> [LOG] [LadderForm] Loaded 14 players from sample data
+>>> [LOG] [LadderForm] Sample player: Rank=1, Name=Sarah Garcia, Rating=1351, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=2, Name=Jane Smith, Rating=1008, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=3, Name=James Moore, Rating=1061, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=4, Name=Daniel Jackson, Rating=1351, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=5, Name=Emily Brown, Rating=1068, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=6, Name=Thomas Anderson, Rating=1228, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=7, Name=John Johnson, Rating=1000, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=8, Name=Lisa Wilson, Rating=1031, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=9, Name=Jennifer White, Rating=1133, Games=5
+>>> [LOG] [LadderForm] Sample player: Rank=10, Name=Michael Davis, Rating=1207, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=11, Name=Maria Thomas, Rating=1375, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=12, Name=Anna Taylor, Rating=1203, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=13, Name=David Miller, Rating=1131, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=14, Name=Robert Williams, Rating=1066, Games=5
+-- Loading input file: basic_File_IO.txt
+>>> [LOG] [LadderForm] Loading file: basic_File_IO.txt
+-- File selected: basic_File_IO.txt
+-- Player count after load: 1
+-- First player: Test User
+-- Successfully loaded 1 players
+-- Executing actions: openSettings, clearAllData, recalculateRatings, fillCorrection, submitCorrection, cancelDialog
+-- Opening settings...
+>>> [LOG] >>> [BUTTON PRESSED] Settings
+-- Button pressed: Settings
+-- Clearing all data...
+>>> [LOG] >>> [BUTTON PRESSED] Clear All Data
+-- Dialog: Are you sure you want to reset all data to sample data? This will clear all loaded players and game results.
+-- Button pressed: Clear All Data
+>>> [DEBUG] [vite] connecting...
+>>> [DEBUG] [vite] connected.
+>>> [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+>>> [LOG] [LadderForm] Loaded 14 players from localStorage
+>>> [LOG] [LadderForm] Loaded 14 players from localStorage
+-- Waiting for page reload...
+-- Player count after reload: 14
+-- Clicking Recalculate Ratings...
+>>> [LOG] >>> [BUTTON PRESSED] Recalculate Ratings - 14 players
+>>> [LOG] Starting rating calculation with VB6-style validation
+>>> [LOG] Processing 14 players
+>>> [LOG] Validated 20 matches, errors: 27
+>>> [WARNING] Errors detected. Opening dialog for correction.
+-- Button pressed: Recalculate Ratings
+-- Filling correction: "5W3"
+-- Text entered: 5W3
+-- Submitting correction...
+>>> [LOG] >>> [BUTTON PRESSED] Save (Game Result)
+-- Button pressed: Submit Correction
+-- Cancelling dialog...
+>>> [LOG] >>> [BUTTON PRESSED] Cancel
+>>> [LOG] Rating calculation complete
+-- Button pressed: Cancel
+-- Clicking Export button...
+>>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
+>>> [LOG] Exported 14 players to Export_Results_2026-03-07T01-17-23-975Z.tab
+-- Button pressed: Export
+-- Download detected: Export_Results_2026-03-07T01-17-23-975Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-07T01-17-23-975Z.tab
+-- Clicking buttons: none
+
+-- Comparing output...
+-- Test FAILED - Output does not match
+
+--- Diff ---
+Line 2:
+  Expected: "	Garcia	Sarah	1351	1	1226	6th	2	2				4W5	8L11"
+  Actual:   "	Garcia	Sarah	1351	1	1334	6th	2	2													D_						D_		O_	W_"
+Line 3:
+  Expected: "B	Smith	Jane	1008	2	1386	2th	4	4				12:11LL10:9	13W1	5:3DD2:8	6:7LL14:4"
+  Actual:   "B	Smith	Jane	1008	2	1010	2th	4	4					L_						D_			D_		W_		L_		D_"
+Line 4:
+  Expected: "C	Moore	James	1061	3	1109	2th	2	2				2W3	5D13"
+  Actual:   "C	Moore	James	1061	3	1078	2th	2	2					L_							W_								L_		O_"
+Line 5:
+  Expected: "A1	Jackson	Daniel	1351	4	1255	6th	4	4				2:3DD4:5	10:7DD8:14	13:6WD9:11	5W3_"
+  Actual:   "A1	Jackson	Daniel	1351	4	1344	6th	4	4						O_																	O_"
+Line 6:
+  Expected: "D	Brown	Emily	1068	5	1010	4th	2	2				10W9	3:8WW14:2"
+  Actual:   "D	Brown	Emily	1068	5	1075	4th	2	2									W_										D_"
+Line 7:
+  Expected: "E	Anderson	Thomas	1228	6	1088	4th	4	4				5:6LL7:4	11L13	9L12	3D1"
+  Actual:   "E	Anderson	Thomas	1228	6	1225	4th	4	4																	D_"
+Line 8:
+  Expected: "A1	Johnson	John	1000	7	1000	1th	2	2				1W2	12W13"
+  Actual:   "A1	Johnson	John	1000	7	1015	1th	2	2						O_		W_		L_"
+Line 9:
+  Expected: "B	Wilson	Lisa	1031	8	1206	1th	3	3				13W12	3L4	2:14DW11:10"
+  Actual:   "B	Wilson	Lisa	1031	8	1038	1th	3	3									W_			D_				W_					D_"
+Line 10:
+  Expected: "B	White	Jennifer	1133	9	1276	7th	5	5				14:13DD12:11	7:9DW8:3	4:6WW5:1	2:10DD1:1	1W1"
+  Actual:   "B	White	Jennifer	1133	9	1135	7th	5	5				O_											D_"
+Line 11:
+  Expected: "E	Davis	Michael	1207	10	1303	5th	2	2				2W3	1:12WW8:6"
+  Actual:   "E	Davis	Michael	1207	10	1192	5th	2	2				O_				W_		L_"
+Line 12:
+  Expected: "	Thomas	Maria	1375	11	1358	5th	4	4				9:8DD7:10	4L1	2:3WD11:14	12D13"
+  Actual:   "	Thomas	Maria	1375	11	1360	5th	4	4							W_"
+Line 13:
+  Expected: "D	Taylor	Anna	1203	12	1254	3th	3	3				14L13	8D1	5W10"
+  Actual:   "D	Taylor	Anna	1203	12	1201	3th	3	3							W_						D_		O_"
+Line 14:
+  Expected: "A1	Miller	David	1131	13	1229	7th	3	3				13W12	4:10WD2:14	11:6LW8:1"
+  Actual:   "A1	Miller	David	1131	13	1134	7th	3	3																	L_"
+Line 15:
+  Expected: "C	Williams	Robert	1066	14	1033	3th	5	5				7:6DD8:5	9:12WL11:10	13:14DL3:1	2:4WD1:1	1W1"
+  Actual:   "C	Williams	Robert	1066	14	1073	3th	5	5											D_			W_				D_					O_"
+
+--- End diff ---
+

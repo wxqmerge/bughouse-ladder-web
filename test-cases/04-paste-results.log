@@ -1,0 +1,87 @@
+=== Test: 04-paste-results ===
+
+
+========================================
+-- Running test: 04-paste-results
+========================================
+
+-- Starting HTTP server...
+Server started on port 5173
+-- Server is ready
+-- Loading app...
+>>> [DEBUG] [vite] connecting...
+>>> [DEBUG] [vite] connected.
+>>> [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+>>> [LOG] [LadderForm] Loaded 14 players from sample data
+>>> [LOG] [LadderForm] Sample player: Rank=1, Name=Sarah Garcia, Rating=1351, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=2, Name=Jane Smith, Rating=1008, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=3, Name=James Moore, Rating=1061, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=4, Name=Daniel Jackson, Rating=1351, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=5, Name=Emily Brown, Rating=1068, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=6, Name=Thomas Anderson, Rating=1228, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=7, Name=John Johnson, Rating=1000, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=8, Name=Lisa Wilson, Rating=1031, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=9, Name=Jennifer White, Rating=1133, Games=5
+>>> [LOG] [LadderForm] Sample player: Rank=10, Name=Michael Davis, Rating=1207, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=11, Name=Maria Thomas, Rating=1375, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=12, Name=Anna Taylor, Rating=1203, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=13, Name=David Miller, Rating=1131, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=14, Name=Robert Williams, Rating=1066, Games=5
+>>> [LOG] [LadderForm] Loaded 14 players from sample data
+>>> [LOG] [LadderForm] Sample player: Rank=1, Name=Sarah Garcia, Rating=1351, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=2, Name=Jane Smith, Rating=1008, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=3, Name=James Moore, Rating=1061, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=4, Name=Daniel Jackson, Rating=1351, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=5, Name=Emily Brown, Rating=1068, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=6, Name=Thomas Anderson, Rating=1228, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=7, Name=John Johnson, Rating=1000, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=8, Name=Lisa Wilson, Rating=1031, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=9, Name=Jennifer White, Rating=1133, Games=5
+>>> [LOG] [LadderForm] Sample player: Rank=10, Name=Michael Davis, Rating=1207, Games=2
+>>> [LOG] [LadderForm] Sample player: Rank=11, Name=Maria Thomas, Rating=1375, Games=4
+>>> [LOG] [LadderForm] Sample player: Rank=12, Name=Anna Taylor, Rating=1203, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=13, Name=David Miller, Rating=1131, Games=3
+>>> [LOG] [LadderForm] Sample player: Rank=14, Name=Robert Williams, Rating=1066, Games=5
+-- Loading input file: kings_cross.tab
+>>> [LOG] [LadderForm] Loading file: kings_cross.tab
+-- File selected: kings_cross.tab
+-- Player count after load: 26
+-- First player: Cullano Dylan
+-- Successfully loaded 26 players
+-- Executing actions: openSettings, clearAllData, pasteResults
+-- Opening settings...
+>>> [LOG] >>> [BUTTON PRESSED] Settings
+-- Button pressed: Settings
+-- Clearing all data...
+>>> [LOG] >>> [BUTTON PRESSED] Clear All Data
+-- Dialog: Are you sure you want to reset all data to sample data? This will clear all loaded players and game results.
+-- Button pressed: Clear All Data
+>>> [DEBUG] [vite] connecting...
+>>> [DEBUG] [vite] connected.
+>>> [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+>>> [LOG] [LadderForm] Loaded 14 players from localStorage
+>>> [LOG] [LadderForm] Loaded 14 players from localStorage
+-- Waiting for page reload...
+-- Player count after reload: 14
+-- Pasting 5 tab-delimited results
+>>> [RESULT] 1: "5W3"
+>>> [RESULT] 2: "7L2"
+>>> [RESULT] 3: "9D4"
+>>> [RESULT] 4: "11W6"
+>>> [RESULT] 5: "3L8"
+-- Filled cell 1 with: "5W3"
+-- Filled cell 2 with: "7L2"
+-- Filled cell 3 with: "9D4"
+-- Filled cell 4 with: "11W6"
+-- Filled cell 5 with: "3L8"
+-- Pasted 5 of 5 results
+-- Clicking Export button...
+>>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
+>>> [LOG] Exported 14 players to Export_Results_2026-03-07T00-17-02-329Z.tab
+-- Button pressed: Export
+-- Download detected: Export_Results_2026-03-07T00-17-02-329Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-07T00-17-02-329Z.tab
+-- Clicking buttons: none
+
+-- Comparing output...
+-- Test PASSED - Output matches expected file!
