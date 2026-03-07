@@ -8,6 +8,7 @@ import {
 } from "../utils/hashUtils";
 import ErrorDialog from "./ErrorDialog";
 import { Settings as SettingsIcon, Play as PlayIcon } from "lucide-react";
+import { shouldLog } from "../utils/debug";
 import "../css/index.css";
 
 export const loadSampleData = () => {
@@ -225,9 +226,11 @@ export default function LadderForm({
           setPlayers(playersWithResults);
           setHasData(true);
           setSortBy(null);
-          console.log(
-            `[LadderForm] Loaded ${playersWithResults.length} players from localStorage`,
-          );
+          if (shouldLog(10)) {
+            console.log(
+              `[LadderForm] Loaded ${playersWithResults.length} players from localStorage`,
+            );
+          }
           return;
         }
       } catch (err) {
@@ -235,13 +238,17 @@ export default function LadderForm({
       }
     }
     const samplePlayers = loadSampleData();
-    console.log(
-      `[LadderForm] Loaded ${samplePlayers.length} players from sample data`,
-    );
-    samplePlayers.forEach((player) => {
+    if (shouldLog(10)) {
       console.log(
-        `[LadderForm] Sample player: Rank=${player.rank}, Name=${player.firstName} ${player.lastName}, Rating=${player.rating}, Games=${player.games}`,
+        `[LadderForm] Loaded ${samplePlayers.length} players from sample data`,
       );
+    }
+    samplePlayers.forEach((player) => {
+      if (shouldLog(10)) {
+        console.log(
+          `[LadderForm] Sample player: Rank=${player.rank}, Name=${player.firstName} ${player.lastName}, Rating=${player.rating}, Games=${player.games}`,
+        );
+      }
     });
 
     setPlayers(samplePlayers);
@@ -256,7 +263,9 @@ export default function LadderForm({
       return;
     }
 
-    console.log(`[LadderForm] Loading file: ${fileToLoad.name}`);
+    if (shouldLog(10)) {
+      console.log(`[LadderForm] Loading file: ${fileToLoad.name}`);
+    }
     const projectName = fileToLoad.name.replace(/\.[^.]+$/, "");
     setProjectName(projectName);
     setLastFile(fileToLoad);
@@ -377,22 +386,28 @@ export default function LadderForm({
   };
 
   const recalculateRatings = () => {
-    console.log(
-      `>>> [BUTTON PRESSED] Recalculate Ratings - ${players.length} players`,
-    );
+    if (shouldLog(10)) {
+      console.log(
+        `>>> [BUTTON PRESSED] Recalculate Ratings - ${players.length} players`,
+      );
+    }
     if (players.length === 0) {
       console.error("No players to process");
       return;
     }
 
-    console.log("Starting rating calculation with validation");
-    console.log(`Processing ${players.length} players`);
+    if (shouldLog(10)) {
+      console.log("Starting rating calculation with validation");
+      console.log(`Processing ${players.length} players`);
+    }
 
     const { matches, hasErrors, errorCount, errors } = processGameResults(
       players,
       31,
     );
-    console.log(`Validated ${matches.length} matches, errors: ${errorCount}`);
+    if (shouldLog(10)) {
+      console.log(`Validated ${matches.length} matches, errors: ${errorCount}`);
+    }
 
     if (hasErrors && errors.length > 0) {
       console.warn("Errors detected. Opening dialog for correction.");
@@ -407,13 +422,17 @@ export default function LadderForm({
       setWalkthroughErrors(errors);
       setWalkthroughIndex(0);
     } else {
-      console.log("No errors. Clearing and repopulating game results.");
+      if (shouldLog(10)) {
+        console.log("No errors. Clearing and repopulating game results.");
+      }
       setIsRecalculating(false);
       const processedPlayers = repopulateGameResults(players, matches, 31);
       const calculatedPlayers = calculateRatings(processedPlayers, matches);
       setPlayers(calculatedPlayers);
       localStorage.setItem("ladder_players", JSON.stringify(calculatedPlayers));
-      console.log("Rating calculation complete");
+      if (shouldLog(10)) {
+        console.log("Rating calculation complete");
+      }
     }
   };
 
@@ -617,7 +636,9 @@ export default function LadderForm({
   };
 
   const handleCorrectionCancel = () => {
-    console.log(">>> [BUTTON PRESSED] Cancel");
+    if (shouldLog(10)) {
+      console.log(">>> [BUTTON PRESSED] Cancel");
+    }
     // If we have pendingPlayers with corrections, complete the calculation first
     // Use the ref to get the latest updated players (not the stale state)
     if (latestPendingPlayersRef.current && pendingMatches) {
@@ -657,7 +678,9 @@ export default function LadderForm({
     setCurrentError(null);
     setEntryCell(null);
     setIsRecalculating(false);
-    console.log("Rating calculation complete");
+    if (shouldLog(10)) {
+      console.log("Rating calculation complete");
+    }
   };
 
   const handleWalkthroughNext = () => {
@@ -752,9 +775,11 @@ export default function LadderForm({
       Array.isArray(pasteResults) &&
       pasteResults.length > 1
     ) {
-      console.log(
-        `>>> [PASTE CONTINUE] ${pasteResults.length - 1} results remaining`,
-      );
+      if (shouldLog(10)) {
+        console.log(
+          `>>> [PASTE CONTINUE] ${pasteResults.length - 1} results remaining`,
+        );
+      }
 
       // Remove first result (just used)
       const remaining = pasteResults.slice(1);
@@ -776,9 +801,11 @@ export default function LadderForm({
           const cellValue = player.gameResults[round];
           if (!cellValue || cellValue.trim() === "") {
             foundCell = { playerRank: rank, round };
-            console.log(
-              `>>> [PASTE CONTINUE] Found empty cell at Rank ${rank}, Round ${round + 1}`,
-            );
+            if (shouldLog(10)) {
+              console.log(
+                `>>> [PASTE CONTINUE] Found empty cell at Rank ${rank}, Round ${round + 1}`,
+              );
+            }
             break;
           }
         }
@@ -795,9 +822,11 @@ export default function LadderForm({
             const cellValue = player.gameResults[round];
             if (!cellValue || cellValue.trim() === "") {
               foundCell = { playerRank: rank, round };
-              console.log(
-                `>>> [PASTE CONTINUE] Found empty cell at Rank ${rank}, Round ${round + 1}`,
-              );
+              if (shouldLog(10)) {
+                console.log(
+                  `>>> [PASTE CONTINUE] Found empty cell at Rank ${rank}, Round ${round + 1}`,
+                );
+              }
               break;
             }
           }
@@ -819,15 +848,19 @@ export default function LadderForm({
             parsedPlayer1Rank: 0,
             parsedPlayer2Rank: 0,
           });
-          console.log(
-            `>>> [PASTE CONTINUE] Opening cell with result: "${remaining[0]}"`,
-          );
+          if (shouldLog(10)) {
+            console.log(
+              `>>> [PASTE CONTINUE] Opening cell with result: "${remaining[0]}"`,
+            );
+          }
         }, 100);
         return;
       } else {
         // No more empty cells or results - clear the queue
         (window as any).__pasteResults = undefined;
-        console.log(`>>> [PASTE CONTINUE] All results pasted!`);
+        if (shouldLog(10)) {
+          console.log(`>>> [PASTE CONTINUE] All results pasted!`);
+        }
       }
     } else {
       (window as any).__pasteResults = undefined;
@@ -942,7 +975,9 @@ export default function LadderForm({
   };
 
   const exportPlayers = () => {
-    console.log(`>>> [BUTTON PRESSED] Export - ${players.length} players`);
+    if (shouldLog(10)) {
+      console.log(`>>> [BUTTON PRESSED] Export - ${players.length} players`);
+    }
     if (players.length === 0) {
       console.error("No players to export");
       return;
@@ -977,7 +1012,9 @@ export default function LadderForm({
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    console.log(`Exported ${players.length} players to ${filename}`);
+    if (shouldLog(10)) {
+      console.log(`Exported ${players.length} players to ${filename}`);
+    }
   };
 
   if (!players || players.length === 0) {
@@ -1019,7 +1056,9 @@ export default function LadderForm({
           {setShowSettings && (
             <button
               onClick={() => {
-                console.log(">>> [BUTTON PRESSED] Settings");
+                if (shouldLog(10)) {
+                  console.log(">>> [BUTTON PRESSED] Settings");
+                }
                 setShowSettings(true);
               }}
               style={{

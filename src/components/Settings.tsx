@@ -19,6 +19,7 @@ export default function Settings({
   onWalkThroughReports,
 }: SettingsProps) {
   const [showRatings, setShowRatings] = useState(true);
+  const [debugLevel, setDebugLevel] = useState(5);
 
   useEffect(() => {
     const savedSettings = localStorage.getItem("ladder_settings");
@@ -26,6 +27,7 @@ export default function Settings({
       try {
         const parsedSettings = JSON.parse(savedSettings);
         setShowRatings(parsedSettings.showRatings ?? true);
+        setDebugLevel(parsedSettings.debugLevel ?? 5);
       } catch (err) {
         console.error("Failed to parse settings:", err);
       }
@@ -36,6 +38,7 @@ export default function Settings({
     console.log(">>> [BUTTON PRESSED] Save (Settings)");
     const settings = {
       showRatings: [showRatings, showRatings, showRatings, showRatings],
+      debugLevel: debugLevel,
     };
     localStorage.setItem("ladder_settings", JSON.stringify(settings));
     onClose();
@@ -120,6 +123,50 @@ export default function Settings({
             }}
           >
             A1 - A8, I1 - I8, Z1 - Z8 groups based on rating
+          </p>
+        </div>
+
+        <div style={{ marginBottom: "1.5rem" }}>
+          <label
+            htmlFor="debugLevel"
+            style={{
+              display: "block",
+              fontSize: "0.875rem",
+              fontWeight: "500",
+              color: "#374151",
+              marginBottom: "0.5rem",
+            }}
+          >
+            Debug Level (lower = more verbose)
+          </label>
+          <input
+            type="number"
+            id="debugLevel"
+            min="0"
+            max="20"
+            value={debugLevel}
+            onChange={(e) =>
+              setDebugLevel(
+                Math.max(0, Math.min(20, parseInt(e.target.value) || 5)),
+              )
+            }
+            style={{
+              width: "100%",
+              padding: "0.5rem",
+              border: "1px solid #d1d5db",
+              borderRadius: "0.25rem",
+              fontSize: "0.875rem",
+              boxSizing: "border-box",
+            }}
+          />
+          <p
+            style={{
+              fontSize: "0.75rem",
+              color: "#6b7280",
+              marginTop: "0.5rem",
+            }}
+          >
+            Debug level 0 = all logs, 5 = default, 10+ = only critical errors
           </p>
         </div>
 
