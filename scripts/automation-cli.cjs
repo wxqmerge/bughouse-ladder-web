@@ -305,16 +305,18 @@ async function runTest(config, rebuildApp = false, logFile = null) {
           logLine("-- Submitting correction...");
           await sleep(1500);
 
-          // Click Submit Correction button
+          // Click Submit Correction or Save button (depending on dialog mode)
           const submitButton = await page.$(
-            'button:has-text("Submit Correction")',
+            'button:has-text("Submit Correction"), button:has-text("Save")',
           );
           if (submitButton) {
             await submitButton.click();
-            logLine(`-- Button pressed: Submit Correction`);
+            logLine(`-- Button pressed: Submit Correction/Save`);
             await sleep(2000);
           } else {
-            logLine("-- Warning: Could not find Submit Correction button");
+            logLine(
+              "-- Warning: Could not find Submit Correction or Save button",
+            );
           }
         }
 

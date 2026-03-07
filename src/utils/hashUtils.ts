@@ -332,6 +332,9 @@ export function parseEntry(
       playersList[1] === playersList[3] ||
       playersList[2] === playersList[3]
     ) {
+      console.log(
+        `PARSE FAILED [4-player]: "${normalizedText}" -> duplicate players`,
+      );
       return -4;
     }
 
@@ -344,6 +347,8 @@ export function parseEntry(
       scoreList[0] < 0 ||
       scoreList[1] < 0
     ) {
+      const reason = errorNum !== 0 ? `error${errorNum}` : "invalid values";
+      console.log(`PARSE FAILED [4-player]: "${normalizedText}" -> ${reason}`);
       return errorNum === 0 ? -3 : -errorNum;
     }
 
@@ -367,6 +372,8 @@ export function parseEntry(
       playersList[1] === 0 ||
       scoreList[0] < 0
     ) {
+      const reason = errorNum !== 0 ? `error${errorNum}` : "invalid values";
+      console.log(`PARSE FAILED [2-player]: "${normalizedText}" -> ${reason}`);
       return errorNum === 0 ? -3 : -errorNum;
     }
     const computedRes =
@@ -481,10 +488,19 @@ export function dataHash(
 
   let i = lKeyVal % 2048;
   let found = false;
+  let storedAtIdx = -1;
+
+  // DEBUG: Log what we're doing
+  console.log(
+    `dataHash: skey="${skey}", sval="${sval}", lKeyVal=${lKeyVal}, startIdx=${i}`,
+  );
 
   // VB6 Line: 344-362 - Collision resolution loop
   while (!found) {
     if (lKeyVal === hashIndex[i]) {
+      console.log(
+        `dataHash: FOUND existing at idx ${i} (keyVal=${hashIndex[i]}), method=${hashMethod}`,
+      );
       // VB6 Line: 347-350 - Delete entry if requested
       if (hashMethod === 2) {
         hashIndex[i] = 0;
@@ -492,16 +508,30 @@ export function dataHash(
       }
       found = true;
     } else if (hashIndex[i] === 0) {
+      console.log(
+        `dataHash: EMPTY slot at idx ${i}, storing keyVal=${lKeyVal}, value="${sval}"`,
+      );
       // VB6 Line: 354-357 - Add new entry
       if (hashMethod === 0) {
         hashIndex[i] = lKeyVal;
         hashArray[i] = sval;
+        storedAtIdx = i;
       }
       found = true;
     } else {
+      console.log(
+        `dataHash: COLLISION at idx ${i} (keyVal=${hashIndex[i]} != ${lKeyVal}), trying next...`,
+      );
       i++;
       if (i === 2048) i = 0;
     }
+  }
+
+  // DEBUG: Log failed storage attempts
+  if (hashMethod === 0 && storedAtIdx === -1) {
+    console.log(
+      `dataHash: FAILED TO STORE - skey="${skey}", sval="${sval}" (hash table full or collision loop ended)`,
+    );
   }
 
   return hashArray[i];
@@ -596,8 +626,8 @@ export function processGameResults(
           hashValue,
           player1: parsedPlayersList[0],
           player2: parsedPlayersList[1],
-          player3: parsedPlayersList[3],
-          player4: parsedPlayersList[4],
+          player3: parsedPlayersList[2], // BUG FIX: was [3]
+          player4: parsedPlayersList[3], // BUG FIX: was [4]
           score1: parsedScoreList[0],
           score2: parsedScoreList[1],
           resultIndex: round,
@@ -612,17 +642,24 @@ export function processGameResults(
       if (processedPairs.has(hashValue)) continue;
 
       const player1Rank = parsedPlayersList[0];
-      const player2Rank = parsedPlayersList[3];
+      const player2Rank = parsedPlayersList[1]; // BUG FIX: was [3], should be [1]
       const player1Score = parsedScoreList[0];
       const player2Score = parsedScoreList[1];
 
+      // DEBUG: Log validation errors around player rank checks
       if (player1Rank <= 0 || player2Rank <= 0) {
         errorCount++;
+        console.log(
+          `ERROR [650]: Invalid player ranks - p1=${player1Rank}, p2=${player2Rank}, result="${result}"`,
+        );
         continue;
       }
 
       if (player1Rank > 200 || player2Rank > 200) {
         errorCount++;
+        console.log(
+          `ERROR [655]: Player ranks exceed 200 - p1=${player1Rank}, p2=${player2Rank}, result="${result}"`,
+        );
         continue;
       }
 
@@ -631,6 +668,9 @@ export function processGameResults(
 
       if (!player1 || !player2) {
         errorCount++;
+        console.log(
+          `ERROR [660]: Player not found - p1Rank=${player1Rank}, p2Rank=${player2Rank}, result="${result}"`,
+        );
         continue;
       }
 
@@ -643,8 +683,8 @@ export function processGameResults(
         playerRank: player.rank,
         player1: parsedPlayersList[0],
         player2: parsedPlayersList[1],
-        player3: parsedPlayersList[3],
-        player4: parsedPlayersList[4],
+        player3: parsedPlayersList[2], // BUG FIX: was [3]
+        player4: parsedPlayersList[3], // BUG FIX: was [4]
         score1: parsedScoreList[0],
         score2: parsedScoreList[1],
       });
@@ -663,8 +703,8 @@ export function processGameResults(
       results.push({
         player1: parsedPlayersList[0],
         player2: parsedPlayersList[1],
-        player3: parsedPlayersList[3],
-        player4: parsedPlayersList[4],
+        player3: parsedPlayersList[2], // BUG FIX: was [3]
+        player4: parsedPlayersList[3], // BUG FIX: was [4]
         score1: player1Score,
         score2: player2Score,
       });
@@ -718,6 +758,9 @@ export function processGameResults(
     if (!allSame) {
       for (const entry of entries) {
         errorCount++;
+        console.log(
+          `ERROR [conflict]: Players disagree on result - p1=${entry.player1}, p2=${entry.player2}, p3=${entry.player3}, p4=${entry.player4}, result="${entry.result}"`,
+        );
         errors.push({
           hashValue: 0,
           player1: entry.player1,
@@ -820,6 +863,11 @@ export function repopulateGameResults(
     const p2 = playersCopy[p2Index];
 
     if (!p1 || !p2) continue;
+
+    // DEBUG: Log repopulation
+    console.log(
+      `REPOPULATING: resultIndex=${resultIndex}, p1Rank=${match.player1}, p2Rank=${match.player2}, score1=${match.score1}, score2=${match.score2}`,
+    );
 
     const result1 = resultCodeToString(match.score1);
     const result2 = resultCodeToString(match.score2);
