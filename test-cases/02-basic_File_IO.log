@@ -265,10 +265,10 @@ Total matches: 39
 -- Cancelling dialog...
 -- Clicking Export button...
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Export_Results_2026-03-07T16-10-12-409Z.tab
+>>> [LOG] Exported 14 players to Export_Results_2026-03-07T16-29-56-550Z.tab
 -- Button pressed: Export
--- Download detected: Export_Results_2026-03-07T16-10-12-409Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-07T16-10-12-409Z.tab
+-- Download detected: Export_Results_2026-03-07T16-29-56-550Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-07T16-29-56-550Z.tab
 -- Clicking buttons: none
 
 -- Comparing output...

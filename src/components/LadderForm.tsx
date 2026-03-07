@@ -244,7 +244,7 @@ export default function LadderForm({
       );
     }
     samplePlayers.forEach((player) => {
-      if (shouldLog(10)) {
+      if (shouldLog(9)) {
         console.log(
           `[LadderForm] Sample player: Rank=${player.rank}, Name=${player.firstName} ${player.lastName}, Rating=${player.rating}, Games=${player.games}`,
         );
@@ -405,7 +405,7 @@ export default function LadderForm({
       players,
       31,
     );
-    if (shouldLog(10)) {
+    if (shouldLog(4)) {
       console.log(`Validated ${matches.length} matches, errors: ${errorCount}`);
     }
 

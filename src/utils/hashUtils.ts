@@ -755,24 +755,26 @@ export function processGameResults(
         );
       }
     }
-    console.log(`Total hash entries stored: ${hashResults.length}`);
-    console.log(
-      "Hash table results:",
-      hashResults.map((h) => h.value).join(", "),
-    );
+    if (shouldLog(4)) {
+      console.log(`Total hash entries stored: ${hashResults.length}`);
+      console.log(
+        "Hash table results:",
+        hashResults.map((h) => h.value).join(", "),
+      );
 
-    // Count 2-player vs 4-player in all matches
-    const twoPlayerMatches = results.filter(
-      (m) => m.player3 === 0 && m.player4 === 0,
-    );
-    const fourPlayerMatches = results.filter(
-      (m) => m.player3 > 0 && m.player4 > 0,
-    );
-    console.log(`\nTotal matches: ${results.length}`);
-    console.log(`2-player matches: ${twoPlayerMatches.length}`);
-    console.log(`4-player matches: ${fourPlayerMatches.length}`);
+      // Count 2-player vs 4-player in all matches
+      const twoPlayerMatches = results.filter(
+        (m) => m.player3 === 0 && m.player4 === 0,
+      );
+      const fourPlayerMatches = results.filter(
+        (m) => m.player3 > 0 && m.player4 > 0,
+      );
+      console.log(`\nTotal matches: ${results.length}`);
+      console.log(`2-player matches: ${twoPlayerMatches.length}`);
+      console.log(`4-player matches: ${fourPlayerMatches.length}`);
 
-    console.log("========================\n");
+      console.log("========================\n");
+    }
   }
 
   // DEBUG: Stop processing here
