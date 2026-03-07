@@ -191,6 +191,7 @@ export default function LadderForm({
     parsedPlayer2Rank: number;
   } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const latestPendingPlayersRef = useRef<PlayerData[] | null>(null);
 
   useEffect(() => {
     if (triggerWalkthrough && setTriggerWalkthrough) {
@@ -384,7 +385,7 @@ export default function LadderForm({
       return;
     }
 
-    console.log("Starting rating calculation with VB6-style validation");
+    console.log("Starting rating calculation with validation");
     console.log(`Processing ${players.length} players`);
 
     const { matches, hasErrors, errorCount, errors } = processGameResults(
@@ -495,6 +496,7 @@ export default function LadderForm({
 
       setPlayers(updatedPlayers);
       setPendingPlayers(pendingUpdatedPlayers);
+      latestPendingPlayersRef.current = pendingUpdatedPlayers;
 
       // Remove this error from the walkthrough errors list
       const newWalkthroughErrors = walkthroughErrors.filter(
@@ -534,10 +536,10 @@ export default function LadderForm({
             round: nextError.resultIndex,
           });
         } else {
-          completeRatingCalculation();
+          completeRatingCalculation(pendingUpdatedPlayers);
         }
       } else {
-        completeRatingCalculation();
+        completeRatingCalculation(pendingUpdatedPlayers);
       }
       return;
     }
@@ -582,6 +584,7 @@ export default function LadderForm({
 
     setPlayers(updatedPlayers);
     setPendingPlayers(pendingUpdatedPlayers);
+    latestPendingPlayersRef.current = pendingUpdatedPlayers;
     setCurrentError(null);
     setWalkthroughErrors(newWalkthroughErrors);
     // setEntryCell(null); // Removed to maintain highlighting during recalculation
@@ -603,18 +606,25 @@ export default function LadderForm({
             round: nextError.resultIndex,
           });
         } else {
-          completeRatingCalculation();
+          completeRatingCalculation(pendingUpdatedPlayers);
         }
       } else {
-        completeRatingCalculation();
+        completeRatingCalculation(pendingUpdatedPlayers);
       }
     } else if (newWalkthroughErrors.length === 0) {
-      completeRatingCalculation();
+      completeRatingCalculation(pendingUpdatedPlayers);
     }
   };
 
   const handleCorrectionCancel = () => {
     console.log(">>> [BUTTON PRESSED] Cancel");
+    // If we have pendingPlayers with corrections, complete the calculation first
+    // Use the ref to get the latest updated players (not the stale state)
+    if (latestPendingPlayersRef.current && pendingMatches) {
+      completeRatingCalculation(latestPendingPlayersRef.current);
+    } else if (pendingPlayers && pendingMatches) {
+      completeRatingCalculation(pendingPlayers);
+    }
     setCurrentError(null);
     setIsRecalculating(false);
     setPendingPlayers(null);
@@ -625,11 +635,12 @@ export default function LadderForm({
     setTempGameResult(null);
   };
 
-  const completeRatingCalculation = () => {
-    if (!pendingPlayers || !pendingMatches) return;
+  const completeRatingCalculation = (usePendingPlayers?: PlayerData[]) => {
+    const playersToUse = usePendingPlayers || pendingPlayers;
+    if (!playersToUse || !pendingMatches) return;
 
     const processedPlayers = repopulateGameResults(
-      pendingPlayers,
+      playersToUse,
       pendingMatches,
       31,
     );
@@ -1645,7 +1656,7 @@ export default function LadderForm({
           }}
         >
           <button
-            onClick={completeRatingCalculation}
+            onClick={() => completeRatingCalculation()}
             style={{
               background: "white",
               color: "#f59e0b",
