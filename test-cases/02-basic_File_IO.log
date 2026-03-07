@@ -65,26 +65,72 @@ Server started on port 5173
 -- Player count after reload: 14
 -- Clicking Recalculate Ratings...
 >>> [LOG] >>> [BUTTON PRESSED] Recalculate Ratings - 14 players
->>> [LOG] Starting rating calculation with VB6-style validation
+>>> [LOG] Starting rating calculation with validation
 >>> [LOG] Processing 14 players
->>> [LOG] Validated 20 matches, errors: 27
->>> [WARNING] Errors detected. Opening dialog for correction.
+>>> [LOG] Storing hashValue=405603593, round=0, is4Player=true, result="12:11LL10:9", player1=9, player2=10
+>>> [LOG] Storing hashValue=168903042, round=0, is4Player=true, result="2:3DD4:5", player1=2, player2=3
+>>> [LOG] Storing hashValue=202703748, round=0, is4Player=true, result="5:6LL7:4", player1=4, player2=7
+>>> [LOG] Storing hashValue=473417227, round=0, is4Player=true, result="14:13DD12:11", player1=11, player2=12
+>>> [LOG] Storing hashValue=304334087, round=0, is4Player=true, result="9:8DD7:10", player1=7, player2=10
+>>> [LOG] Storing hashValue=236700677, round=0, is4Player=true, result="7:6DD8:5", player1=5, player2=8
+>>> [LOG] Storing hashValue=471942407, round=1, is4Player=true, result="10:7DD8:14", player1=7, player2=10
+>>> [LOG] Storing hashValue=269387522, round=1, is4Player=true, result="3:8WW14:2", player1=2, player2=14
+>>> [LOG] Storing hashValue=304006147, round=1, is4Player=true, result="7:9DW8:3", player1=3, player2=8
+>>> [LOG] Storing hashValue=270173697, round=1, is4Player=true, result="1:12WW8:6", player1=1, player2=12
+>>> [LOG] Storing hashValue=336824066, round=1, is4Player=true, result="4:10WD2:14", player1=2, player2=14
+>>> [LOG] Storing hashValue=371754505, round=1, is4Player=true, result="9:12WL11:10", player1=9, player2=12
+>>> [LOG] Storing hashValue=168805378, round=2, is4Player=true, result="5:3DD2:8", player1=2, player2=8
+>>> [LOG] Storing hashValue=371558022, round=2, is4Player=true, result="13:6WD9:11", player1=6, player2=13
+>>> [LOG] Storing hashValue=371869442, round=2, is4Player=true, result="2:14DW11:10", player1=2, player2=14
+>>> [LOG] Storing hashValue=202539649, round=2, is4Player=true, result="4:6WW5:1", player1=1, player2=5
+>>> [LOG] Storing hashValue=472744322, round=2, is4Player=true, result="2:3WD11:14", player1=2, player2=3
+>>> [LOG] Storing hashValue=370869249, round=2, is4Player=true, result="11:6LW8:1", player1=1, player2=8
+>>> [LOG] Storing hashValue=473219457, round=2, is4Player=true, result="13:14DL3:1", player1=1, player2=3
+>>> [LOG] Storing hashValue=236521220, round=3, is4Player=true, result="6:7LL14:4", player1=4, player2=14
+>>> [LOG] 
+=== HASH TABLE DEBUG ===
+>>> [LOG] Hash[12]: keyVal=51708692492, value="11:6LW8:1"
+>>> [LOG] Hash[22]: keyVal=49688053782, value="5:3DD2:8"
+>>> [LOG] Hash[31]: keyVal=51040061471, value="7:9DW8:3"
+>>> [LOG] Hash[50]: keyVal=50367006770, value="7:6DD8:5"
+>>> [LOG] Hash[268]: keyVal=50025396492, value="4:6WW5:1"
+>>> [LOG] Hash[318]: keyVal=51715580222, value="13:6WD9:11"
+>>> [LOG] Hash[582]: keyVal=51043340870, value="9:8DD7:10"
+>>> [LOG] Hash[583]: keyVal=52719424071, value="10:7DD8:14"
+>>> [LOG] Hash[602]: keyVal=52056035930, value="12:11LL10:9"
+>>> [LOG] Hash[808]: keyVal=50027037480, value="5:6LL7:4"
+>>> [LOG] Hash[1035]: keyVal=50701736971, value="1:12WW8:6"
+>>> [LOG] Hash[1115]: keyVal=51717545051, value="9:12WL11:10"
+>>> [LOG] Hash[1134]: keyVal=52734172270, value="14:13DD12:11"
+>>> [LOG] Hash[1557]: keyVal=50693875221, value="3:8WW14:2"
+>>> [LOG] Hash[1558]: keyVal=51368240661, value="4:10WD2:14"
+>>> [LOG] Hash[1559]: keyVal=51718694422, value="2:14DW11:10"
+>>> [LOG] Hash[1579]: keyVal=50365212203, value="6:7LL14:4"
+>>> [LOG] Hash[1804]: keyVal=52732194572, value="13:14DL3:1"
+>>> [LOG] Hash[1812]: keyVal=49689030420, value="2:3DD4:5"
+>>> [LOG] Hash[1814]: keyVal=52727443222, value="2:3WD11:14"
+>>> [LOG] Total hash entries stored: 20
+>>> [LOG] Hash table results: 11:6LW8:1, 5:3DD2:8, 7:9DW8:3, 7:6DD8:5, 4:6WW5:1, 13:6WD9:11, 9:8DD7:10, 10:7DD8:14, 12:11LL10:9, 5:6LL7:4, 1:12WW8:6, 9:12WL11:10, 14:13DD12:11, 3:8WW14:2, 4:10WD2:14, 2:14DW11:10, 6:7LL14:4, 13:14DL3:1, 2:3DD4:5, 2:3WD11:14
+>>> [LOG] 
+Total matches: 20
+>>> [LOG] 2-player matches: 0
+>>> [LOG] 4-player matches: 0
+>>> [LOG] ========================
+
+>>> [LOG] Validated 0 matches, errors: 0
+>>> [LOG] No errors. Clearing and repopulating game results.
+>>> [LOG] Rating calculation complete
 -- Button pressed: Recalculate Ratings
 -- Filling correction: "5W3"
--- Text entered: 5W3
 -- Submitting correction...
->>> [LOG] >>> [BUTTON PRESSED] Save (Game Result)
--- Button pressed: Submit Correction
+-- Warning: Could not find Submit Correction button
 -- Cancelling dialog...
->>> [LOG] >>> [BUTTON PRESSED] Cancel
->>> [LOG] Rating calculation complete
--- Button pressed: Cancel
 -- Clicking Export button...
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Export_Results_2026-03-07T01-17-23-975Z.tab
+>>> [LOG] Exported 14 players to Export_Results_2026-03-07T03-16-22-892Z.tab
 -- Button pressed: Export
--- Download detected: Export_Results_2026-03-07T01-17-23-975Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-07T01-17-23-975Z.tab
+-- Download detected: Export_Results_2026-03-07T03-16-22-892Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-07T03-16-22-892Z.tab
 -- Clicking buttons: none
 
 -- Comparing output...
@@ -93,46 +139,46 @@ Server started on port 5173
 --- Diff ---
 Line 2:
   Expected: "	Garcia	Sarah	1351	1	1226	6th	2	2				4W5	8L11"
-  Actual:   "	Garcia	Sarah	1351	1	1334	6th	2	2													D_						D_		O_	W_"
+  Actual:   "	Garcia	Sarah	1351	1	1226	6th	2	2"
 Line 3:
   Expected: "B	Smith	Jane	1008	2	1386	2th	4	4				12:11LL10:9	13W1	5:3DD2:8	6:7LL14:4"
-  Actual:   "B	Smith	Jane	1008	2	1010	2th	4	4					L_						D_			D_		W_		L_		D_"
+  Actual:   "B	Smith	Jane	1008	2	1386	2th	4	4"
 Line 4:
   Expected: "C	Moore	James	1061	3	1109	2th	2	2				2W3	5D13"
-  Actual:   "C	Moore	James	1061	3	1078	2th	2	2					L_							W_								L_		O_"
+  Actual:   "C	Moore	James	1061	3	1109	2th	2	2"
 Line 5:
   Expected: "A1	Jackson	Daniel	1351	4	1255	6th	4	4				2:3DD4:5	10:7DD8:14	13:6WD9:11	5W3_"
-  Actual:   "A1	Jackson	Daniel	1351	4	1344	6th	4	4						O_																	O_"
+  Actual:   "A1	Jackson	Daniel	1351	4	1255	6th	4	4"
 Line 6:
   Expected: "D	Brown	Emily	1068	5	1010	4th	2	2				10W9	3:8WW14:2"
-  Actual:   "D	Brown	Emily	1068	5	1075	4th	2	2									W_										D_"
+  Actual:   "D	Brown	Emily	1068	5	1010	4th	2	2"
 Line 7:
   Expected: "E	Anderson	Thomas	1228	6	1088	4th	4	4				5:6LL7:4	11L13	9L12	3D1"
-  Actual:   "E	Anderson	Thomas	1228	6	1225	4th	4	4																	D_"
+  Actual:   "E	Anderson	Thomas	1228	6	1088	4th	4	4"
 Line 8:
   Expected: "A1	Johnson	John	1000	7	1000	1th	2	2				1W2	12W13"
-  Actual:   "A1	Johnson	John	1000	7	1015	1th	2	2						O_		W_		L_"
+  Actual:   "A1	Johnson	John	1000	7	1000	1th	2	2"
 Line 9:
   Expected: "B	Wilson	Lisa	1031	8	1206	1th	3	3				13W12	3L4	2:14DW11:10"
-  Actual:   "B	Wilson	Lisa	1031	8	1038	1th	3	3									W_			D_				W_					D_"
+  Actual:   "B	Wilson	Lisa	1031	8	1206	1th	3	3"
 Line 10:
   Expected: "B	White	Jennifer	1133	9	1276	7th	5	5				14:13DD12:11	7:9DW8:3	4:6WW5:1	2:10DD1:1	1W1"
-  Actual:   "B	White	Jennifer	1133	9	1135	7th	5	5				O_											D_"
+  Actual:   "B	White	Jennifer	1133	9	1276	7th	5	5"
 Line 11:
   Expected: "E	Davis	Michael	1207	10	1303	5th	2	2				2W3	1:12WW8:6"
-  Actual:   "E	Davis	Michael	1207	10	1192	5th	2	2				O_				W_		L_"
+  Actual:   "E	Davis	Michael	1207	10	1303	5th	2	2"
 Line 12:
   Expected: "	Thomas	Maria	1375	11	1358	5th	4	4				9:8DD7:10	4L1	2:3WD11:14	12D13"
-  Actual:   "	Thomas	Maria	1375	11	1360	5th	4	4							W_"
+  Actual:   "	Thomas	Maria	1375	11	1358	5th	4	4"
 Line 13:
   Expected: "D	Taylor	Anna	1203	12	1254	3th	3	3				14L13	8D1	5W10"
-  Actual:   "D	Taylor	Anna	1203	12	1201	3th	3	3							W_						D_		O_"
+  Actual:   "D	Taylor	Anna	1203	12	1254	3th	3	3"
 Line 14:
   Expected: "A1	Miller	David	1131	13	1229	7th	3	3				13W12	4:10WD2:14	11:6LW8:1"
-  Actual:   "A1	Miller	David	1131	13	1134	7th	3	3																	L_"
+  Actual:   "A1	Miller	David	1131	13	1229	7th	3	3"
 Line 15:
   Expected: "C	Williams	Robert	1066	14	1033	3th	5	5				7:6DD8:5	9:12WL11:10	13:14DL3:1	2:4WD1:1	1W1"
-  Actual:   "C	Williams	Robert	1066	14	1073	3th	5	5											D_			W_				D_					O_"
+  Actual:   "C	Williams	Robert	1066	14	1033	3th	5	5"
 
 --- End diff ---
 

@@ -566,7 +566,6 @@ export function processGameResults(
       score2: number;
     }[]
   >();
-  const hashDebugKeys: string[] = []; // DEBUG: track hash keys
 
   hashInitialize();
 
@@ -654,7 +653,12 @@ export function processGameResults(
 
       const _matchKey = `${hashValue}_${round}`;
       dataHash(_matchKey, result, 0);
-      hashDebugKeys.push(_matchKey); // DEBUG: track keys
+
+      // DEBUG: Log what we're storing
+      const is4Player = parsedPlayersList[2] > 0 && parsedPlayersList[3] > 0;
+      console.log(
+        `Storing hashValue=${hashValue}, round=${round}, is4Player=${is4Player}, result="${result}", player1=${parsedPlayersList[0]}, player2=${parsedPlayersList[1]}`,
+      );
 
       results.push({
         player1: parsedPlayersList[0],
@@ -669,23 +673,32 @@ export function processGameResults(
 
   // DEBUG: Convert hash table back to results
   console.log("\n=== HASH TABLE DEBUG ===");
-  const hashResults: { key: string; value: string }[] = [];
+  const hashResults: { index: number; keyVal: number; value: string }[] = [];
   for (let i = 0; i < hashArray.length; i++) {
     if (hashArray[i] !== "" && hashIndex[i] !== 0) {
-      hashResults.push({
-        key: hashDebugKeys[i] || `unknown_${i}`,
-        value: hashArray[i],
-      });
+      hashResults.push({ index: i, keyVal: hashIndex[i], value: hashArray[i] });
       console.log(
-        `Hash[${i}]: key="${hashDebugKeys[i] || `unknown_${i}`}", value="${hashArray[i]}"`,
+        `Hash[${i}]: keyVal=${hashIndex[i]}, value="${hashArray[i]}"`,
       );
     }
   }
-  console.log(`Total hash entries: ${hashResults.length}`);
+  console.log(`Total hash entries stored: ${hashResults.length}`);
   console.log(
     "Hash table results:",
     hashResults.map((h) => h.value).join(", "),
   );
+
+  // Count 2-player vs 4-player in all matches
+  const twoPlayerMatches = results.filter(
+    (m) => m.player3 === 0 && m.player4 === 0,
+  );
+  const fourPlayerMatches = results.filter(
+    (m) => m.player3 > 0 && m.player4 > 0,
+  );
+  console.log(`\nTotal matches: ${results.length}`);
+  console.log(`2-player matches: ${twoPlayerMatches.length}`);
+  console.log(`4-player matches: ${fourPlayerMatches.length}`);
+
   console.log("========================\n");
 
   // DEBUG: Stop processing here
