@@ -229,6 +229,12 @@ Total matches: 39
 >>> [LOG] ========================
 
 >>> [LOG] No errors. Clearing and repopulating game results.
+>>> [LOG] 
+=== REPOPULATION SUMMARY ===
+>>> [LOG] Total player result entries: 0
+>>> [LOG] Expected: 2 entries per match (one for each participant)
+>>> [LOG] ============================
+
 >>> [LOG] Rating calculation complete
 -- Button pressed: Recalculate Ratings
 -- Filling correction: "5W3"
@@ -237,10 +243,10 @@ Total matches: 39
 -- Cancelling dialog...
 -- Clicking Export button...
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Export_Results_2026-03-07T16-57-07-996Z.tab
+>>> [LOG] Exported 14 players to Export_Results_2026-03-07T17-07-13-546Z.tab
 -- Button pressed: Export
--- Download detected: Export_Results_2026-03-07T16-57-07-996Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-07T16-57-07-996Z.tab
+-- Download detected: Export_Results_2026-03-07T17-07-13-546Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-07T17-07-13-546Z.tab
 -- Clicking buttons: none
 
 -- Comparing output...

@@ -902,23 +902,102 @@ export function repopulateGameResults(
 
     if (!p1 || !p2) continue;
 
-    // DEBUG: Log repopulation
-    if (shouldLog(10)) {
+    // Build full result strings for all players involved
+    const result1ForP1 = buildResultStringForPlayer(match.player1, match, 0);
+    const result1ForP2 = buildResultStringForPlayer(match.player2, match, 0);
+
+    if (shouldLog(5)) {
       console.log(
-        `REPOPULATING: resultIndex=${resultIndex}, p1Rank=${match.player1}, p2Rank=${match.player2}, score1=${match.score1}, score2=${match.score2}`,
+        `[REPOPULATE] Round ${resultIndex}: p1Rank=${match.player1}=${p1.firstName} ${p1.lastName}, p2Rank=${match.player2}=${p2.firstName} ${p2.lastName}`,
       );
     }
 
-    const result1 = resultCodeToString(match.score1);
-    const result2 = resultCodeToString(match.score2);
+    // Set result for player 1
+    if (result1ForP1) {
+      p1.gameResults[resultIndex] = result1ForP1 + "_";
+      if (shouldLog(5)) {
+        console.log(`  -> Set p1[${resultIndex}] = "${result1ForP1}_"`);
+      }
+    }
 
-    if (result1) {
-      p1.gameResults[resultIndex] = result1 + "_";
+    // Set result for player 2
+    if (result1ForP2) {
+      p2.gameResults[resultIndex] = result1ForP2 + "_";
+      if (shouldLog(5)) {
+        console.log(`  -> Set p2[${resultIndex}] = "${result1ForP2}_"`);
+      }
     }
-    if (result2) {
-      p2.gameResults[resultIndex] = result2 + "_";
+
+    // For 4-player games, also set results for player 3 and 4
+    if (match.player3 > 0 && match.player4 > 0) {
+      const p3Index = match.player3 - 1;
+      const p4Index = match.player4 - 1;
+
+      if (
+        p3Index >= 0 &&
+        p3Index < playersCopy.length &&
+        p3Index !== p1Index &&
+        p3Index !== p2Index
+      ) {
+        const p3 = playersCopy[p3Index];
+        if (p3) {
+          const result2ForP3 = buildResultStringForPlayer(
+            match.player3,
+            match,
+            1,
+          );
+          if (result2ForP3) {
+            p3.gameResults[resultIndex] = result2ForP3 + "_";
+            if (shouldLog(5)) {
+              console.log(`  -> Set p3[${resultIndex}] = "${result2ForP3}_"`);
+            }
+          }
+        }
+      }
+
+      if (
+        p4Index >= 0 &&
+        p4Index < playersCopy.length &&
+        p4Index !== p1Index &&
+        p4Index !== p2Index &&
+        p4Index !== p3Index
+      ) {
+        const p4 = playersCopy[p4Index];
+        if (p4) {
+          const result2ForP4 = buildResultStringForPlayer(
+            match.player4,
+            match,
+            1,
+          );
+          if (result2ForP4) {
+            p4.gameResults[resultIndex] = result2ForP4 + "_";
+            if (shouldLog(5)) {
+              console.log(`  -> Set p4[${resultIndex}] = "${result2ForP4}_"`);
+            }
+          }
+        }
+      }
     }
+
     resultIndex++;
+  }
+
+  // Summary: show all non-null game results
+  if (shouldLog(5)) {
+    console.log("\n=== REPOPULATION SUMMARY ===");
+    let totalResults = 0;
+    for (const p of playersCopy) {
+      const filled = p.gameResults.filter((r) => r !== null && r !== "");
+      if (filled.length > 0) {
+        console.log(
+          `Player ${p.rank} (${p.firstName} ${p.lastName}): ${filled.length} results`,
+        );
+        totalResults += filled.length;
+      }
+    }
+    console.log(`Total player result entries: ${totalResults}`);
+    console.log("Expected: 2 entries per match (one for each participant)");
+    console.log("============================\n");
   }
 
   return playersCopy;
@@ -930,6 +1009,64 @@ function resultCodeToString(code: number): string {
   if (code === 2) return "D";
   if (code === 3) return "W";
   return "O";
+}
+
+/**
+ * Build result string for a specific player in a match
+ * @param playerRank - The rank of the player this result is for
+ * @param match - The match data containing all players and scores
+ * @param scoreIndex - Which score to use (0 for first, 1 for second)
+ */
+function buildResultStringForPlayer(
+  playerRank: number,
+  match: MatchData,
+  scoreIndex: number,
+): string {
+  const resultCodes = [
+    resultCodeToString(match.score1),
+    resultCodeToString(match.score2),
+  ];
+
+  if (match.player3 > 0 && match.player4 > 0) {
+    // 4-player game: format is "A:BWC:D" where A,B are first pair, C,D are second pair
+    const p1 = match.player1;
+    const p2 = match.player2;
+    const p3 = match.player3;
+    const p4 = match.player4;
+
+    if (playerRank === p1) {
+      // Player 1 is in first pair, has score1
+      return `${p1}:${p2}${resultCodes[scoreIndex]}${p3}:${p4}`;
+    } else if (playerRank === p2) {
+      // Player 2 is in first pair, has score1 (opposite of p1)
+      const oppScore =
+        match.score1 === 1 ? 3 : match.score1 === 3 ? 1 : match.score1;
+      return `${p2}:${p1}${resultCodeToString(oppScore)}${p4}:${p3}`;
+    } else if (playerRank === p3) {
+      // Player 3 is in second pair, has score2
+      return `${p3}:${p4}${resultCodes[scoreIndex]}${p1}:${p2}`;
+    } else if (playerRank === p4) {
+      // Player 4 is in second pair, has score2 (opposite of p3)
+      const oppScore =
+        match.score2 === 1 ? 3 : match.score2 === 3 ? 1 : match.score2;
+      return `${p4}:${p3}${resultCodeToString(oppScore)}${p2}:${p1}`;
+    }
+  } else {
+    // 2-player game: format is "AWB" or "AWBLC" for multiple results
+    const p1 = match.player1;
+    const p2 = match.player2;
+
+    if (playerRank === p1) {
+      return `${p1}${resultCodes[scoreIndex]}${p2}`;
+    } else if (playerRank === p2) {
+      // Opposite score
+      const oppScore =
+        match.score1 === 1 ? 3 : match.score1 === 3 ? 1 : match.score1;
+      return `${p2}${resultCodeToString(oppScore)}${p1}`;
+    }
+  }
+
+  return "";
 }
 
 export const ERROR_MESSAGES: Record<number, string> = {
