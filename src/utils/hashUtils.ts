@@ -273,8 +273,10 @@ export function parseEntry(
   }
 
   // VB6 Line: 223-228 - Process scores
-  scoreList[0] = RESULT_STRING.indexOf(results[0]) - 1;
-  scoreList[1] = results[1] ? RESULT_STRING.indexOf(results[1]) - 1 : 0;
+  // FIXED: RESULT_STRING.indexOf() returns the score directly (no -1 needed)
+  // O=0, L=1, D=2, W=3, X=4, Y=5, Z=6
+  scoreList[0] = RESULT_STRING.indexOf(results[0]);
+  scoreList[1] = results[1] ? RESULT_STRING.indexOf(results[1]) : 0;
 
   // VB6 Line: 229-245 - Normalize player order
   // Store original values before normalization for display
@@ -388,6 +390,17 @@ export function parseEntry(
       }
       return errorNum === 0 ? -3 : -errorNum;
     }
+
+    // Check for self-play in 2-player game
+    if (playersList[0] === playersList[1]) {
+      if (shouldLog(10)) {
+        console.log(
+          `PARSE FAILED [2-player]: "${normalizedText}" -> duplicate players (self-play)`,
+        );
+      }
+      return -4;
+    }
+
     const computedRes =
       ((playersList[0] * 128 + playersList[1]) * 4 + scoreList[0]) * 128 + 0;
     return computedRes;
@@ -677,6 +690,31 @@ export function processGameResults(
         continue;
       }
 
+      // Check for self-play (same player on both sides)
+      if (player1Rank === player2Rank) {
+        errorCount++;
+        if (shouldLog(5)) {
+          console.log(
+            `ERROR [SELF-PLAY]: Player plays against themselves - result="${result}", p1=${player1Rank}, p2=${player2Rank}`,
+          );
+        }
+        errors.push({
+          hashValue: 0,
+          player1: parsedPlayersList[0],
+          player2: parsedPlayersList[1],
+          player3: parsedPlayersList[2],
+          player4: parsedPlayersList[3],
+          score1: parsedScoreList[0],
+          score2: parsedScoreList[1],
+          resultIndex: round,
+          isValid: false,
+          error: 3, // Incomplete entry
+          originalString: result,
+          playerRank: player.rank,
+        });
+        continue;
+      }
+
       if (player1Rank > 200 || player2Rank > 200) {
         errorCount++;
         if (shouldLog(10)) {
@@ -777,14 +815,7 @@ export function processGameResults(
     }
   }
 
-  // DEBUG: Stop processing here
-  return {
-    matches: [],
-    hasErrors: false,
-    errorCount: 0,
-    errors: [],
-  };
-
+  // Process match results and check for conflicts
   for (const [_, entries] of matchResults.entries()) {
     if (entries.length < 2) continue;
 
@@ -890,6 +921,13 @@ export function repopulateGameResults(
   }));
 
   let resultIndex = 0;
+  let totalSet = 0;
+
+  if (shouldLog(5)) {
+    console.log(`\n=== START REPOPULATION ===`);
+    console.log(`Total matches to process: ${matches.length}`);
+  }
+
   for (const match of matches) {
     const p1Index = match.player1 - 1;
     const p2Index = match.player2 - 1;
@@ -908,23 +946,36 @@ export function repopulateGameResults(
 
     if (shouldLog(5)) {
       console.log(
-        `[REPOPULATE] Round ${resultIndex}: p1Rank=${match.player1}=${p1.firstName} ${p1.lastName}, p2Rank=${match.player2}=${p2.firstName} ${p2.lastName}`,
+        `[REPOPULATE #${resultIndex}] Match: p1=${match.player1} (${p1.firstName}), p2=${match.player2} (${p2.firstName})`,
+      );
+      console.log(
+        `  result1ForP1="${result1ForP1}", result1ForP2="${result1ForP2}"`,
       );
     }
 
     // Set result for player 1
     if (result1ForP1) {
       p1.gameResults[resultIndex] = result1ForP1 + "_";
+      totalSet++;
       if (shouldLog(5)) {
         console.log(`  -> Set p1[${resultIndex}] = "${result1ForP1}_"`);
+      }
+    } else {
+      if (shouldLog(5)) {
+        console.log(`  -> SKIPPED p1 (no result string)`);
       }
     }
 
     // Set result for player 2
     if (result1ForP2) {
       p2.gameResults[resultIndex] = result1ForP2 + "_";
+      totalSet++;
       if (shouldLog(5)) {
         console.log(`  -> Set p2[${resultIndex}] = "${result1ForP2}_"`);
+      }
+    } else {
+      if (shouldLog(5)) {
+        console.log(`  -> SKIPPED p2 (no result string)`);
       }
     }
 
@@ -948,8 +999,13 @@ export function repopulateGameResults(
           );
           if (result2ForP3) {
             p3.gameResults[resultIndex] = result2ForP3 + "_";
+            totalSet++;
             if (shouldLog(5)) {
               console.log(`  -> Set p3[${resultIndex}] = "${result2ForP3}_"`);
+            }
+          } else {
+            if (shouldLog(5)) {
+              console.log(`  -> SKIPPED p3 (no result string)`);
             }
           }
         }
@@ -971,8 +1027,13 @@ export function repopulateGameResults(
           );
           if (result2ForP4) {
             p4.gameResults[resultIndex] = result2ForP4 + "_";
+            totalSet++;
             if (shouldLog(5)) {
               console.log(`  -> Set p4[${resultIndex}] = "${result2ForP4}_"`);
+            }
+          } else {
+            if (shouldLog(5)) {
+              console.log(`  -> SKIPPED p4 (no result string)`);
             }
           }
         }
@@ -986,17 +1047,39 @@ export function repopulateGameResults(
   if (shouldLog(5)) {
     console.log("\n=== REPOPULATION SUMMARY ===");
     let totalResults = 0;
-    for (const p of playersCopy) {
-      const filled = p.gameResults.filter((r) => r !== null && r !== "");
-      if (filled.length > 0) {
+
+    console.log(`Total entries SET during loop: ${totalSet}`);
+
+    // Debug: Check first few players' arrays
+    for (let i = 0; i < Math.min(3, playersCopy.length); i++) {
+      const p = playersCopy[i];
+      if (p) {
         console.log(
-          `Player ${p.rank} (${p.firstName} ${p.lastName}): ${filled.length} results`,
+          `\nPlayer ${i + 1} (${p.firstName} ${p.lastName}) gameResults:`,
+        );
+        const filled = p.gameResults.filter((r) => r !== null && r !== "");
+        console.log(`  Total slots: ${p.gameResults.length}`);
+        console.log(`  Filled (${filled.length}):`, filled);
+        console.log(
+          `  Empty/null slots:`,
+          p.gameResults.filter((r) => r === null || r === ""),
         );
         totalResults += filled.length;
       }
     }
-    console.log(`Total player result entries: ${totalResults}`);
-    console.log("Expected: 2 entries per match (one for each participant)");
+
+    for (const p of playersCopy) {
+      const filled = p.gameResults.filter((r) => r !== null && r !== "");
+      if (filled.length > 0) {
+        console.log(
+          `\nPlayer ${p.rank} (${p.firstName} ${p.lastName}): ${filled.length} results`,
+        );
+        totalResults += filled.length;
+      }
+    }
+    console.log(`\nTotal player result entries: ${totalResults}`);
+    console.log(`Expected: ${matches.length * 2} (2 per match)`);
+    console.log(`Difference: ${totalSet - totalResults}`);
     console.log("============================\n");
   }
 

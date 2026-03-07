@@ -569,6 +569,10 @@ async function runTest(config, rebuildApp = false, logFile = null) {
       }
     }
 
+    // Log full path to expected file for debugging
+    const expectedFullPath = resolve(config.expectedOutputFile);
+    logLine(`-- Expected file: ${expectedFullPath}`);
+
     logLine("\n-- Comparing output...");
     const expectedContent = await fs.readFile(
       config.expectedOutputFile,
