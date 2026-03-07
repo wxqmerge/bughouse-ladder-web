@@ -49,7 +49,7 @@ FUNCTION processGameResults(players, numRounds):
 
             IF result is empty: continue
 
-            # Parse game string like "23:29LW"
+            # Parse game string like "23:29LW1:2"
             hashValue = string2long(result, parsedPlayers, parsedScores)  # [hashUtils.ts:380]
 
             IF hashValue < 0:  # Parse error
