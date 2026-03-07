@@ -17,6 +17,12 @@
       "correctionValue": "5W3"
     },
     {
+      "type": "submitCorrection"
+    },
+    {
+      "type": "submitCorrection"
+    },
+    {
       "type": "clearCell"
     },
     {

@@ -8,6 +8,16 @@
     },
     {
       "type": "clearAllData"
+    },
+    {
+      "type": "recalculateRatings"
+    },
+    {
+      "type": "fillCorrection",
+      "correctionValue": "5W3"
+    },
+    {
+      "type": "submitCorrection"
     }
   ],
   "clickExportButton": true

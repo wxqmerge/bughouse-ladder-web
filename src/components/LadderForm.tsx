@@ -569,10 +569,15 @@ export default function LadderForm({
       }
     }
 
-    // Remove this error from the walkthrough errors list
+    // Remove this error from the walkthrough errors list (match both playerRank and resultIndex)
+    const currentPlayerRank = entryCell?.playerRank ?? -1;
     const currentResultIndex = entryCell?.round ?? -1;
     const newWalkthroughErrors = walkthroughErrors.filter(
-      (error) => error.resultIndex !== currentResultIndex,
+      (error) =>
+        !(
+          error.playerRank === currentPlayerRank &&
+          error.resultIndex === currentResultIndex
+        ),
     );
 
     setPlayers(updatedPlayers);
@@ -583,9 +588,16 @@ export default function LadderForm({
     // After correction: move to next error or complete if recalculation mode
     if (isRecalculating) {
       if (newWalkthroughErrors.length > 0) {
-        const nextError = newWalkthroughErrors[walkthroughIndex];
+        // Find the correct index after filtering - adjust for removed error
+        const currentIndex = walkthroughIndex;
+        const adjustedIndex = Math.min(
+          currentIndex,
+          newWalkthroughErrors.length - 1,
+        );
+        const nextError = newWalkthroughErrors[adjustedIndex];
         if (nextError) {
-          setWalkthroughIndex(walkthroughIndex);
+          setWalkthroughIndex(adjustedIndex);
+          setCurrentError(nextError);
           setEntryCell({
             playerRank: nextError.playerRank,
             round: nextError.resultIndex,
@@ -1559,7 +1571,11 @@ export default function LadderForm({
                 ? walkthroughErrors[
                     walkthroughIndex
                   ].originalString?.toUpperCase()
-                : undefined
+                : entryCell
+                  ? players[entryCell.playerRank - 1]?.gameResults?.[
+                      entryCell.round
+                    ]?.toUpperCase() || ""
+                  : undefined
           }
           totalRounds={
             isWalkthrough

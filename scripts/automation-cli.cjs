@@ -283,7 +283,7 @@ async function runTest(config, rebuildApp = false, logFile = null) {
           logLine(`-- Filling correction: "${action.correctionValue}"`);
           await sleep(1500);
 
-          // Fill the input box
+          // Fill the input box only
           const filled = await page.evaluate(
             async ({ value }) => {
               const inputField = document.getElementById("correctedResult");
@@ -299,6 +299,11 @@ async function runTest(config, rebuildApp = false, logFile = null) {
 
           if (filled) logLine(`-- Text entered: ${action.correctionValue}`);
           await sleep(1000);
+        }
+
+        if (action.type === "submitCorrection") {
+          logLine("-- Submitting correction...");
+          await sleep(1500);
 
           // Click Submit Correction button
           const submitButton = await page.$(
