@@ -18,6 +18,9 @@
     },
     {
       "type": "submitCorrection"
+    },
+    {
+      "type": "cancelDialog"
     }
   ],
   "clickExportButton": true
