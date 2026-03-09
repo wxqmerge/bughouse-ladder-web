@@ -5,6 +5,9 @@
   "actions": [
     {
       "type": "recalculateRatings"
+    },
+   {
+      "type": "recalculateRatings"
     }
    ],
   "clickExportButton": true
