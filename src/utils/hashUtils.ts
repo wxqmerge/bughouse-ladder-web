@@ -923,6 +923,16 @@ export function repopulateGameResults(
   let resultIndex = 0;
   let totalSet = 0;
 
+  // Helper function to find the lowest empty round for a player
+  const findLowestEmptyRound = (player: PlayerData): number => {
+    for (let r = 0; r < numRounds; r++) {
+      if (player.gameResults[r] === null) {
+        return r;
+      }
+    }
+    return -1;
+  };
+
   if (shouldLog(5)) {
     console.log(`\n=== START REPOPULATION ===`);
     console.log(`Total matches to process: ${matches.length}`);
@@ -953,12 +963,19 @@ export function repopulateGameResults(
       );
     }
 
-    // Set result for player 1
+    // Set result for player 1 in their lowest empty round
     if (result1ForP1) {
-      p1.gameResults[resultIndex] = result1ForP1 + "_";
-      totalSet++;
-      if (shouldLog(5)) {
-        console.log(`  -> Set p1[${resultIndex}] = "${result1ForP1}_"`);
+      const p1Round = findLowestEmptyRound(p1);
+      if (p1Round >= 0) {
+        p1.gameResults[p1Round] = result1ForP1 + "_";
+        totalSet++;
+        if (shouldLog(5)) {
+          console.log(`  -> Set p1[${p1Round}] = "${result1ForP1}_"`);
+        }
+      } else {
+        if (shouldLog(5)) {
+          console.log(`  -> SKIPPED p1 (no empty rounds available)`);
+        }
       }
     } else {
       if (shouldLog(5)) {
@@ -966,12 +983,19 @@ export function repopulateGameResults(
       }
     }
 
-    // Set result for player 2
+    // Set result for player 2 in their lowest empty round
     if (result1ForP2) {
-      p2.gameResults[resultIndex] = result1ForP2 + "_";
-      totalSet++;
-      if (shouldLog(5)) {
-        console.log(`  -> Set p2[${resultIndex}] = "${result1ForP2}_"`);
+      const p2Round = findLowestEmptyRound(p2);
+      if (p2Round >= 0) {
+        p2.gameResults[p2Round] = result1ForP2 + "_";
+        totalSet++;
+        if (shouldLog(5)) {
+          console.log(`  -> Set p2[${p2Round}] = "${result1ForP2}_"`);
+        }
+      } else {
+        if (shouldLog(5)) {
+          console.log(`  -> SKIPPED p2 (no empty rounds available)`);
+        }
       }
     } else {
       if (shouldLog(5)) {
@@ -998,10 +1022,17 @@ export function repopulateGameResults(
             1,
           );
           if (result2ForP3) {
-            p3.gameResults[resultIndex] = result2ForP3 + "_";
-            totalSet++;
-            if (shouldLog(5)) {
-              console.log(`  -> Set p3[${resultIndex}] = "${result2ForP3}_"`);
+            const p3Round = findLowestEmptyRound(p3);
+            if (p3Round >= 0) {
+              p3.gameResults[p3Round] = result2ForP3 + "_";
+              totalSet++;
+              if (shouldLog(5)) {
+                console.log(`  -> Set p3[${p3Round}] = "${result2ForP3}_"`);
+              }
+            } else {
+              if (shouldLog(5)) {
+                console.log(`  -> SKIPPED p3 (no empty rounds available)`);
+              }
             }
           } else {
             if (shouldLog(5)) {
@@ -1026,10 +1057,17 @@ export function repopulateGameResults(
             1,
           );
           if (result2ForP4) {
-            p4.gameResults[resultIndex] = result2ForP4 + "_";
-            totalSet++;
-            if (shouldLog(5)) {
-              console.log(`  -> Set p4[${resultIndex}] = "${result2ForP4}_"`);
+            const p4Round = findLowestEmptyRound(p4);
+            if (p4Round >= 0) {
+              p4.gameResults[p4Round] = result2ForP4 + "_";
+              totalSet++;
+              if (shouldLog(5)) {
+                console.log(`  -> Set p4[${p4Round}] = "${result2ForP4}_"`);
+              }
+            } else {
+              if (shouldLog(5)) {
+                console.log(`  -> SKIPPED p4 (no empty rounds available)`);
+              }
             }
           } else {
             if (shouldLog(5)) {
