@@ -746,8 +746,11 @@ export function processGameResults(
 
   let errorCount = 0;
 
+  // Global deduplication across all rounds to prevent same match appearing multiple times
+  const processedMatches = new Set<string>();
+
   for (let round = 0; round < numRounds; round++) {
-    const processedPairs = new Set<string>(); // Use string keys for normalized deduplication
+    const processedPairs = new Set<string>(); // Use string keys for normalized deduplication within round
 
     for (let i = 0; i < playersList.length; i++) {
       const player = playersList[i];
@@ -928,6 +931,17 @@ export function processGameResults(
       const _matchKey = `${hashValue}_${round}`;
       dataHash(_matchKey, result, 0);
 
+      // Check if this match is already in results (global deduplication)
+      if (processedMatches.has(normKey)) {
+        if (shouldLog(5)) {
+          console.log(
+            `[SKIP DUPLICATE MATCH] Match "${normKey}" already in results array (from previous round)`,
+          );
+        }
+        continue;
+      }
+      processedMatches.add(normKey);
+
       // DEBUG: Log what we're storing
       if (shouldLog(10)) {
         const is4Player = parsedPlayersList[2] > 0 && parsedPlayersList[3] > 0;
@@ -987,9 +1001,12 @@ export function processGameResults(
     }
   }
 
-  // DEBUG: Log final match count
+  // DEBUG: Log final match count and global deduplication stats
   if (shouldLog(5)) {
     console.log(`\n[FINAL] Matches built: ${results.length}`);
+    console.log(
+      `Global duplicates filtered: ${processedMatches.size - results.length}`,
+    );
   }
 
   // Process match results and check for conflicts

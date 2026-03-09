@@ -38,143 +38,181 @@ Server started on port 5173
 -- Player count after reload: 14
 -- Clicking Recalculate Ratings...
 >>> [LOG] >>> [BUTTON PRESSED] Recalculate Ratings - 14 players
->>> [LOG] Starting rating calculation with validation
->>> [LOG] Processing 14 players
+>>> [LOG] [ADDED] Player 1 round 0: "4W5" -> normKey="4-5"
 >>> [LOG] dataHash: skey="265088_0", sval="4W5", lKeyVal=50650880, startIdx=1792
 >>> [LOG] dataHash: EMPTY slot at idx 1792, storing keyVal=50650880, value="4W5"
 >>> [LOG] Storing hashValue=265088, round=0, is4Player=false, result="4W5", player1=4, player2=5
+>>> [LOG] [ADDED] Player 2 round 0: "12:11LL10:9" -> normKey="9-10-11-12"
 >>> [LOG] dataHash: skey="405783817_0", sval="12:11LL10:9", lKeyVal=52057838170, startIdx=602
 >>> [LOG] dataHash: EMPTY slot at idx 602, storing keyVal=52057838170, value="12:11LL10:9"
 >>> [LOG] Storing hashValue=405783817, round=0, is4Player=true, result="12:11LL10:9", player1=9, player2=10
+>>> [LOG] [ADDED] Player 3 round 0: "2W3" -> normKey="2-3"
 >>> [LOG] dataHash: skey="132992_0", sval="2W3", lKeyVal=49329920, startIdx=1792
 >>> [LOG] dataHash: COLLISION at idx 1792 (keyVal=50650880 != 49329920), trying next...
 >>> [LOG] dataHash: EMPTY slot at idx 1793, storing keyVal=49329920, value="2W3"
 >>> [LOG] Storing hashValue=132992, round=0, is4Player=false, result="2W3", player1=2, player2=3
+>>> [LOG] [ADDED] Player 4 round 0: "2:3DD4:5" -> normKey="2-3-4-5"
 >>> [LOG] dataHash: skey="168984962_0", sval="2:3DD4:5", lKeyVal=49689849620, startIdx=1812
 >>> [LOG] dataHash: EMPTY slot at idx 1812, storing keyVal=49689849620, value="2:3DD4:5"
 >>> [LOG] Storing hashValue=168984962, round=0, is4Player=true, result="2:3DD4:5", player1=2, player2=3
+>>> [LOG] [ADDED] Player 5 round 0: "10W9" -> normKey="9-10"
 >>> [LOG] dataHash: skey="660352_0", sval="10W9", lKeyVal=54603520, startIdx=1792
 >>> [LOG] dataHash: COLLISION at idx 1792 (keyVal=50650880 != 54603520), trying next...
 >>> [LOG] dataHash: COLLISION at idx 1793 (keyVal=49329920 != 54603520), trying next...
 >>> [LOG] dataHash: EMPTY slot at idx 1794, storing keyVal=54603520, value="10W9"
 >>> [LOG] Storing hashValue=660352, round=0, is4Player=false, result="10W9", player1=10, player2=9
+>>> [LOG] [ADDED] Player 6 round 0: "5:6LL7:4" -> normKey="4-5-6-7"
 >>> [LOG] dataHash: skey="202883972_0", sval="5:6LL7:4", lKeyVal=50028839720, startIdx=808
 >>> [LOG] dataHash: EMPTY slot at idx 808, storing keyVal=50028839720, value="5:6LL7:4"
 >>> [LOG] Storing hashValue=202883972, round=0, is4Player=true, result="5:6LL7:4", player1=4, player2=7
+>>> [LOG] [ADDED] Player 7 round 0: "1W2" -> normKey="1-2"
 >>> [LOG] dataHash: skey="66944_0", sval="1W2", lKeyVal=5469440, startIdx=1280
 >>> [LOG] dataHash: EMPTY slot at idx 1280, storing keyVal=5469440, value="1W2"
 >>> [LOG] Storing hashValue=66944, round=0, is4Player=false, result="1W2", player1=1, player2=2
+>>> [LOG] [ADDED] Player 8 round 0: "13W12" -> normKey="12-13"
 >>> [LOG] dataHash: skey="858496_0", sval="13W12", lKeyVal=56584960, startIdx=768
 >>> [LOG] dataHash: EMPTY slot at idx 768, storing keyVal=56584960, value="13W12"
 >>> [LOG] Storing hashValue=858496, round=0, is4Player=false, result="13W12", player1=13, player2=12
+>>> [LOG] [ADDED] Player 9 round 0: "14:13DD12:11" -> normKey="11-12-13-14"
 >>> [LOG] dataHash: skey="473335307_0", sval="14:13DD12:11", lKeyVal=52733353070, startIdx=1134
 >>> [LOG] dataHash: EMPTY slot at idx 1134, storing keyVal=52733353070, value="14:13DD12:11"
 >>> [LOG] Storing hashValue=473335307, round=0, is4Player=true, result="14:13DD12:11", player1=11, player2=12
+>>> [LOG] [DUPLICATE DETECTED] Player 10 round 0: "2W3" -> normKey="2-3" (already processed)
+>>> [LOG] [ADDED] Player 11 round 0: "9:8DD7:10" -> normKey="7-8-9-10"
 >>> [LOG] dataHash: skey="304252167_0", sval="9:8DD7:10", lKeyVal=51042521670, startIdx=582
 >>> [LOG] dataHash: EMPTY slot at idx 582, storing keyVal=51042521670, value="9:8DD7:10"
 >>> [LOG] Storing hashValue=304252167, round=0, is4Player=true, result="9:8DD7:10", player1=7, player2=10
+>>> [LOG] [ADDED] Player 12 round 0: "14L13" -> normKey="13-14"
 >>> [LOG] dataHash: skey="924288_0", sval="14L13", lKeyVal=57242880, startIdx=1280
 >>> [LOG] dataHash: COLLISION at idx 1280 (keyVal=5469440 != 57242880), trying next...
 >>> [LOG] dataHash: EMPTY slot at idx 1281, storing keyVal=57242880, value="14L13"
 >>> [LOG] Storing hashValue=924288, round=0, is4Player=false, result="14L13", player1=14, player2=13
+>>> [LOG] [DUPLICATE DETECTED] Player 13 round 0: "13W12" -> normKey="12-13" (already processed)
+>>> [LOG] [ADDED] Player 14 round 0: "7:6DD8:5" -> normKey="5-6-7-8"
 >>> [LOG] dataHash: skey="236618757_0", sval="7:6DD8:5", lKeyVal=50366187570, startIdx=50
 >>> [LOG] dataHash: EMPTY slot at idx 50, storing keyVal=50366187570, value="7:6DD8:5"
 >>> [LOG] Storing hashValue=236618757, round=0, is4Player=true, result="7:6DD8:5", player1=5, player2=8
+>>> [LOG] [ADDED] Player 1 round 1: "8L11" -> normKey="8-11"
 >>> [LOG] dataHash: skey="530048_1", sval="8L11", lKeyVal=53300481, startIdx=1281
 >>> [LOG] dataHash: COLLISION at idx 1281 (keyVal=57242880 != 53300481), trying next...
 >>> [LOG] dataHash: EMPTY slot at idx 1282, storing keyVal=53300481, value="8L11"
 >>> [LOG] Storing hashValue=530048, round=1, is4Player=false, result="8L11", player1=8, player2=11
+>>> [LOG] [ADDED] Player 2 round 1: "13W1" -> normKey="1-13"
 >>> [LOG] dataHash: skey="852864_1", sval="13W1", lKeyVal=56528641, startIdx=1793
 >>> [LOG] dataHash: COLLISION at idx 1793 (keyVal=49329920 != 56528641), trying next...
 >>> [LOG] dataHash: COLLISION at idx 1794 (keyVal=54603520 != 56528641), trying next...
 >>> [LOG] dataHash: EMPTY slot at idx 1795, storing keyVal=56528641, value="13W1"
 >>> [LOG] Storing hashValue=852864, round=1, is4Player=false, result="13W1", player1=13, player2=1
+>>> [LOG] [ADDED] Player 3 round 1: "5D13" -> normKey="5-13"
 >>> [LOG] dataHash: skey="334592_1", sval="5D13", lKeyVal=51345921, startIdx=513
 >>> [LOG] dataHash: EMPTY slot at idx 513, storing keyVal=51345921, value="5D13"
 >>> [LOG] Storing hashValue=334592, round=1, is4Player=false, result="5D13", player1=5, player2=13
+>>> [LOG] [ADDED] Player 4 round 1: "10:7DD8:14" -> normKey="7-8-10-14"
 >>> [LOG] dataHash: skey="472024327_1", sval="10:7DD8:14", lKeyVal=52720243271, startIdx=583
 >>> [LOG] dataHash: EMPTY slot at idx 583, storing keyVal=52720243271, value="10:7DD8:14"
 >>> [LOG] Storing hashValue=472024327, round=1, is4Player=true, result="10:7DD8:14", player1=7, player2=10
+>>> [LOG] [ADDED] Player 5 round 1: "3:8WW14:2" -> normKey="2-3-8-14"
 >>> [LOG] dataHash: skey="269305602_1", sval="3:8WW14:2", lKeyVal=50693056021, startIdx=1557
 >>> [LOG] dataHash: EMPTY slot at idx 1557, storing keyVal=50693056021, value="3:8WW14:2"
 >>> [LOG] Storing hashValue=269305602, round=1, is4Player=true, result="3:8WW14:2", player1=2, player2=14
+>>> [LOG] [ADDED] Player 6 round 1: "11L13" -> normKey="11-13"
 >>> [LOG] dataHash: skey="727680_1", sval="11L13", lKeyVal=55276801, startIdx=1281
 >>> [LOG] dataHash: COLLISION at idx 1281 (keyVal=57242880 != 55276801), trying next...
 >>> [LOG] dataHash: COLLISION at idx 1282 (keyVal=53300481 != 55276801), trying next...
 >>> [LOG] dataHash: EMPTY slot at idx 1283, storing keyVal=55276801, value="11L13"
 >>> [LOG] Storing hashValue=727680, round=1, is4Player=false, result="11L13", player1=11, player2=13
+>>> [LOG] [ADDED] Player 7 round 1: "12W13" -> normKey="12-13"
 >>> [LOG] dataHash: skey="793472_1", sval="12W13", lKeyVal=55934721, startIdx=1793
 >>> [LOG] dataHash: COLLISION at idx 1793 (keyVal=49329920 != 55934721), trying next...
 >>> [LOG] dataHash: COLLISION at idx 1794 (keyVal=54603520 != 55934721), trying next...
 >>> [LOG] dataHash: COLLISION at idx 1795 (keyVal=56528641 != 55934721), trying next...
 >>> [LOG] dataHash: EMPTY slot at idx 1796, storing keyVal=55934721, value="12W13"
->>> [LOG] Storing hashValue=793472, round=1, is4Player=false, result="12W13", player1=12, player2=13
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "12-13" already in results array (from previous round)
+>>> [LOG] [ADDED] Player 8 round 1: "3L4" -> normKey="3-4"
 >>> [LOG] dataHash: skey="198784_1", sval="3L4", lKeyVal=49987841, startIdx=257
 >>> [LOG] dataHash: EMPTY slot at idx 257, storing keyVal=49987841, value="3L4"
 >>> [LOG] Storing hashValue=198784, round=1, is4Player=false, result="3L4", player1=3, player2=4
+>>> [LOG] [ADDED] Player 9 round 1: "7:9DW8:3" -> normKey="3-7-8-9"
 >>> [LOG] dataHash: skey="303924227_1", sval="7:9DW8:3", lKeyVal=51039242271, startIdx=31
 >>> [LOG] dataHash: EMPTY slot at idx 31, storing keyVal=51039242271, value="7:9DW8:3"
 >>> [LOG] Storing hashValue=303924227, round=1, is4Player=true, result="7:9DW8:3", player1=3, player2=8
+>>> [LOG] [ADDED] Player 10 round 1: "1:12WW8:6" -> normKey="1-6-8-12"
 >>> [LOG] dataHash: skey="270255617_1", sval="1:12WW8:6", lKeyVal=50702556171, startIdx=1035
 >>> [LOG] dataHash: EMPTY slot at idx 1035, storing keyVal=50702556171, value="1:12WW8:6"
 >>> [LOG] Storing hashValue=270255617, round=1, is4Player=true, result="1:12WW8:6", player1=1, player2=12
+>>> [LOG] [ADDED] Player 11 round 1: "4L1" -> normKey="1-4"
 >>> [LOG] dataHash: skey="262784_1", sval="4L1", lKeyVal=50627841, startIdx=1281
 >>> [LOG] dataHash: COLLISION at idx 1281 (keyVal=57242880 != 50627841), trying next...
 >>> [LOG] dataHash: COLLISION at idx 1282 (keyVal=53300481 != 50627841), trying next...
 >>> [LOG] dataHash: COLLISION at idx 1283 (keyVal=55276801 != 50627841), trying next...
 >>> [LOG] dataHash: EMPTY slot at idx 1284, storing keyVal=50627841, value="4L1"
 >>> [LOG] Storing hashValue=262784, round=1, is4Player=false, result="4L1", player1=4, player2=1
+>>> [LOG] [ADDED] Player 12 round 1: "8D1" -> normKey="1-8"
 >>> [LOG] dataHash: skey="525056_1", sval="8D1", lKeyVal=53250561, startIdx=513
 >>> [LOG] dataHash: COLLISION at idx 513 (keyVal=51345921 != 53250561), trying next...
 >>> [LOG] dataHash: EMPTY slot at idx 514, storing keyVal=53250561, value="8D1"
 >>> [LOG] Storing hashValue=525056, round=1, is4Player=false, result="8D1", player1=8, player2=1
+>>> [LOG] [ADDED] Player 13 round 1: "4:10WD2:14" -> normKey="2-4-10-14"
 >>> [LOG] dataHash: skey="336742146_1", sval="4:10WD2:14", lKeyVal=51367421461, startIdx=1557
 >>> [LOG] dataHash: COLLISION at idx 1557 (keyVal=50693056021 != 51367421461), trying next...
 >>> [LOG] dataHash: EMPTY slot at idx 1558, storing keyVal=51367421461, value="4:10WD2:14"
 >>> [LOG] Storing hashValue=336742146, round=1, is4Player=true, result="4:10WD2:14", player1=2, player2=14
+>>> [LOG] [ADDED] Player 14 round 1: "9:12WL11:10" -> normKey="9-10-11-12"
 >>> [LOG] dataHash: skey="371836425_1", sval="9:12WL11:10", lKeyVal=51718364251, startIdx=1115
 >>> [LOG] dataHash: EMPTY slot at idx 1115, storing keyVal=51718364251, value="9:12WL11:10"
->>> [LOG] Storing hashValue=371836425, round=1, is4Player=true, result="9:12WL11:10", player1=9, player2=12
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "9-10-11-12" already in results array (from previous round)
+>>> [LOG] [ADDED] Player 2 round 2: "5:3DD2:8" -> normKey="2-3-5-8"
 >>> [LOG] dataHash: skey="168723458_2", sval="5:3DD2:8", lKeyVal=49687234582, startIdx=22
 >>> [LOG] dataHash: EMPTY slot at idx 22, storing keyVal=49687234582, value="5:3DD2:8"
 >>> [LOG] Storing hashValue=168723458, round=2, is4Player=true, result="5:3DD2:8", player1=2, player2=8
+>>> [LOG] [ADDED] Player 4 round 2: "13:6WD9:11" -> normKey="6-9-11-13"
 >>> [LOG] dataHash: skey="371639942_2", sval="13:6WD9:11", lKeyVal=51716399422, startIdx=318
 >>> [LOG] dataHash: EMPTY slot at idx 318, storing keyVal=51716399422, value="13:6WD9:11"
 >>> [LOG] Storing hashValue=371639942, round=2, is4Player=true, result="13:6WD9:11", player1=6, player2=13
+>>> [LOG] [ADDED] Player 6 round 2: "9L12" -> normKey="9-12"
 >>> [LOG] dataHash: skey="596096_2", sval="9L12", lKeyVal=53960962, startIdx=258
 >>> [LOG] dataHash: EMPTY slot at idx 258, storing keyVal=53960962, value="9L12"
 >>> [LOG] Storing hashValue=596096, round=2, is4Player=false, result="9L12", player1=9, player2=12
+>>> [LOG] [ADDED] Player 8 round 2: "2:14DW11:10" -> normKey="2-10-11-14"
 >>> [LOG] dataHash: skey="371951362_2", sval="2:14DW11:10", lKeyVal=51719513622, startIdx=1558
 >>> [LOG] dataHash: COLLISION at idx 1558 (keyVal=51367421461 != 51719513622), trying next...
 >>> [LOG] dataHash: EMPTY slot at idx 1559, storing keyVal=51719513622, value="2:14DW11:10"
 >>> [LOG] Storing hashValue=371951362, round=2, is4Player=true, result="2:14DW11:10", player1=2, player2=14
+>>> [LOG] [ADDED] Player 9 round 2: "4:6WW5:1" -> normKey="1-4-5-6"
 >>> [LOG] dataHash: skey="202457729_2", sval="4:6WW5:1", lKeyVal=50024577292, startIdx=268
 >>> [LOG] dataHash: EMPTY slot at idx 268, storing keyVal=50024577292, value="4:6WW5:1"
 >>> [LOG] Storing hashValue=202457729, round=2, is4Player=true, result="4:6WW5:1", player1=1, player2=5
+>>> [LOG] [ADDED] Player 11 round 2: "2:3WD11:14" -> normKey="2-3-11-14"
 >>> [LOG] dataHash: skey="472826242_2", sval="2:3WD11:14", lKeyVal=52728262422, startIdx=1814
 >>> [LOG] dataHash: EMPTY slot at idx 1814, storing keyVal=52728262422, value="2:3WD11:14"
 >>> [LOG] Storing hashValue=472826242, round=2, is4Player=true, result="2:3WD11:14", player1=2, player2=3
+>>> [LOG] [ADDED] Player 12 round 2: "5W10" -> normKey="5-10"
 >>> [LOG] dataHash: skey="333184_2", sval="5W10", lKeyVal=51331842, startIdx=770
 >>> [LOG] dataHash: EMPTY slot at idx 770, storing keyVal=51331842, value="5W10"
 >>> [LOG] Storing hashValue=333184, round=2, is4Player=false, result="5W10", player1=5, player2=10
+>>> [LOG] [ADDED] Player 13 round 2: "11:6LW8:1" -> normKey="1-6-8-11"
 >>> [LOG] dataHash: skey="370787329_2", sval="11:6LW8:1", lKeyVal=51707873292, startIdx=12
 >>> [LOG] dataHash: EMPTY slot at idx 12, storing keyVal=51707873292, value="11:6LW8:1"
 >>> [LOG] Storing hashValue=370787329, round=2, is4Player=true, result="11:6LW8:1", player1=1, player2=8
+>>> [LOG] [ADDED] Player 14 round 2: "13:14DL3:1" -> normKey="1-3-13-14"
 >>> [LOG] dataHash: skey="473399681_2", sval="13:14DL3:1", lKeyVal=52733996812, startIdx=1804
 >>> [LOG] dataHash: EMPTY slot at idx 1804, storing keyVal=52733996812, value="13:14DL3:1"
 >>> [LOG] Storing hashValue=473399681, round=2, is4Player=true, result="13:14DL3:1", player1=1, player2=3
+>>> [LOG] [ADDED] Player 2 round 3: "6:7LL14:4" -> normKey="4-6-7-14"
 >>> [LOG] dataHash: skey="236701444_3", sval="6:7LL14:4", lKeyVal=50367014443, startIdx=1579
 >>> [LOG] dataHash: EMPTY slot at idx 1579, storing keyVal=50367014443, value="6:7LL14:4"
 >>> [LOG] Storing hashValue=236701444, round=3, is4Player=true, result="6:7LL14:4", player1=4, player2=14
 >>> [LOG] PARSE FAILED [4-player]: "12:1LD1:1" -> duplicate players
+>>> [LOG] [ADDED] Player 6 round 3: "3D1" -> normKey="1-3"
 >>> [LOG] dataHash: skey="197376_3", sval="3D1", lKeyVal=49973763, startIdx=515
 >>> [LOG] dataHash: EMPTY slot at idx 515, storing keyVal=49973763, value="3D1"
 >>> [LOG] Storing hashValue=197376, round=3, is4Player=false, result="3D1", player1=3, player2=1
 >>> [LOG] PARSE FAILED [4-player]: "2:10DD1:1" -> duplicate players
+>>> [LOG] [ADDED] Player 11 round 3: "12D13" -> normKey="12-13"
 >>> [LOG] dataHash: skey="793344_3", sval="12D13", lKeyVal=55933443, startIdx=515
 >>> [LOG] dataHash: COLLISION at idx 515 (keyVal=49973763 != 55933443), trying next...
 >>> [LOG] dataHash: EMPTY slot at idx 516, storing keyVal=55933443, value="12D13"
->>> [LOG] Storing hashValue=793344, round=3, is4Player=false, result="12D13", player1=12, player2=13
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "12-13" already in results array (from previous round)
 >>> [LOG] PARSE FAILED [4-player]: "2:4WD1:1" -> duplicate players
 >>> [LOG] PARSE FAILED [2-player]: "1W1" -> duplicate players (self-play)
 >>> [LOG] PARSE FAILED [2-player]: "1W1" -> duplicate players (self-play)
@@ -221,287 +259,201 @@ Server started on port 5173
 >>> [LOG] Total hash entries stored: 38
 >>> [LOG] Hash table results: 11:6LW8:1, 5:3DD2:8, 7:9DW8:3, 7:6DD8:5, 3L4, 9L12, 4:6WW5:1, 13:6WD9:11, 5D13, 8D1, 3D1, 12D13, 9:8DD7:10, 10:7DD8:14, 12:11LL10:9, 13W12, 5W10, 5:6LL7:4, 1:12WW8:6, 9:12WL11:10, 14:13DD12:11, 1W2, 14L13, 8L11, 11L13, 4L1, 3:8WW14:2, 4:10WD2:14, 2:14DW11:10, 6:7LL14:4, 4W5, 2W3, 10W9, 13W1, 12W13, 13:14DL3:1, 2:3DD4:5, 2:3WD11:14
 >>> [LOG] 
-Total matches: 38
->>> [LOG] 2-player matches: 18
->>> [LOG] 4-player matches: 20
+[processGameResults] Total matches created: 35
+>>> [LOG] 2-player matches: 16
+>>> [LOG] 4-player matches: 19
 >>> [LOG] ========================
 
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=2, p2=3, p3=0, p4=0, result="2W3"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=2, p2=3, p3=4, p4=5, result="2:3DD4:5"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=2, p2=3, p3=11, p4=14, result="2:3WD11:14"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=7, p2=10, p3=8, p4=9, result="9:8DD7:10"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=7, p2=10, p3=8, p4=14, result="10:7DD8:14"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=2, p2=14, p3=3, p4=8, result="3:8WW14:2"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=2, p2=14, p3=4, p4=10, result="4:10WD2:14"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=2, p2=14, p3=10, p4=11, result="2:14DW11:10"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=12, p2=13, p3=0, p4=0, result="12W13"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=12, p2=13, p3=0, p4=0, result="12D13"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=9, p2=12, p3=10, p4=11, result="9:12WL11:10"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=9, p2=12, p3=0, p4=0, result="9L12"
+>>> [LOG] 
+[FINAL] Matches built: 35
+>>> [LOG] Global duplicates filtered: 0
+>>> [LOG] ERROR [conflict]: Players disagree on result - p1=9, p2=10, p3=11, p4=12
+>>> [LOG]   Player 2: "12:11LL10:9"
+>>> [LOG]   Player 14: "9:12WL11:10"
+>>> [LOG] ERROR [conflict]: Players disagree on result - p1=13, p2=12, p3=0, p4=0
+>>> [LOG]   Player 8: "13W12"
+>>> [LOG]   Player 7: "12W13"
+>>> [LOG]   Player 11: "12D13"
 >>> [WARNING] Errors detected. Opening dialog for correction.
->>> [LOG] PARSE FAILED [4-player]: "12:1LD1:1" -> duplicate players
->>> [LOG] PARSE FAILED [4-player]: "12:1LD1:1" -> duplicate players
--- Button pressed: Recalculate Ratings
--- Filling correction: "5W3"
--- Text entered: 5W3
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
->>> [LOG] PARSE FAILED [4-player]: "2:10DD1:1" -> duplicate players
--- Button pressed: Clear Cell
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
->>> [LOG] PARSE FAILED [4-player]: "2:4WD1:1" -> duplicate players
--- Button pressed: Clear Cell
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
->>> [LOG] PARSE FAILED [2-player]: "1W1" -> duplicate players (self-play)
--- Button pressed: Clear Cell
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
->>> [LOG] PARSE FAILED [2-player]: "1W1" -> duplicate players (self-play)
--- Button pressed: Clear Cell
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
--- Button pressed: Clear Cell
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
--- Button pressed: Clear Cell
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
--- Button pressed: Clear Cell
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
--- Button pressed: Clear Cell
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
--- Button pressed: Clear Cell
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
--- Button pressed: Clear Cell
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
--- Button pressed: Clear Cell
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
--- Button pressed: Clear Cell
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
--- Button pressed: Clear Cell
--- Clearing cell...
->>> [LOG] >>> [BUTTON PRESSED] Clear Cell
+>>> [LOG] 
+=== RECALC START ===
+>>> [LOG] Matches to process: 35
+>>> [LOG] Total existing game results: 45
+>>> [LOG] After clear - verifying arrays are empty:
+>>> [LOG] Player 1: 0 results (should be 0), array length: 31
+>>> [LOG] Player 2: 0 results (should be 0), array length: 31
+>>> [LOG] Player 3: 0 results (should be 0), array length: 31
+>>> [LOG] Player 4: 0 results (should be 0), array length: 31
 >>> [LOG] 
 === START REPOPULATION ===
->>> [LOG] Total matches to process: 38
->>> [LOG] [REPOPULATE #0] Match: p1=4 (Daniel), p2=5 (Emily)
->>> [LOG]   result1ForP1="4W5", result1ForP2="5L4"
->>> [LOG]   -> Set p1[0] = "4W5_"
->>> [LOG]   -> Set p2[0] = "5L4_"
->>> [LOG] [REPOPULATE #1] Match: p1=9 (Jennifer), p2=10 (Michael)
->>> [LOG]   result1ForP1="9:10W11:12", result1ForP2="10:9L12:11"
->>> [LOG]   -> Set p1[1] = "9:10W11:12_"
->>> [LOG]   -> Set p2[1] = "10:9L12:11_"
->>> [LOG]   -> Set p3[1] = "11:12W9:10_"
->>> [LOG]   -> Set p4[1] = "12:11L10:9_"
->>> [LOG] [REPOPULATE #2] Match: p1=2 (Jane), p2=3 (James)
->>> [LOG]   result1ForP1="2W3", result1ForP2="3L2"
->>> [LOG]   -> Set p1[2] = "2W3_"
->>> [LOG]   -> Set p2[2] = "3L2_"
->>> [LOG] [REPOPULATE #3] Match: p1=2 (Jane), p2=3 (James)
->>> [LOG]   result1ForP1="2:3D4:5", result1ForP2="3:2D5:4"
->>> [LOG]   -> Set p1[3] = "2:3D4:5_"
->>> [LOG]   -> Set p2[3] = "3:2D5:4_"
->>> [LOG]   -> Set p3[3] = "4:5D2:3_"
->>> [LOG]   -> Set p4[3] = "5:4D3:2_"
->>> [LOG] [REPOPULATE #4] Match: p1=10 (Michael), p2=9 (Jennifer)
->>> [LOG]   result1ForP1="10W9", result1ForP2="9L10"
->>> [LOG]   -> Set p1[4] = "10W9_"
->>> [LOG]   -> Set p2[4] = "9L10_"
->>> [LOG] [REPOPULATE #5] Match: p1=4 (Daniel), p2=7 (John)
->>> [LOG]   result1ForP1="4:7W5:6", result1ForP2="7:4L6:5"
->>> [LOG]   -> Set p1[5] = "4:7W5:6_"
->>> [LOG]   -> Set p2[5] = "7:4L6:5_"
->>> [LOG]   -> Set p3[5] = "5:6W4:7_"
->>> [LOG]   -> Set p4[5] = "6:5L7:4_"
->>> [LOG] [REPOPULATE #6] Match: p1=1 (Sarah), p2=2 (Jane)
->>> [LOG]   result1ForP1="1W2", result1ForP2="2L1"
->>> [LOG]   -> Set p1[6] = "1W2_"
->>> [LOG]   -> Set p2[6] = "2L1_"
->>> [LOG] [REPOPULATE #7] Match: p1=13 (David), p2=12 (Anna)
->>> [LOG]   result1ForP1="13W12", result1ForP2="12L13"
->>> [LOG]   -> Set p1[7] = "13W12_"
->>> [LOG]   -> Set p2[7] = "12L13_"
->>> [LOG] [REPOPULATE #8] Match: p1=11 (Maria), p2=12 (Anna)
->>> [LOG]   result1ForP1="11:12D13:14", result1ForP2="12:11D14:13"
->>> [LOG]   -> Set p1[8] = "11:12D13:14_"
->>> [LOG]   -> Set p2[8] = "12:11D14:13_"
->>> [LOG]   -> Set p3[8] = "13:14D11:12_"
->>> [LOG]   -> Set p4[8] = "14:13D12:11_"
->>> [LOG] [REPOPULATE #9] Match: p1=7 (John), p2=10 (Michael)
->>> [LOG]   result1ForP1="7:10D8:9", result1ForP2="10:7D9:8"
->>> [LOG]   -> Set p1[9] = "7:10D8:9_"
->>> [LOG]   -> Set p2[9] = "10:7D9:8_"
->>> [LOG]   -> Set p3[9] = "8:9D7:10_"
->>> [LOG]   -> Set p4[9] = "9:8D10:7_"
->>> [LOG] [REPOPULATE #10] Match: p1=14 (Robert), p2=13 (David)
->>> [LOG]   result1ForP1="14L13", result1ForP2="13W14"
->>> [LOG]   -> Set p1[10] = "14L13_"
->>> [LOG]   -> Set p2[10] = "13W14_"
->>> [LOG] [REPOPULATE #11] Match: p1=5 (Emily), p2=8 (Lisa)
->>> [LOG]   result1ForP1="5:8D6:7", result1ForP2="8:5D7:6"
->>> [LOG]   -> Set p1[11] = "5:8D6:7_"
->>> [LOG]   -> Set p2[11] = "8:5D7:6_"
->>> [LOG]   -> Set p3[11] = "6:7D5:8_"
->>> [LOG]   -> Set p4[11] = "7:6D8:5_"
->>> [LOG] [REPOPULATE #12] Match: p1=8 (Lisa), p2=11 (Maria)
->>> [LOG]   result1ForP1="8L11", result1ForP2="11W8"
->>> [LOG]   -> Set p1[12] = "8L11_"
->>> [LOG]   -> Set p2[12] = "11W8_"
->>> [LOG] [REPOPULATE #13] Match: p1=13 (David), p2=1 (Sarah)
->>> [LOG]   result1ForP1="13W1", result1ForP2="1L13"
->>> [LOG]   -> Set p1[13] = "13W1_"
->>> [LOG]   -> Set p2[13] = "1L13_"
->>> [LOG] [REPOPULATE #14] Match: p1=5 (Emily), p2=13 (David)
->>> [LOG]   result1ForP1="5D13", result1ForP2="13D5"
->>> [LOG]   -> Set p1[14] = "5D13_"
->>> [LOG]   -> Set p2[14] = "13D5_"
->>> [LOG] [REPOPULATE #15] Match: p1=7 (John), p2=10 (Michael)
->>> [LOG]   result1ForP1="7:10D8:14", result1ForP2="10:7D14:8"
->>> [LOG]   -> Set p1[15] = "7:10D8:14_"
->>> [LOG]   -> Set p2[15] = "10:7D14:8_"
->>> [LOG]   -> Set p3[15] = "8:14D7:10_"
->>> [LOG]   -> Set p4[15] = "14:8D10:7_"
->>> [LOG] [REPOPULATE #16] Match: p1=2 (Jane), p2=14 (Robert)
->>> [LOG]   result1ForP1="2:14L3:8", result1ForP2="14:2W8:3"
->>> [LOG]   -> Set p1[16] = "2:14L3:8_"
->>> [LOG]   -> Set p2[16] = "14:2W8:3_"
->>> [LOG]   -> Set p3[16] = "3:8L2:14_"
->>> [LOG]   -> Set p4[16] = "8:3W14:2_"
->>> [LOG] [REPOPULATE #17] Match: p1=11 (Maria), p2=13 (David)
->>> [LOG]   result1ForP1="11L13", result1ForP2="13W11"
->>> [LOG]   -> Set p1[17] = "11L13_"
->>> [LOG]   -> Set p2[17] = "13W11_"
->>> [LOG] [REPOPULATE #18] Match: p1=12 (Anna), p2=13 (David)
->>> [LOG]   result1ForP1="12W13", result1ForP2="13L12"
->>> [LOG]   -> Set p1[18] = "12W13_"
->>> [LOG]   -> Set p2[18] = "13L12_"
->>> [LOG] [REPOPULATE #19] Match: p1=3 (James), p2=4 (Daniel)
->>> [LOG]   result1ForP1="3L4", result1ForP2="4W3"
->>> [LOG]   -> Set p1[19] = "3L4_"
->>> [LOG]   -> Set p2[19] = "4W3_"
->>> [LOG] [REPOPULATE #20] Match: p1=3 (James), p2=8 (Lisa)
->>> [LOG]   result1ForP1="3:8D7:9", result1ForP2="8:3D9:7"
->>> [LOG]   -> Set p1[20] = "3:8D7:9_"
->>> [LOG]   -> Set p2[20] = "8:3D9:7_"
->>> [LOG]   -> Set p3[20] = "7:9L3:8_"
->>> [LOG]   -> Set p4[20] = "9:7W8:3_"
->>> [LOG] [REPOPULATE #21] Match: p1=1 (Sarah), p2=12 (Anna)
->>> [LOG]   result1ForP1="1:12W6:8", result1ForP2="12:1L8:6"
->>> [LOG]   -> Set p1[21] = "1:12W6:8_"
->>> [LOG]   -> Set p2[21] = "12:1L8:6_"
->>> [LOG]   -> Set p3[21] = "6:8W1:12_"
->>> [LOG]   -> Set p4[21] = "8:6L12:1_"
->>> [LOG] [REPOPULATE #22] Match: p1=4 (Daniel), p2=1 (Sarah)
->>> [LOG]   result1ForP1="4L1", result1ForP2="1W4"
->>> [LOG]   -> Set p1[22] = "4L1_"
->>> [LOG]   -> Set p2[22] = "1W4_"
->>> [LOG] [REPOPULATE #23] Match: p1=8 (Lisa), p2=1 (Sarah)
->>> [LOG]   result1ForP1="8D1", result1ForP2="1D8"
->>> [LOG]   -> Set p1[23] = "8D1_"
->>> [LOG]   -> Set p2[23] = "1D8_"
->>> [LOG] [REPOPULATE #24] Match: p1=2 (Jane), p2=14 (Robert)
->>> [LOG]   result1ForP1="2:14L4:10", result1ForP2="14:2W10:4"
->>> [LOG]   -> Set p1[24] = "2:14L4:10_"
->>> [LOG]   -> Set p2[24] = "14:2W10:4_"
->>> [LOG]   -> Set p3[24] = "4:10D2:14_"
->>> [LOG]   -> Set p4[24] = "10:4D14:2_"
->>> [LOG] [REPOPULATE #25] Match: p1=9 (Jennifer), p2=12 (Anna)
->>> [LOG]   result1ForP1="9:12W10:11", result1ForP2="12:9L11:10"
->>> [LOG]   -> Set p1[25] = "9:12W10:11_"
->>> [LOG]   -> Set p2[25] = "12:9L11:10_"
->>> [LOG]   -> Set p3[25] = "10:11L9:12_"
->>> [LOG]   -> Set p4[25] = "11:10W12:9_"
->>> [LOG] [REPOPULATE #26] Match: p1=2 (Jane), p2=8 (Lisa)
->>> [LOG]   result1ForP1="2:8D3:5", result1ForP2="8:2D5:3"
->>> [LOG]   -> Set p1[26] = "2:8D3:5_"
->>> [LOG]   -> Set p2[26] = "8:2D5:3_"
->>> [LOG]   -> Set p3[26] = "3:5D2:8_"
->>> [LOG]   -> Set p4[26] = "5:3D8:2_"
->>> [LOG] [REPOPULATE #27] Match: p1=6 (Thomas), p2=13 (David)
->>> [LOG]   result1ForP1="6:13W9:11", result1ForP2="13:6L11:9"
->>> [LOG]   -> Set p1[27] = "6:13W9:11_"
->>> [LOG]   -> Set p2[27] = "13:6L11:9_"
->>> [LOG]   -> Set p3[27] = "9:11D6:13_"
->>> [LOG]   -> Set p4[27] = "11:9D13:6_"
->>> [LOG] [REPOPULATE #28] Match: p1=9 (Jennifer), p2=12 (Anna)
->>> [LOG]   result1ForP1="9L12", result1ForP2="12W9"
->>> [LOG]   -> Set p1[28] = "9L12_"
->>> [LOG]   -> Set p2[28] = "12W9_"
->>> [LOG] [REPOPULATE #29] Match: p1=2 (Jane), p2=14 (Robert)
->>> [LOG]   result1ForP1="2:14D10:11", result1ForP2="14:2D11:10"
->>> [LOG]   -> Set p1[29] = "2:14D10:11_"
->>> [LOG]   -> Set p2[29] = "14:2D11:10_"
->>> [LOG]   -> Set p3[29] = "10:11W2:14_"
->>> [LOG]   -> Set p4[29] = "11:10L14:2_"
->>> [LOG] [REPOPULATE #30] Match: p1=1 (Sarah), p2=5 (Emily)
->>> [LOG]   result1ForP1="1:5L4:6", result1ForP2="5:1W6:4"
->>> [LOG]   -> Set p1[30] = "1:5L4:6_"
->>> [LOG]   -> Set p2[30] = "5:1W6:4_"
->>> [LOG]   -> Set p3[30] = "4:6L1:5_"
->>> [LOG]   -> Set p4[30] = "6:4W5:1_"
->>> [LOG] [REPOPULATE #31] Match: p1=2 (Jane), p2=3 (James)
->>> [LOG]   result1ForP1="2:3W11:14", result1ForP2="3:2L14:11"
->>> [LOG]   -> Set p1[31] = "2:3W11:14_"
->>> [LOG]   -> Set p2[31] = "3:2L14:11_"
->>> [LOG]   -> Set p3[31] = "11:14D2:3_"
->>> [LOG]   -> Set p4[31] = "14:11D3:2_"
->>> [LOG] [REPOPULATE #32] Match: p1=5 (Emily), p2=10 (Michael)
->>> [LOG]   result1ForP1="5W10", result1ForP2="10L5"
->>> [LOG]   -> Set p1[32] = "5W10_"
->>> [LOG]   -> Set p2[32] = "10L5_"
->>> [LOG] [REPOPULATE #33] Match: p1=1 (Sarah), p2=8 (Lisa)
->>> [LOG]   result1ForP1="1:8W6:11", result1ForP2="8:1L11:6"
->>> [LOG]   -> Set p1[33] = "1:8W6:11_"
->>> [LOG]   -> Set p2[33] = "8:1L11:6_"
->>> [LOG]   -> Set p3[33] = "6:11L1:8_"
->>> [LOG]   -> Set p4[33] = "11:6W8:1_"
->>> [LOG] [REPOPULATE #34] Match: p1=1 (Sarah), p2=3 (James)
->>> [LOG]   result1ForP1="1:3D13:14", result1ForP2="3:1D14:13"
->>> [LOG]   -> Set p1[34] = "1:3D13:14_"
->>> [LOG]   -> Set p2[34] = "3:1D14:13_"
->>> [LOG]   -> Set p3[34] = "13:14W1:3_"
->>> [LOG]   -> Set p4[34] = "14:13L3:1_"
->>> [LOG] [REPOPULATE #35] Match: p1=4 (Daniel), p2=14 (Robert)
->>> [LOG]   result1ForP1="4:14W6:7", result1ForP2="14:4L7:6"
->>> [LOG]   -> Set p1[35] = "4:14W6:7_"
->>> [LOG]   -> Set p2[35] = "14:4L7:6_"
->>> [LOG]   -> Set p3[35] = "6:7W4:14_"
->>> [LOG]   -> Set p4[35] = "7:6L14:4_"
->>> [LOG] [REPOPULATE #36] Match: p1=3 (James), p2=1 (Sarah)
->>> [LOG]   result1ForP1="3D1", result1ForP2="1D3"
->>> [LOG]   -> Set p1[36] = "3D1_"
->>> [LOG]   -> Set p2[36] = "1D3_"
->>> [LOG] [REPOPULATE #37] Match: p1=12 (Anna), p2=13 (David)
->>> [LOG]   result1ForP1="12D13", result1ForP2="13D12"
->>> [LOG]   -> Set p1[37] = "12D13_"
->>> [LOG]   -> Set p2[37] = "13D12_"
+>>> [LOG] Total matches to process: 35
+>>> [LOG] Players input: 14
+>>> [LOG] Player 1: 2 existing results - 4W5, 8L11
+>>> [LOG] Player 2: 4 existing results - 12:11LL10:9, 13W1, 5:3DD2:8, 6:7LL14:4
+>>> [LOG] Player 3: 2 existing results - 2W3, 5D13
+>>> [LOG] Player 4: 4 existing results - 2:3DD4:5, 10:7DD8:14, 13:6WD9:11, 12:1LD1:1
+>>> [LOG] Total input game results: 45
+>>> [LOG] [REPOPULATE] Match: p1=4, p2=5 -> "4W5"
+>>> [LOG]   -> Set player 4[0] = "4W5_"
+>>> [LOG]   -> Set player 5[0] = "4W5_"
+>>> [LOG] [REPOPULATE] Match: p1=9, p2=10 -> "9:10WW11:12"
+>>> [LOG]   -> Set player 9[0] = "9:10WW11:12_"
+>>> [LOG]   -> Set player 10[0] = "9:10WW11:12_"
+>>> [LOG]   -> Set player 11[0] = "9:10WW11:12_"
+>>> [LOG]   -> Set player 12[0] = "9:10WW11:12_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=3 -> "2W3"
+>>> [LOG]   -> Set player 2[0] = "2W3_"
+>>> [LOG]   -> Set player 3[0] = "2W3_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=3 -> "2:3DD4:5"
+>>> [LOG]   -> Set player 2[1] = "2:3DD4:5_"
+>>> [LOG]   -> Set player 3[1] = "2:3DD4:5_"
+>>> [LOG]   -> Set player 4[1] = "2:3DD4:5_"
+>>> [LOG]   -> Set player 5[1] = "2:3DD4:5_"
+>>> [LOG] [REPOPULATE] Match: p1=10, p2=9 -> "9W10"
+>>> [LOG]   -> Set player 10[1] = "9W10_"
+>>> [LOG]   -> Set player 9[1] = "9W10_"
+>>> [LOG] [REPOPULATE] Match: p1=4, p2=7 -> "4:7WW5:6"
+>>> [LOG]   -> Set player 4[2] = "4:7WW5:6_"
+>>> [LOG]   -> Set player 7[0] = "4:7WW5:6_"
+>>> [LOG]   -> Set player 5[2] = "4:7WW5:6_"
+>>> [LOG]   -> Set player 6[0] = "4:7WW5:6_"
+>>> [LOG] [REPOPULATE] Match: p1=1, p2=2 -> "1W2"
+>>> [LOG]   -> Set player 1[0] = "1W2_"
+>>> [LOG]   -> Set player 2[2] = "1W2_"
+>>> [LOG] [REPOPULATE] Match: p1=13, p2=12 -> "12W13"
+>>> [LOG]   -> Set player 13[0] = "12W13_"
+>>> [LOG]   -> Set player 12[1] = "12W13_"
+>>> [LOG] [REPOPULATE] Match: p1=11, p2=12 -> "11:12DD13:14"
+>>> [LOG]   -> Set player 11[1] = "11:12DD13:14_"
+>>> [LOG]   -> Set player 12[2] = "11:12DD13:14_"
+>>> [LOG]   -> Set player 13[1] = "11:12DD13:14_"
+>>> [LOG]   -> Set player 14[0] = "11:12DD13:14_"
+>>> [LOG] [REPOPULATE] Match: p1=7, p2=10 -> "7:10DD8:9"
+>>> [LOG]   -> Set player 7[1] = "7:10DD8:9_"
+>>> [LOG]   -> Set player 10[2] = "7:10DD8:9_"
+>>> [LOG]   -> Set player 8[0] = "7:10DD8:9_"
+>>> [LOG]   -> Set player 9[2] = "7:10DD8:9_"
+>>> [LOG] [REPOPULATE] Match: p1=14, p2=13 -> "13L14"
+>>> [LOG]   -> Set player 14[1] = "13L14_"
+>>> [LOG]   -> Set player 13[2] = "13L14_"
+>>> [LOG] [REPOPULATE] Match: p1=5, p2=8 -> "5:8DD6:7"
+>>> [LOG]   -> Set player 5[3] = "5:8DD6:7_"
+>>> [LOG]   -> Set player 8[1] = "5:8DD6:7_"
+>>> [LOG]   -> Set player 6[1] = "5:8DD6:7_"
+>>> [LOG]   -> Set player 7[2] = "5:8DD6:7_"
+>>> [LOG] [REPOPULATE] Match: p1=8, p2=11 -> "8L11"
+>>> [LOG]   -> Set player 8[2] = "8L11_"
+>>> [LOG]   -> Set player 11[2] = "8L11_"
+>>> [LOG] [REPOPULATE] Match: p1=13, p2=1 -> "1W13"
+>>> [LOG]   -> Set player 13[3] = "1W13_"
+>>> [LOG]   -> Set player 1[1] = "1W13_"
+>>> [LOG] [REPOPULATE] Match: p1=5, p2=13 -> "5D13"
+>>> [LOG]   -> Set player 5[4] = "5D13_"
+>>> [LOG]   -> Set player 13[4] = "5D13_"
+>>> [LOG] [REPOPULATE] Match: p1=7, p2=10 -> "7:10DD8:14"
+>>> [LOG]   -> Set player 7[3] = "7:10DD8:14_"
+>>> [LOG]   -> Set player 10[3] = "7:10DD8:14_"
+>>> [LOG]   -> Set player 8[3] = "7:10DD8:14_"
+>>> [LOG]   -> Set player 14[2] = "7:10DD8:14_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=14 -> "2:14LL3:8"
+>>> [LOG]   -> Set player 2[3] = "2:14LL3:8_"
+>>> [LOG]   -> Set player 14[3] = "2:14LL3:8_"
+>>> [LOG]   -> Set player 3[2] = "2:14LL3:8_"
+>>> [LOG]   -> Set player 8[4] = "2:14LL3:8_"
+>>> [LOG] [REPOPULATE] Match: p1=11, p2=13 -> "11L13"
+>>> [LOG]   -> Set player 11[3] = "11L13_"
+>>> [LOG]   -> Set player 13[5] = "11L13_"
+>>> [LOG] [REPOPULATE] Match: p1=3, p2=4 -> "3L4"
+>>> [LOG]   -> Set player 3[3] = "3L4_"
+>>> [LOG]   -> Set player 4[3] = "3L4_"
+>>> [LOG] [REPOPULATE] Match: p1=3, p2=8 -> "3:8DL7:9"
+>>> [LOG]   -> Set player 3[4] = "3:8DL7:9_"
+>>> [LOG]   -> Set player 8[5] = "3:8DL7:9_"
+>>> [LOG]   -> Set player 7[4] = "3:8DL7:9_"
+>>> [LOG]   -> Set player 9[3] = "3:8DL7:9_"
+>>> [LOG] [REPOPULATE] Match: p1=1, p2=12 -> "1:12WW6:8"
+>>> [LOG]   -> Set player 1[2] = "1:12WW6:8_"
+>>> [LOG]   -> Set player 12[3] = "1:12WW6:8_"
+>>> [LOG]   -> Set player 6[2] = "1:12WW6:8_"
+>>> [LOG]   -> Set player 8[6] = "1:12WW6:8_"
+>>> [LOG] [REPOPULATE] Match: p1=4, p2=1 -> "1L4"
+>>> [LOG]   -> Set player 4[4] = "1L4_"
+>>> [LOG]   -> Set player 1[3] = "1L4_"
+>>> [LOG] [REPOPULATE] Match: p1=8, p2=1 -> "1D8"
+>>> [LOG]   -> Set player 8[7] = "1D8_"
+>>> [LOG]   -> Set player 1[4] = "1D8_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=14 -> "2:14LD4:10"
+>>> [LOG]   -> Set player 2[4] = "2:14LD4:10_"
+>>> [LOG]   -> Set player 14[4] = "2:14LD4:10_"
+>>> [LOG]   -> Set player 4[5] = "2:14LD4:10_"
+>>> [LOG]   -> Set player 10[4] = "2:14LD4:10_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=8 -> "2:8DD3:5"
+>>> [LOG]   -> Set player 2[5] = "2:8DD3:5_"
+>>> [LOG]   -> Set player 8[8] = "2:8DD3:5_"
+>>> [LOG]   -> Set player 3[5] = "2:8DD3:5_"
+>>> [LOG]   -> Set player 5[5] = "2:8DD3:5_"
+>>> [LOG] [REPOPULATE] Match: p1=6, p2=13 -> "6:13WD9:11"
+>>> [LOG]   -> Set player 6[3] = "6:13WD9:11_"
+>>> [LOG]   -> Set player 13[6] = "6:13WD9:11_"
+>>> [LOG]   -> Set player 9[4] = "6:13WD9:11_"
+>>> [LOG]   -> Set player 11[4] = "6:13WD9:11_"
+>>> [LOG] [REPOPULATE] Match: p1=9, p2=12 -> "9L12"
+>>> [LOG]   -> Set player 9[5] = "9L12_"
+>>> [LOG]   -> Set player 12[4] = "9L12_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=14 -> "2:14DW10:11"
+>>> [LOG]   -> Set player 2[6] = "2:14DW10:11_"
+>>> [LOG]   -> Set player 14[5] = "2:14DW10:11_"
+>>> [LOG]   -> Set player 10[5] = "2:14DW10:11_"
+>>> [LOG]   -> Set player 11[5] = "2:14DW10:11_"
+>>> [LOG] [REPOPULATE] Match: p1=1, p2=5 -> "1:5LL4:6"
+>>> [LOG]   -> Set player 1[5] = "1:5LL4:6_"
+>>> [LOG]   -> Set player 5[6] = "1:5LL4:6_"
+>>> [LOG]   -> Set player 4[6] = "1:5LL4:6_"
+>>> [LOG]   -> Set player 6[4] = "1:5LL4:6_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=3 -> "2:3WD11:14"
+>>> [LOG]   -> Set player 2[7] = "2:3WD11:14_"
+>>> [LOG]   -> Set player 3[6] = "2:3WD11:14_"
+>>> [LOG]   -> Set player 11[6] = "2:3WD11:14_"
+>>> [LOG]   -> Set player 14[6] = "2:3WD11:14_"
+>>> [LOG] [REPOPULATE] Match: p1=5, p2=10 -> "5W10"
+>>> [LOG]   -> Set player 5[7] = "5W10_"
+>>> [LOG]   -> Set player 10[6] = "5W10_"
+>>> [LOG] [REPOPULATE] Match: p1=1, p2=8 -> "1:8WL6:11"
+>>> [LOG]   -> Set player 1[6] = "1:8WL6:11_"
+>>> [LOG]   -> Set player 8[9] = "1:8WL6:11_"
+>>> [LOG]   -> Set player 6[5] = "1:8WL6:11_"
+>>> [LOG]   -> Set player 11[7] = "1:8WL6:11_"
+>>> [LOG] [REPOPULATE] Match: p1=1, p2=3 -> "1:3DW13:14"
+>>> [LOG]   -> Set player 1[7] = "1:3DW13:14_"
+>>> [LOG]   -> Set player 3[7] = "1:3DW13:14_"
+>>> [LOG]   -> Set player 13[7] = "1:3DW13:14_"
+>>> [LOG]   -> Set player 14[7] = "1:3DW13:14_"
+>>> [LOG] [REPOPULATE] Match: p1=4, p2=14 -> "4:14WW6:7"
+>>> [LOG]   -> Set player 4[7] = "4:14WW6:7_"
+>>> [LOG]   -> Set player 14[8] = "4:14WW6:7_"
+>>> [LOG]   -> Set player 6[6] = "4:14WW6:7_"
+>>> [LOG]   -> Set player 7[5] = "4:14WW6:7_"
+>>> [LOG] [REPOPULATE] Match: p1=3, p2=1 -> "1D3"
+>>> [LOG]   -> Set player 3[8] = "1D3_"
+>>> [LOG]   -> Set player 1[8] = "1D3_"
 >>> [LOG] 
 === REPOPULATION SUMMARY ===
->>> [LOG] Total entries SET during loop: 116
+>>> [LOG] Total entries SET during loop: 108
 >>> [LOG] 
 Player 1 (Sarah Garcia) gameResults:
->>> [LOG]   Total slots: 37
->>> [LOG]   Filled (9): [1W2_, 1L13_, 1:12W6:8_, 1W4_, 1D8_, 1:5L4:6_, 1:8W6:11_, 1:3D13:14_, 1D3_]
->>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (9): [1W2_, 1W13_, 1:12WW6:8_, 1L4_, 1D8_, 1:5LL4:6_, 1:8WL6:11_, 1:3DW13:14_, 1D3_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
 >>> [LOG] 
 Player 2 (Jane Smith) gameResults:
->>> [LOG]   Total slots: 32
->>> [LOG]   Filled (8): [2W3_, 2:3D4:5_, 2L1_, 2:14L3:8_, 2:14L4:10_, 2:8D3:5_, 2:14D10:11_, 2:3W11:14_]
->>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (8): [2W3_, 2:3DD4:5_, 1W2_, 2:14LL3:8_, 2:14LD4:10_, 2:8DD3:5_, 2:14DW10:11_, 2:3WD11:14_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
 >>> [LOG] 
 Player 3 (James Moore) gameResults:
->>> [LOG]   Total slots: 37
->>> [LOG]   Filled (9): [3L2_, 3:2D5:4_, 3:8L2:14_, 3L4_, 3:8D7:9_, 3:5D2:8_, 3:2L14:11_, 3:1D14:13_, 3D1_]
->>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (9): [2W3_, 2:3DD4:5_, 2:14LL3:8_, 3L4_, 3:8DL7:9_, 2:8DD3:5_, 2:3WD11:14_, 1:3DW13:14_, 1D3_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
 >>> [LOG] 
 Player 1 (Sarah Garcia): 9 results
 >>> [LOG] 
@@ -519,37 +471,101 @@ Player 7 (John Johnson): 6 results
 >>> [LOG] 
 Player 8 (Lisa Wilson): 10 results
 >>> [LOG] 
-Player 9 (Jennifer White): 7 results
+Player 9 (Jennifer White): 6 results
 >>> [LOG] 
-Player 10 (Michael Davis): 8 results
+Player 10 (Michael Davis): 7 results
 >>> [LOG] 
-Player 11 (Maria Thomas): 9 results
+Player 11 (Maria Thomas): 8 results
 >>> [LOG] 
-Player 12 (Anna Taylor): 8 results
+Player 12 (Anna Taylor): 5 results
 >>> [LOG] 
-Player 13 (David Miller): 10 results
+Player 13 (David Miller): 8 results
 >>> [LOG] 
 Player 14 (Robert Williams): 9 results
 >>> [LOG] 
-Total player result entries: 142
->>> [LOG] Expected: 76 (2 per match)
+Total player result entries: 134
+>>> [LOG] Expected: 70 (2 per match)
 >>> [LOG] Difference: -26
 >>> [LOG] ============================
 
+>>> [LOG] Total results after repopulation: 108
 >>> [LOG] Rating calculation complete
--- Button pressed: Clear Cell
+
+-- Button pressed: Recalculate Ratings
+-- Filling correction: "5W3"
+-- Clearing cell...
+-- Clearing cell...
+-- Clearing cell...
+-- Clearing cell...
+-- Clearing cell...
+-- Clearing cell...
+-- Clearing cell...
+-- Clearing cell...
+-- Clearing cell...
+-- Clearing cell...
+-- Clearing cell...
+-- Clearing cell...
+-- Clearing cell...
+-- Clearing cell...
 -- Clearing cell...
 -- Submitting correction...
 -- Button pressed: Submit Correction/Save
 -- Cancelling dialog...
 -- Clicking Export button...
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Export_Results_2026-03-09T14-00-23-757Z.tab
+>>> [LOG] Exported 14 players to Export_Results_2026-03-09T19-05-48-480Z.tab
 -- Button pressed: Export
--- Download detected: Export_Results_2026-03-09T14-00-23-757Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T14-00-23-757Z.tab
+-- Download detected: Export_Results_2026-03-09T19-05-48-480Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T19-05-48-480Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\basic_File_IO.tab
 
 -- Comparing output...
--- Test PASSED - Output matches expected file!
+-- Test FAILED - Output does not match
+
+--- Diff ---
+Line 2:
+  Expected: "	Garcia	Sarah	1351	1	1344	6th	2	2										1W2_							1L13_								1:12W6:8_	1W4_	1D8_							1:5L4:6_			1:8W6:11_	1:3D13:14_		1D3_"
+  Actual:   "	Garcia	Sarah	1351	1	1344	6th	2	2				1W2_	1W13_	1:12WW6:8_	1L4_	1D8_	1:5LL4:6_	1:8WL6:11_	1:3DW13:14_	1D3_"
+Line 3:
+  Expected: "B	Smith	Jane	1008	2	1000	2th	4	4						2W3_	2:3D4:5_			2L1_										2:14L3:8_								2:14L4:10_		2:8D3:5_			2:14D10:11_		2:3W11:14_"
+  Actual:   "B	Smith	Jane	1008	2	1000	2th	4	4				2W3_	2:3DD4:5_	1W2_	2:14LL3:8_	2:14LD4:10_	2:8DD3:5_	2:14DW10:11_	2:3WD11:14_"
+Line 4:
+  Expected: "C	Moore	James	1061	3	1068	2th	2	2						3L2_	3:2D5:4_													3:8L2:14_			3L4_	3:8D7:9_						3:5D2:8_					3:2L14:11_			3:1D14:13_		3D1_"
+  Actual:   "C	Moore	James	1061	3	1068	2th	2	2				2W3_	2:3DD4:5_	2:14LL3:8_	3L4_	3:8DL7:9_	2:8DD3:5_	2:3WD11:14_	1:3DW13:14_	1D3_"
+Line 5:
+  Expected: "A1	Jackson	Daniel	1351	4	1334	6th	4	4				4W5_			4:5D2:3_		4:7W5:6_														4W3_			4L1_		4:10D2:14_						4:6L1:5_					4:14W6:7_"
+  Actual:   "A1	Jackson	Daniel	1351	4	1334	6th	4	4				4W5_	2:3DD4:5_	4:7WW5:6_	3L4_	1L4_	2:14LD4:10_	1:5LL4:6_	4:14WW6:7_"
+Line 6:
+  Expected: "D	Brown	Emily	1068	5	1062	4th	2	2				5L4_			5:4D3:2_		5:6W4:7_						5:8D6:7_			5D13_												5:3D8:2_				5:1W6:4_		5W10_"
+  Actual:   "D	Brown	Emily	1068	5	1062	4th	2	2				4W5_	2:3DD4:5_	4:7WW5:6_	5:8DD6:7_	5D13_	2:8DD3:5_	1:5LL4:6_	5W10_"
+Line 7:
+  Expected: "E	Anderson	Thomas	1228	6	1215	4th	4	4									6:5L7:4_						6:7D5:8_										6:8W1:12_						6:13W9:11_			6:4W5:1_			6:11L1:8_		6:7W4:14_"
+  Actual:   "E	Anderson	Thomas	1228	6	1215	4th	4	4				4:7WW5:6_	5:8DD6:7_	1:12WW6:8_	6:13WD9:11_	1:5LL4:6_	1:8WL6:11_	4:14WW6:7_"
+Line 8:
+  Expected: "A1	Johnson	John	1000	7	1005	1th	2	2									7:4L6:5_				7:10D8:9_		7:6D8:5_				7:10D8:14_					7:9L3:8_															7:6L14:4_"
+  Actual:   "A1	Johnson	John	1000	7	1005	1th	2	2				4:7WW5:6_	7:10DD8:9_	5:8DD6:7_	7:10DD8:14_	3:8DL7:9_	4:14WW6:7_"
+Line 9:
+  Expected: "B	Wilson	Lisa	1031	8	1048	1th	3	3													8:9D7:10_		8:5D7:6_	8L11_			8:14D7:10_	8:3W14:2_				8:3D9:7_	8:6L12:1_		8D1_			8:2D5:3_							8:1L11:6_"
+  Actual:   "B	Wilson	Lisa	1031	8	1048	1th	3	3				7:10DD8:9_	5:8DD6:7_	8L11_	7:10DD8:14_	2:14LL3:8_	3:8DL7:9_	1:12WW6:8_	1D8_	2:8DD3:5_	1:8WL6:11_"
+Line 10:
+  Expected: "B	White	Jennifer	1133	9	1145	7th	5	5					9:10W11:12_			9L10_					9:8D10:7_											9:7W8:3_					9:12W10:11_		9:11D6:13_	9L12_"
+  Actual:   "B	White	Jennifer	1133	9	1145	7th	5	5				9:10WW11:12_	9W10_	7:10DD8:9_	3:8DL7:9_	6:13WD9:11_	9L12_"
+Line 11:
+  Expected: "E	Davis	Michael	1207	10	1213	5th	2	2					10:9L12:11_			10W9_					10:7D9:8_						10:7D14:8_									10:4D14:2_	10:11L9:12_				10:11W2:14_			10L5_"
+  Actual:   "E	Davis	Michael	1207	10	1213	5th	2	2				9:10WW11:12_	9W10_	7:10DD8:9_	7:10DD8:14_	2:14LD4:10_	2:14DW10:11_	5W10_"
+Line 12:
+  Expected: "	Thomas	Maria	1375	11	1379	5th	4	4					11:12W9:10_							11:12D13:14_				11W8_					11L13_								11:10W12:9_		11:9D13:6_		11:10L14:2_		11:14D2:3_		11:6W8:1_"
+  Actual:   "	Thomas	Maria	1375	11	1379	5th	4	4				9:10WW11:12_	11:12DD13:14_	8L11_	11L13_	6:13WD9:11_	2:14DW10:11_	2:3WD11:14_	1:8WL6:11_"
+Line 13:
+  Expected: "D	Taylor	Anna	1203	12	1201	3th	3	3					12:11L10:9_						12L13_	12:11D14:13_										12W13_			12:1L8:6_				12:9L11:10_			12W9_									12D13_"
+  Actual:   "D	Taylor	Anna	1203	12	1191	3th	3	3				9:10WW11:12_	12W13_	11:12DD13:14_	1:12WW6:8_	9L12_"
+Line 14:
+  Expected: "A1	Miller	David	1131	13	1133	7th	3	3											13W12_	13:14D11:12_		13W14_			13W1_	13D5_			13W11_	13L12_									13:6L11:9_							13:14W1:3_			13D12_"
+  Actual:   "A1	Miller	David	1131	13	1144	7th	3	3				12W13_	11:12DD13:14_	13L14_	1W13_	5D13_	11L13_	6:13WD9:11_	1:3DW13:14_"
+Line 15:
+  Expected: "C	Williams	Robert	1066	14	1083	3th	5	5												14:13D12:11_		14L13_					14:8D10:7_	14:2W8:3_								14:2W10:4_					14:2D11:10_		14:11D3:2_			14:13L3:1_	14:4L7:6_"
+  Actual:   "C	Williams	Robert	1066	14	1083	3th	5	5				11:12DD13:14_	13L14_	7:10DD8:14_	2:14LL3:8_	2:14LD4:10_	2:14DW10:11_	2:3WD11:14_	1:3DW13:14_	4:14WW6:7_"
+
+--- End diff ---
+

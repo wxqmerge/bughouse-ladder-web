@@ -21,7 +21,7 @@ Server started on port 5173
 -- Player count after load: 26
 -- First player: Cullano Dylan
 -- Successfully loaded 26 players
--- Executing actions: recalculateRatings
+-- Executing actions: recalculateRatings, recalculateRatings
 -- Clicking Recalculate Ratings...
 >>> [LOG] >>> [BUTTON PRESSED] Recalculate Ratings - 26 players
 >>> [LOG] [ADDED] Player 7 round 0: "2L8" -> normKey="2-8"
@@ -62,6 +62,7 @@ Server started on port 5173
 
 >>> [LOG] 
 [FINAL] Matches built: 5
+>>> [LOG] Global duplicates filtered: 0
 >>> [LOG] 
 === RECALC START ===
 >>> [LOG] Matches to process: 5
@@ -149,55 +150,154 @@ Total player result entries: 18
 >>> [LOG] Rating calculation complete
 
 -- Button pressed: Recalculate Ratings
+-- Clicking Recalculate Ratings...
+>>> [LOG] >>> [BUTTON PRESSED] Recalculate Ratings - 26 players
+>>> [LOG] [ADDED] Player 8 round 0: "1:12LD3:4_" -> normKey="1-3-4-12"
+>>> [LOG] dataHash: skey="135153153_0", sval="1:12LD3:4_", lKeyVal=49351531530, startIdx=1034
+>>> [LOG] dataHash: EMPTY slot at idx 1034, storing keyVal=49351531530, value="1:12LD3:4_"
+>>> [LOG] Storing hashValue=135153153, round=0, is4Player=true, result="1:12LD3:4_", player1=1, player2=12
+>>> [LOG] [ADDED] Player 7 round 0: "2L8_" -> normKey="2-8"
+>>> [LOG] dataHash: skey="135296_0", sval="2L8_", lKeyVal=49352960, startIdx=256
+>>> [LOG] dataHash: EMPTY slot at idx 256, storing keyVal=49352960, value="2L8_"
+>>> [LOG] Storing hashValue=135296, round=0, is4Player=false, result="2L8_", player1=2, player2=8
+>>> [LOG] [DUPLICATE DETECTED] Player 22 round 0: "1:12LD3:4_" -> normKey="1-3-4-12" (already processed)
+>>> [LOG] [DUPLICATE DETECTED] Player 1 round 0: "1:12LD3:4_" -> normKey="1-3-4-12" (already processed)
+>>> [LOG] [ADDED] Player 25 round 0: "5L25_" -> normKey="5-25"
+>>> [LOG] dataHash: skey="340608_0", sval="5L25_", lKeyVal=51406080, startIdx=1280
+>>> [LOG] dataHash: EMPTY slot at idx 1280, storing keyVal=51406080, value="5L25_"
+>>> [LOG] Storing hashValue=340608, round=0, is4Player=false, result="5L25_", player1=5, player2=25
+>>> [LOG] [ADDED] Player 26 round 0: "3:4WD6:12_" -> normKey="3-4-6-12"
+>>> [LOG] dataHash: skey="404406787_0", sval="3:4WD6:12_", lKeyVal=52044067870, startIdx=1054
+>>> [LOG] dataHash: EMPTY slot at idx 1054, storing keyVal=52044067870, value="3:4WD6:12_"
+>>> [LOG] Storing hashValue=404406787, round=0, is4Player=true, result="3:4WD6:12_", player1=3, player2=4
+>>> [LOG] [DUPLICATE DETECTED] Player 3 round 0: "2L8_" -> normKey="2-8" (already processed)
+>>> [LOG] [ADDED] Player 5 round 0: "11D26_" -> normKey="11-26"
+>>> [LOG] dataHash: skey="734464_0", sval="11D26_", lKeyVal=55344640, startIdx=1536
+>>> [LOG] dataHash: EMPTY slot at idx 1536, storing keyVal=55344640, value="11D26_"
+>>> [LOG] Storing hashValue=734464, round=0, is4Player=false, result="11D26_", player1=11, player2=26
+>>> [LOG] [DUPLICATE DETECTED] Player 2 round 0: "1:12LD3:4_" -> normKey="1-3-4-12" (already processed)
+>>> [LOG] [DUPLICATE DETECTED] Player 16 round 0: "5L25_" -> normKey="5-25" (already processed)
+>>> [LOG] [DUPLICATE DETECTED] Player 18 round 0: "11D26_" -> normKey="11-26" (already processed)
+>>> [LOG] [ADDED] Player 22 round 1: "3:4WD6:12_" -> normKey="3-4-6-12"
+>>> [LOG] dataHash: skey="404406787_1", sval="3:4WD6:12_", lKeyVal=52044067871, startIdx=1055
+>>> [LOG] dataHash: EMPTY slot at idx 1055, storing keyVal=52044067871, value="3:4WD6:12_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "3-4-6-12" already in results array (from previous round)
+>>> [LOG] [DUPLICATE DETECTED] Player 1 round 1: "3:4WD6:12_" -> normKey="3-4-6-12" (already processed)
+>>> [LOG] [DUPLICATE DETECTED] Player 2 round 1: "3:4WD6:12_" -> normKey="3-4-6-12" (already processed)
+>>> [LOG] 
+=== HASH TABLE DEBUG ===
+>>> [LOG] Hash[256]: keyVal=49352960, value="2L8_"
+>>> [LOG] Hash[1034]: keyVal=49351531530, value="1:12LD3:4_"
+>>> [LOG] Hash[1054]: keyVal=52044067870, value="3:4WD6:12_"
+>>> [LOG] Hash[1055]: keyVal=52044067871, value="3:4WD6:12_"
+>>> [LOG] Hash[1280]: keyVal=51406080, value="5L25_"
+>>> [LOG] Hash[1536]: keyVal=55344640, value="11D26_"
+>>> [LOG] Total hash entries stored: 6
+>>> [LOG] Hash table results: 2L8_, 1:12LD3:4_, 3:4WD6:12_, 3:4WD6:12_, 5L25_, 11D26_
+>>> [LOG] 
+[processGameResults] Total matches created: 5
+>>> [LOG] 2-player matches: 3
+>>> [LOG] 4-player matches: 2
+>>> [LOG] ========================
+
+>>> [LOG] 
+[FINAL] Matches built: 5
+>>> [LOG] Global duplicates filtered: 0
+>>> [LOG] 
+=== RECALC START ===
+>>> [LOG] Matches to process: 5
+>>> [LOG] Total existing game results: 14
+>>> [LOG] After clear - verifying arrays are empty:
+>>> [LOG] Player 8: 0 results (should be 0), array length: 31
+>>> [LOG] Player 7: 0 results (should be 0), array length: 31
+>>> [LOG] Player 22: 0 results (should be 0), array length: 31
+>>> [LOG] Player 1: 0 results (should be 0), array length: 31
+>>> [LOG] 
+=== START REPOPULATION ===
+>>> [LOG] Total matches to process: 5
+>>> [LOG] Players input: 26
+>>> [LOG] Player 1: 2 existing results - 1:12LD3:4_, 3:4WD6:12_
+>>> [LOG] Player 3: 1 existing results - 2L8_
+>>> [LOG] Player 2: 2 existing results - 1:12LD3:4_, 3:4WD6:12_
+>>> [LOG] Player 4: 0 existing results - 
+>>> [LOG] Total input game results: 14
+>>> [LOG] [REPOPULATE] Match: p1=1, p2=12 -> "1:12LD3:4"
+>>> [LOG]   -> Set player 1[0] = "1:12LD3:4_"
+>>> [LOG]   -> Set player 12[0] = "1:12LD3:4_"
+>>> [LOG]   -> Set player 3[0] = "1:12LD3:4_"
+>>> [LOG]   -> Set player 4[0] = "1:12LD3:4_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=8 -> "2L8"
+>>> [LOG]   -> Set player 2[0] = "2L8_"
+>>> [LOG]   -> Set player 8[0] = "2L8_"
+>>> [LOG] [REPOPULATE] Match: p1=5, p2=25 -> "5L25"
+>>> [LOG]   -> Set player 5[0] = "5L25_"
+>>> [LOG]   -> Set player 25[0] = "5L25_"
+>>> [LOG] [REPOPULATE] Match: p1=3, p2=4 -> "3:4WD6:12"
+>>> [LOG]   -> Set player 3[1] = "3:4WD6:12_"
+>>> [LOG]   -> Set player 4[1] = "3:4WD6:12_"
+>>> [LOG]   -> Set player 6[0] = "3:4WD6:12_"
+>>> [LOG]   -> Set player 12[1] = "3:4WD6:12_"
+>>> [LOG] [REPOPULATE] Match: p1=11, p2=26 -> "11D26"
+>>> [LOG]   -> Set player 11[0] = "11D26_"
+>>> [LOG]   -> Set player 26[0] = "11D26_"
+>>> [LOG] 
+=== REPOPULATION SUMMARY ===
+>>> [LOG] Total entries SET during loop: 14
+>>> [LOG] 
+Player 1 (Dylan Cullano) gameResults:
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (1): [1:12LD3:4_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG] 
+Player 2 (Ryan Layman) gameResults:
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (1): [2L8_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG] 
+Player 3 (James Nuesea) gameResults:
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (2): [1:12LD3:4_, 3:4WD6:12_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG] 
+Player 8 (Dylan Cullano): 1 results
+>>> [LOG] 
+Player 7 (Ryan Layman): 1 results
+>>> [LOG] 
+Player 22 (James Nuesea): 2 results
+>>> [LOG] 
+Player 1 (Jermaine Morehedd): 2 results
+>>> [LOG] 
+Player 25 (Jan Arauz): 1 results
+>>> [LOG] 
+Player 26 (Alan Filion): 1 results
+>>> [LOG] 
+Player 3 (Jayden Ibarra): 1 results
+>>> [LOG] 
+Player 5 (Daniel Smith): 1 results
+>>> [LOG] 
+Player 2 (Kieran Williams): 2 results
+>>> [LOG] 
+Player 16 (Francisco Sr.): 1 results
+>>> [LOG] 
+Player 18 (Dave adult): 1 results
+>>> [LOG] 
+Total player result entries: 18
+>>> [LOG] Expected: 10 (2 per match)
+>>> [LOG] Difference: -4
+>>> [LOG] ============================
+
+>>> [LOG] Total results after repopulation: 14
+>>> [LOG] Rating calculation complete
+
+-- Button pressed: Recalculate Ratings
 -- Clicking Export button...
 >>> [LOG] >>> [BUTTON PRESSED] Export - 26 players
->>> [LOG] Exported 26 players to Export_Results_2026-03-09T18-26-42-779Z.tab
+>>> [LOG] Exported 26 players to Export_Results_2026-03-09T19-04-49-224Z.tab
 -- Button pressed: Export
--- Download detected: Export_Results_2026-03-09T18-26-42-779Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T18-26-42-779Z.tab
+-- Download detected: Export_Results_2026-03-09T19-04-49-224Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T19-04-49-224Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\kings_cross.tab
 
 -- Comparing output...
--- Test FAILED - Output does not match
-
---- Diff ---
-Line 2:
-  Expected: "A1	Cullano	Dylan	1279	8		8	0"
-  Actual:   "A1	Cullano	Dylan	1279	8	1282	8	0					1:12LD3:4_"
-Line 3:
-  Expected: "A1	Layman	Ryan	957	7		8	0	1				2L8"
-  Actual:   "A1	Layman	Ryan	957	7	958	8	0	1				2L8_"
-Line 4:
-  Expected: "A1	Nuesea	James	956	22		6	0	1				5L25"
-  Actual:   "A1	Nuesea	James	956	22	945	6	0	1				1:12LD3:4_	3:4WD6:12_"
-Line 5:
-  Expected: "A1	Morehedd	Jermaine	908	1		8	0	1					12:1LD3:4"
-  Actual:   "A1	Morehedd	Jermaine	908	1	919	8	0	1				1:12LD3:4_	3:4WD6:12_"
-Line 6:
-  Expected: "A	Arauz	Jan	1084	25			0"
-  Actual:   "A	Arauz	Jan	1084	25	1090		0					5L25_"
-Line 7:
-  Expected: "A	Filion	Alan	1	26		6	0						11D26"
-  Actual:   "A	Filion	Alan	1	26		6	0					3:4WD6:12_"
-Line 9:
-  Expected: "B	Ibarra	Jayden	400	3		5	0							12:6LD3:4"
-  Actual:   "B	Ibarra	Jayden	400	3	399	5	0					2L8_"
-Line 11:
-  Expected: "A	Chavez	Cali	899	10		1	0						12:1LD3:4"
-  Actual:   "A	Chavez	Cali	899	10		1	0"
-Line 12:
-  Expected: "B	Smith	Daniel	634	5		4	0"
-  Actual:   "B	Smith	Daniel	634	5	643	4	0					11D26_"
-Line 13:
-  Expected: "B	Williams	Kieran	986	2		1	0"
-  Actual:   "B	Williams	Kieran	986	2	983	1	0					1:12LD3:4_	3:4WD6:12_"
-Line 26:
-  Expected: "	Sr.	Francisco	-927	16			0"
-  Actual:   "	Sr.	Francisco	-927	16	921		0					5L25_"
-Line 27:
-  Expected: "	adult	Dave	-1245	18			0	1"
-  Actual:   "	adult	Dave	-1245	18	1236		0	1				11D26_"
-
---- End diff ---
-
+-- Test PASSED - Output matches expected file!

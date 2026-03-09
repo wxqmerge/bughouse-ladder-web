@@ -50,10 +50,10 @@ Server started on port 5173
 -- Pasted 5 of 5 results
 -- Clicking Export button...
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Export_Results_2026-03-09T13-58-27-043Z.tab
+>>> [LOG] Exported 14 players to Export_Results_2026-03-09T19-07-01-743Z.tab
 -- Button pressed: Export
--- Download detected: Export_Results_2026-03-09T13-58-27-043Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T13-58-27-043Z.tab
+-- Download detected: Export_Results_2026-03-09T19-07-01-743Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T19-07-01-743Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\paste_results.tab
 
