@@ -1187,6 +1187,7 @@ export default function LadderForm({
           onOpenSettings={() => setShowSettings?.(true)}
           isAdmin={isAdmin}
           isWide={zoomLevel === "140%"}
+          zoomLevel={zoomLevel}
           projectName={projectName}
           playerCount={players.length}
         />

@@ -511,10 +511,10 @@ Total player result entries: 134
 -- Menu opened: File
 >>> [LOG] >>> [MENU ACTION] export
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Export_Results_2026-03-09T20-22-08-612Z.tab
--- Download detected: Export_Results_2026-03-09T20-22-08-612Z.tab
+>>> [LOG] Exported 14 players to Export_Results_2026-03-09T21-20-03-612Z.tab
+-- Download detected: Export_Results_2026-03-09T21-20-03-612Z.tab
 -- Menu item selected: Export
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T20-22-08-612Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T21-20-03-612Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\basic_File_IO.tab
 

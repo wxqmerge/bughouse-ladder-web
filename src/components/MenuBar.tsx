@@ -30,6 +30,7 @@ interface MenuBarProps {
   onOpenSettings: () => void;
   isAdmin: boolean;
   isWide: boolean;
+  zoomLevel: "70%" | "100%" | "140%";
   projectName?: string;
   playerCount?: number;
 }
@@ -50,6 +51,7 @@ export default function MenuBar({
   onSetZoom,
   onOpenSettings,
   isAdmin,
+  zoomLevel,
   projectName,
   playerCount,
 }: MenuBarProps) {
@@ -212,7 +214,6 @@ export default function MenuBar({
             display: "flex",
             alignItems: "center",
             gap: "0.75rem",
-            fontSize: "0.875rem",
             color: "#374151",
             backgroundColor: "white",
           }}
@@ -271,7 +272,6 @@ export default function MenuBar({
           display: "flex",
           alignItems: "center",
           gap: "0.5rem",
-          fontSize: "0.875rem",
           borderRadius: "0.25rem",
         }}
       >
@@ -283,6 +283,19 @@ export default function MenuBar({
     </div>
   );
 
+  const getFontSize = () => {
+    switch (zoomLevel) {
+      case "70%":
+        return "0.625rem";
+      case "100%":
+        return "0.875rem";
+      case "140%":
+        return "1.25rem";
+      default:
+        return "0.875rem";
+    }
+  };
+
   return (
     <>
       <div
@@ -292,6 +305,7 @@ export default function MenuBar({
           alignItems: "center",
           backgroundColor: "#1e293b",
           borderBottom: "1px solid #334155",
+          fontSize: getFontSize(),
         }}
       >
         <div
@@ -324,7 +338,6 @@ export default function MenuBar({
               display: "flex",
               alignItems: "center",
               gap: "0.5rem",
-              fontSize: "0.875rem",
               borderRadius: "0.25rem",
             }}
           >
@@ -335,48 +348,16 @@ export default function MenuBar({
 
         {/* Title and player count */}
         {projectName && (
-          <h1
-            style={{
-              margin: 0,
-              fontSize: "0.875rem",
-              color: "white",
-              padding: "0 1rem",
-            }}
-          >
+          <h1 style={{ margin: 0, color: "white", padding: "0 1rem" }}>
             {projectName} v1.0.0
           </h1>
         )}
         {playerCount !== undefined && (
           <div style={{ padding: "0.75rem 1rem" }}>
-            <span
-              style={{
-                fontSize: "0.875rem",
-                color: "rgba(255, 255, 255, 0.7)",
-              }}
-            >
+            <span style={{ color: "rgba(255, 255, 255, 0.7)" }}>
               Total Players
             </span>
-            <div
-              style={{
-                fontSize: "0.875rem",
-                fontWeight: "600",
-                color: "white",
-              }}
-            >
-              {playerCount}
-            </div>
-          </div>
-        )}
-        {playerCount !== undefined && (
-          <div style={{ padding: "0.75rem 1rem" }}>
-            <span
-              style={{ fontSize: "0.75rem", color: "rgba(255, 255, 255, 0.7)" }}
-            >
-              Total Players
-            </span>
-            <div
-              style={{ fontSize: "1rem", fontWeight: "600", color: "white" }}
-            >
+            <div style={{ fontWeight: "600", color: "white" }}>
               {playerCount}
             </div>
           </div>
