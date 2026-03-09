@@ -38,8 +38,6 @@ Server started on port 5173
 -- Player count after reload: 14
 -- Clicking Recalculate Ratings...
 >>> [LOG] >>> [BUTTON PRESSED] Recalculate Ratings - 14 players
->>> [LOG] Starting rating calculation with validation
->>> [LOG] Processing 14 players
 >>> [LOG] dataHash: skey="265088_0", sval="4W5", lKeyVal=50650880, startIdx=1792
 >>> [LOG] dataHash: EMPTY slot at idx 1792, storing keyVal=50650880, value="4W5"
 >>> [LOG] Storing hashValue=265088, round=0, is4Player=false, result="4W5", player1=4, player2=5
@@ -221,52 +219,309 @@ Server started on port 5173
 >>> [LOG] Total hash entries stored: 38
 >>> [LOG] Hash table results: 11:6LW8:1, 5:3DD2:8, 7:9DW8:3, 7:6DD8:5, 3L4, 9L12, 4:6WW5:1, 13:6WD9:11, 5D13, 8D1, 3D1, 12D13, 9:8DD7:10, 10:7DD8:14, 12:11LL10:9, 13W12, 5W10, 5:6LL7:4, 1:12WW8:6, 9:12WL11:10, 14:13DD12:11, 1W2, 14L13, 8L11, 11L13, 4L1, 3:8WW14:2, 4:10WD2:14, 2:14DW11:10, 6:7LL14:4, 4W5, 2W3, 10W9, 13W1, 12W13, 13:14DL3:1, 2:3DD4:5, 2:3WD11:14
 >>> [LOG] 
-Total matches: 38
+[processGameResults] Total matches created: 38
 >>> [LOG] 2-player matches: 18
 >>> [LOG] 4-player matches: 20
 >>> [LOG] ========================
 
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=2, p2=3, p3=0, p4=0, result="2W3"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=2, p2=3, p3=4, p4=5, result="2:3DD4:5"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=2, p2=3, p3=11, p4=14, result="2:3WD11:14"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=7, p2=10, p3=8, p4=9, result="9:8DD7:10"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=7, p2=10, p3=8, p4=14, result="10:7DD8:14"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=2, p2=14, p3=3, p4=8, result="3:8WW14:2"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=2, p2=14, p3=4, p4=10, result="4:10WD2:14"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=2, p2=14, p3=10, p4=11, result="2:14DW11:10"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=12, p2=13, p3=0, p4=0, result="12W13"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=12, p2=13, p3=0, p4=0, result="12D13"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=9, p2=12, p3=10, p4=11, result="9:12WL11:10"
->>> [LOG] ERROR [conflict]: Players disagree on result - p1=9, p2=12, p3=0, p4=0, result="9L12"
+>>> [LOG] ERROR [conflict]: Players disagree on result - p1=9, p2=10, p3=11, p4=12
+>>> [LOG]   Player 2: "12:11LL10:9"
+>>> [LOG]   Player 14: "9:12WL11:10"
+>>> [LOG] ERROR [conflict]: Players disagree on result - p1=13, p2=12, p3=0, p4=0
+>>> [LOG]   Player 8: "13W12"
+>>> [LOG]   Player 7: "12W13"
+>>> [LOG]   Player 11: "12D13"
 >>> [WARNING] Errors detected. Opening dialog for correction.
->>> [LOG] PARSE FAILED [4-player]: "12:1LD1:1" -> duplicate players
->>> [LOG] PARSE FAILED [4-player]: "12:1LD1:1" -> duplicate players
+>>> [LOG] 
+=== RECALC START ===
+>>> [LOG] Matches to process: 38
+>>> [LOG] Total existing game results: 45
+>>> [LOG] After clear - verifying arrays are empty:
+>>> [LOG] Player 1: 0 results (should be 0), array length: 31
+>>> [LOG] Player 2: 0 results (should be 0), array length: 31
+>>> [LOG] Player 3: 0 results (should be 0), array length: 31
+>>> [LOG] Player 4: 0 results (should be 0), array length: 31
+>>> [LOG] 
+=== START REPOPULATION ===
+>>> [LOG] Total matches to process: 38
+>>> [LOG] Players input: 14
+>>> [LOG] Player 1: 2 existing results - 4W5, 8L11
+>>> [LOG] Player 2: 4 existing results - 12:11LL10:9, 13W1, 5:3DD2:8, 6:7LL14:4
+>>> [LOG] Player 3: 2 existing results - 2W3, 5D13
+>>> [LOG] Player 4: 4 existing results - 2:3DD4:5, 10:7DD8:14, 13:6WD9:11, 12:1LD1:1
+>>> [LOG] Total input game results: 45
+>>> [LOG] [REPOPULATE] Match: p1=4, p2=5 -> "4W5"
+>>> [LOG]   -> Set player 4[0] = "4W5_"
+>>> [LOG]   -> Set player 5[0] = "4W5_"
+>>> [LOG] [REPOPULATE] Match: p1=9, p2=10 -> "9:10WW11:12"
+>>> [LOG]   -> Set player 9[0] = "9:10WW11:12_"
+>>> [LOG]   -> Set player 10[0] = "9:10WW11:12_"
+>>> [LOG]   -> Set player 11[0] = "9:10WW11:12_"
+>>> [LOG]   -> Set player 12[0] = "9:10WW11:12_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=3 -> "2W3"
+>>> [LOG]   -> Set player 2[0] = "2W3_"
+>>> [LOG]   -> Set player 3[0] = "2W3_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=3 -> "2:3DD4:5"
+>>> [LOG]   -> Set player 2[1] = "2:3DD4:5_"
+>>> [LOG]   -> Set player 3[1] = "2:3DD4:5_"
+>>> [LOG]   -> Set player 4[1] = "2:3DD4:5_"
+>>> [LOG]   -> Set player 5[1] = "2:3DD4:5_"
+>>> [LOG] [REPOPULATE] Match: p1=10, p2=9 -> "9W10"
+>>> [LOG]   -> Set player 10[1] = "9W10_"
+>>> [LOG]   -> Set player 9[1] = "9W10_"
+>>> [LOG] [REPOPULATE] Match: p1=4, p2=7 -> "4:7WW5:6"
+>>> [LOG]   -> Set player 4[2] = "4:7WW5:6_"
+>>> [LOG]   -> Set player 7[0] = "4:7WW5:6_"
+>>> [LOG]   -> Set player 5[2] = "4:7WW5:6_"
+>>> [LOG]   -> Set player 6[0] = "4:7WW5:6_"
+>>> [LOG] [REPOPULATE] Match: p1=1, p2=2 -> "1W2"
+>>> [LOG]   -> Set player 1[0] = "1W2_"
+>>> [LOG]   -> Set player 2[2] = "1W2_"
+>>> [LOG] [REPOPULATE] Match: p1=13, p2=12 -> "12W13"
+>>> [LOG]   -> Set player 13[0] = "12W13_"
+>>> [LOG]   -> Set player 12[1] = "12W13_"
+>>> [LOG] [REPOPULATE] Match: p1=11, p2=12 -> "11:12DD13:14"
+>>> [LOG]   -> Set player 11[1] = "11:12DD13:14_"
+>>> [LOG]   -> Set player 12[2] = "11:12DD13:14_"
+>>> [LOG]   -> Set player 13[1] = "11:12DD13:14_"
+>>> [LOG]   -> Set player 14[0] = "11:12DD13:14_"
+>>> [LOG] [REPOPULATE] Match: p1=7, p2=10 -> "7:10DD8:9"
+>>> [LOG]   -> Set player 7[1] = "7:10DD8:9_"
+>>> [LOG]   -> Set player 10[2] = "7:10DD8:9_"
+>>> [LOG]   -> Set player 8[0] = "7:10DD8:9_"
+>>> [LOG]   -> Set player 9[2] = "7:10DD8:9_"
+>>> [LOG] [REPOPULATE] Match: p1=14, p2=13 -> "13L14"
+>>> [LOG]   -> Set player 14[1] = "13L14_"
+>>> [LOG]   -> Set player 13[2] = "13L14_"
+>>> [LOG] [REPOPULATE] Match: p1=5, p2=8 -> "5:8DD6:7"
+>>> [LOG]   -> Set player 5[3] = "5:8DD6:7_"
+>>> [LOG]   -> Set player 8[1] = "5:8DD6:7_"
+>>> [LOG]   -> Set player 6[1] = "5:8DD6:7_"
+>>> [LOG]   -> Set player 7[2] = "5:8DD6:7_"
+>>> [LOG] [REPOPULATE] Match: p1=8, p2=11 -> "8L11"
+>>> [LOG]   -> Set player 8[2] = "8L11_"
+>>> [LOG]   -> Set player 11[2] = "8L11_"
+>>> [LOG] [REPOPULATE] Match: p1=13, p2=1 -> "1W13"
+>>> [LOG]   -> Set player 13[3] = "1W13_"
+>>> [LOG]   -> Set player 1[1] = "1W13_"
+>>> [LOG] [REPOPULATE] Match: p1=5, p2=13 -> "5D13"
+>>> [LOG]   -> Set player 5[4] = "5D13_"
+>>> [LOG]   -> Set player 13[4] = "5D13_"
+>>> [LOG] [REPOPULATE] Match: p1=7, p2=10 -> "7:10DD8:14"
+>>> [LOG]   -> Set player 7[3] = "7:10DD8:14_"
+>>> [LOG]   -> Set player 10[3] = "7:10DD8:14_"
+>>> [LOG]   -> Set player 8[3] = "7:10DD8:14_"
+>>> [LOG]   -> Set player 14[2] = "7:10DD8:14_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=14 -> "2:14LL3:8"
+>>> [LOG]   -> Set player 2[3] = "2:14LL3:8_"
+>>> [LOG]   -> Set player 14[3] = "2:14LL3:8_"
+>>> [LOG]   -> Set player 3[2] = "2:14LL3:8_"
+>>> [LOG]   -> Set player 8[4] = "2:14LL3:8_"
+>>> [LOG] [REPOPULATE] Match: p1=11, p2=13 -> "11L13"
+>>> [LOG]   -> Set player 11[3] = "11L13_"
+>>> [LOG]   -> Set player 13[5] = "11L13_"
+>>> [LOG] [REPOPULATE] Match: p1=12, p2=13 -> "12W13"
+>>> [LOG]   -> Set player 12[3] = "12W13_"
+>>> [LOG]   -> Set player 13[6] = "12W13_"
+>>> [LOG] [REPOPULATE] Match: p1=3, p2=4 -> "3L4"
+>>> [LOG]   -> Set player 3[3] = "3L4_"
+>>> [LOG]   -> Set player 4[3] = "3L4_"
+>>> [LOG] [REPOPULATE] Match: p1=3, p2=8 -> "3:8DL7:9"
+>>> [LOG]   -> Set player 3[4] = "3:8DL7:9_"
+>>> [LOG]   -> Set player 8[5] = "3:8DL7:9_"
+>>> [LOG]   -> Set player 7[4] = "3:8DL7:9_"
+>>> [LOG]   -> Set player 9[3] = "3:8DL7:9_"
+>>> [LOG] [REPOPULATE] Match: p1=1, p2=12 -> "1:12WW6:8"
+>>> [LOG]   -> Set player 1[2] = "1:12WW6:8_"
+>>> [LOG]   -> Set player 12[4] = "1:12WW6:8_"
+>>> [LOG]   -> Set player 6[2] = "1:12WW6:8_"
+>>> [LOG]   -> Set player 8[6] = "1:12WW6:8_"
+>>> [LOG] [REPOPULATE] Match: p1=4, p2=1 -> "1L4"
+>>> [LOG]   -> Set player 4[4] = "1L4_"
+>>> [LOG]   -> Set player 1[3] = "1L4_"
+>>> [LOG] [REPOPULATE] Match: p1=8, p2=1 -> "1D8"
+>>> [LOG]   -> Set player 8[7] = "1D8_"
+>>> [LOG]   -> Set player 1[4] = "1D8_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=14 -> "2:14LD4:10"
+>>> [LOG]   -> Set player 2[4] = "2:14LD4:10_"
+>>> [LOG]   -> Set player 14[4] = "2:14LD4:10_"
+>>> [LOG]   -> Set player 4[5] = "2:14LD4:10_"
+>>> [LOG]   -> Set player 10[4] = "2:14LD4:10_"
+>>> [LOG] [REPOPULATE] Match: p1=9, p2=12 -> "9:12WL10:11"
+>>> [LOG]   -> Set player 9[4] = "9:12WL10:11_"
+>>> [LOG]   -> Set player 12[5] = "9:12WL10:11_"
+>>> [LOG]   -> Set player 10[5] = "9:12WL10:11_"
+>>> [LOG]   -> Set player 11[4] = "9:12WL10:11_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=8 -> "2:8DD3:5"
+>>> [LOG]   -> Set player 2[5] = "2:8DD3:5_"
+>>> [LOG]   -> Set player 8[8] = "2:8DD3:5_"
+>>> [LOG]   -> Set player 3[5] = "2:8DD3:5_"
+>>> [LOG]   -> Set player 5[5] = "2:8DD3:5_"
+>>> [LOG] [REPOPULATE] Match: p1=6, p2=13 -> "6:13WD9:11"
+>>> [LOG]   -> Set player 6[3] = "6:13WD9:11_"
+>>> [LOG]   -> Set player 13[7] = "6:13WD9:11_"
+>>> [LOG]   -> Set player 9[5] = "6:13WD9:11_"
+>>> [LOG]   -> Set player 11[5] = "6:13WD9:11_"
+>>> [LOG] [REPOPULATE] Match: p1=9, p2=12 -> "9L12"
+>>> [LOG]   -> Set player 9[6] = "9L12_"
+>>> [LOG]   -> Set player 12[6] = "9L12_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=14 -> "2:14DW10:11"
+>>> [LOG]   -> Set player 2[6] = "2:14DW10:11_"
+>>> [LOG]   -> Set player 14[5] = "2:14DW10:11_"
+>>> [LOG]   -> Set player 10[6] = "2:14DW10:11_"
+>>> [LOG]   -> Set player 11[6] = "2:14DW10:11_"
+>>> [LOG] [REPOPULATE] Match: p1=1, p2=5 -> "1:5LL4:6"
+>>> [LOG]   -> Set player 1[5] = "1:5LL4:6_"
+>>> [LOG]   -> Set player 5[6] = "1:5LL4:6_"
+>>> [LOG]   -> Set player 4[6] = "1:5LL4:6_"
+>>> [LOG]   -> Set player 6[4] = "1:5LL4:6_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=3 -> "2:3WD11:14"
+>>> [LOG]   -> Set player 2[7] = "2:3WD11:14_"
+>>> [LOG]   -> Set player 3[6] = "2:3WD11:14_"
+>>> [LOG]   -> Set player 11[7] = "2:3WD11:14_"
+>>> [LOG]   -> Set player 14[6] = "2:3WD11:14_"
+>>> [LOG] [REPOPULATE] Match: p1=5, p2=10 -> "5W10"
+>>> [LOG]   -> Set player 5[7] = "5W10_"
+>>> [LOG]   -> Set player 10[7] = "5W10_"
+>>> [LOG] [REPOPULATE] Match: p1=1, p2=8 -> "1:8WL6:11"
+>>> [LOG]   -> Set player 1[6] = "1:8WL6:11_"
+>>> [LOG]   -> Set player 8[9] = "1:8WL6:11_"
+>>> [LOG]   -> Set player 6[5] = "1:8WL6:11_"
+>>> [LOG]   -> Set player 11[8] = "1:8WL6:11_"
+>>> [LOG] [REPOPULATE] Match: p1=1, p2=3 -> "1:3DW13:14"
+>>> [LOG]   -> Set player 1[7] = "1:3DW13:14_"
+>>> [LOG]   -> Set player 3[7] = "1:3DW13:14_"
+>>> [LOG]   -> Set player 13[8] = "1:3DW13:14_"
+>>> [LOG]   -> Set player 14[7] = "1:3DW13:14_"
+>>> [LOG] [REPOPULATE] Match: p1=4, p2=14 -> "4:14WW6:7"
+>>> [LOG]   -> Set player 4[7] = "4:14WW6:7_"
+>>> [LOG]   -> Set player 14[8] = "4:14WW6:7_"
+>>> [LOG]   -> Set player 6[6] = "4:14WW6:7_"
+>>> [LOG]   -> Set player 7[5] = "4:14WW6:7_"
+>>> [LOG] [REPOPULATE] Match: p1=3, p2=1 -> "1D3"
+>>> [LOG]   -> Set player 3[8] = "1D3_"
+>>> [LOG]   -> Set player 1[8] = "1D3_"
+>>> [LOG] [REPOPULATE] Match: p1=12, p2=13 -> "12D13"
+>>> [LOG]   -> Set player 12[7] = "12D13_"
+>>> [LOG]   -> Set player 13[9] = "12D13_"
+>>> [LOG] 
+=== REPOPULATION SUMMARY ===
+>>> [LOG] Total entries SET during loop: 116
+>>> [LOG] 
+Player 1 (Sarah Garcia) gameResults:
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (9): [1W2_, 1W13_, 1:12WW6:8_, 1L4_, 1D8_, 1:5LL4:6_, 1:8WL6:11_, 1:3DW13:14_, 1D3_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG] 
+Player 2 (Jane Smith) gameResults:
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (8): [2W3_, 2:3DD4:5_, 1W2_, 2:14LL3:8_, 2:14LD4:10_, 2:8DD3:5_, 2:14DW10:11_, 2:3WD11:14_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG] 
+Player 3 (James Moore) gameResults:
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (9): [2W3_, 2:3DD4:5_, 2:14LL3:8_, 3L4_, 3:8DL7:9_, 2:8DD3:5_, 2:3WD11:14_, 1:3DW13:14_, 1D3_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG] 
+Player 1 (Sarah Garcia): 9 results
+>>> [LOG] 
+Player 2 (Jane Smith): 8 results
+>>> [LOG] 
+Player 3 (James Moore): 9 results
+>>> [LOG] 
+Player 4 (Daniel Jackson): 8 results
+>>> [LOG] 
+Player 5 (Emily Brown): 8 results
+>>> [LOG] 
+Player 6 (Thomas Anderson): 7 results
+>>> [LOG] 
+Player 7 (John Johnson): 6 results
+>>> [LOG] 
+Player 8 (Lisa Wilson): 10 results
+>>> [LOG] 
+Player 9 (Jennifer White): 7 results
+>>> [LOG] 
+Player 10 (Michael Davis): 8 results
+>>> [LOG] 
+Player 11 (Maria Thomas): 9 results
+>>> [LOG] 
+Player 12 (Anna Taylor): 8 results
+>>> [LOG] 
+Player 13 (David Miller): 10 results
+>>> [LOG] 
+Player 14 (Robert Williams): 9 results
+>>> [LOG] 
+Total player result entries: 142
+>>> [LOG] Expected: 76 (2 per match)
+>>> [LOG] Difference: -26
+>>> [LOG] ============================
+
+>>> [LOG] Total results after repopulation: 116
+>>> [LOG] Rating calculation complete
+
 -- Button pressed: Recalculate Ratings
 -- Filling correction: "5W3"
--- Text entered: 5W3
 -- Submitting correction...
--- Test error: elementHandle.click: Timeout 30000ms exceeded.
-Call log:
-[2m  - attempting click action[22m
-[2m    2 × waiting for element to be visible, enabled and stable[22m
-[2m      - element is visible, enabled and stable[22m
-[2m      - scrolling into view if needed[22m
-[2m      - done scrolling[22m
-[2m      - <div>…</div> intercepts pointer events[22m
-[2m    - retrying click action[22m
-[2m    - waiting 20ms[22m
-[2m    2 × waiting for element to be visible, enabled and stable[22m
-[2m      - element is visible, enabled and stable[22m
-[2m      - scrolling into view if needed[22m
-[2m      - done scrolling[22m
-[2m      - <div>…</div> intercepts pointer events[22m
-[2m    - retrying click action[22m
-[2m      - waiting 100ms[22m
-[2m    57 × waiting for element to be visible, enabled and stable[22m
-[2m       - element is visible, enabled and stable[22m
-[2m       - scrolling into view if needed[22m
-[2m       - done scrolling[22m
-[2m       - <div>…</div> intercepts pointer events[22m
-[2m     - retrying click action[22m
-[2m       - waiting 500ms[22m
+-- Button pressed: Submit Correction/Save
+-- Submitting correction...
+-- Button pressed: Submit Correction/Save
+-- Clearing cell...
+-- Cancelling dialog...
+-- Clicking Export button...
+>>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
+>>> [LOG] Exported 14 players to Export_Results_2026-03-09T18-08-08-330Z.tab
+-- Button pressed: Export
+-- Download detected: Export_Results_2026-03-09T18-08-08-330Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T18-08-08-330Z.tab
+-- Clicking buttons: none
+-- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\recalculate_ratings.tab
+
+-- Comparing output...
+-- Test FAILED - Output does not match
+
+--- Diff ---
+Line 2:
+  Expected: "	Garcia	Sarah	1351	1	1226	6th	2	2				4W5	8L11"
+  Actual:   "	Garcia	Sarah	1351	1	1344	6th	2	2				1W2_	1W13_	1:12WW6:8_	1L4_	1D8_	1:5LL4:6_	1:8WL6:11_	1:3DW13:14_	1D3_"
+Line 3:
+  Expected: "B	Smith	Jane	1008	2	1386	2th	4	4				12:11LL10:9	13W1	5:3DD2:8	6:7LL14:4"
+  Actual:   "B	Smith	Jane	1008	2	1000	2th	4	4				2W3_	2:3DD4:5_	1W2_	2:14LL3:8_	2:14LD4:10_	2:8DD3:5_	2:14DW10:11_	2:3WD11:14_"
+Line 4:
+  Expected: "C	Moore	James	1061	3	1109	2th	2	2				2W3	5D13"
+  Actual:   "C	Moore	James	1061	3	1068	2th	2	2				2W3_	2:3DD4:5_	2:14LL3:8_	3L4_	3:8DL7:9_	2:8DD3:5_	2:3WD11:14_	1:3DW13:14_	1D3_"
+Line 5:
+  Expected: "A1	Jackson	Daniel	1351	4	1255	6th	4	4				2:3DD4:5	10:7DD8:14	13:6WD9:11"
+  Actual:   "A1	Jackson	Daniel	1351	4	1334	6th	4	4				4W5_	2:3DD4:5_	4:7WW5:6_	3L4_	1L4_	2:14LD4:10_	1:5LL4:6_	4:14WW6:7_"
+Line 6:
+  Expected: "D	Brown	Emily	1068	5	1010	4th	2	2				10W9	3:8WW14:2"
+  Actual:   "D	Brown	Emily	1068	5	1062	4th	2	2				4W5_	2:3DD4:5_	4:7WW5:6_	5:8DD6:7_	5D13_	2:8DD3:5_	1:5LL4:6_	5W10_"
+Line 7:
+  Expected: "E	Anderson	Thomas	1228	6	1088	4th	4	4				5:6LL7:4	11L13	9L12	3D1"
+  Actual:   "E	Anderson	Thomas	1228	6	1215	4th	4	4				4:7WW5:6_	5:8DD6:7_	1:12WW6:8_	6:13WD9:11_	1:5LL4:6_	1:8WL6:11_	4:14WW6:7_"
+Line 8:
+  Expected: "A1	Johnson	John	1000	7	1000	1th	2	2				1W2	12W13"
+  Actual:   "A1	Johnson	John	1000	7	1005	1th	2	2				4:7WW5:6_	7:10DD8:9_	5:8DD6:7_	7:10DD8:14_	3:8DL7:9_	4:14WW6:7_"
+Line 9:
+  Expected: "B	Wilson	Lisa	1031	8	1206	1th	3	3				13W12	3L4	2:14DW11:10"
+  Actual:   "B	Wilson	Lisa	1031	8	1048	1th	3	3				7:10DD8:9_	5:8DD6:7_	8L11_	7:10DD8:14_	2:14LL3:8_	3:8DL7:9_	1:12WW6:8_	1D8_	2:8DD3:5_	1:8WL6:11_"
+Line 10:
+  Expected: "B	White	Jennifer	1133	9	1276	7th	5	5				14:13DD12:11	7:9DW8:3	4:6WW5:1		1W1"
+  Actual:   "B	White	Jennifer	1133	9	1145	7th	5	5				9:10WW11:12_	9W10_	7:10DD8:9_	3:8DL7:9_	9:12WL10:11_	6:13WD9:11_	9L12_"
+Line 11:
+  Expected: "E	Davis	Michael	1207	10	1303	5th	2	2				2W3	1:12WW8:6"
+  Actual:   "E	Davis	Michael	1207	10	1213	5th	2	2				9:10WW11:12_	9W10_	7:10DD8:9_	7:10DD8:14_	2:14LD4:10_	9:12WL10:11_	2:14DW10:11_	5W10_"
+Line 12:
+  Expected: "	Thomas	Maria	1375	11	1358	5th	4	4				9:8DD7:10	4L1	2:3WD11:14	12D13"
+  Actual:   "	Thomas	Maria	1375	11	1379	5th	4	4				9:10WW11:12_	11:12DD13:14_	8L11_	11L13_	9:12WL10:11_	6:13WD9:11_	2:14DW10:11_	2:3WD11:14_	1:8WL6:11_"
+Line 13:
+  Expected: "D	Taylor	Anna	1203	12	1254	3th	3	3				14L13	8D1	5W10"
+  Actual:   "D	Taylor	Anna	1203	12	1201	3th	3	3				9:10WW11:12_	12W13_	11:12DD13:14_	12W13_	1:12WW6:8_	9:12WL10:11_	9L12_	12D13_"
+Line 14:
+  Expected: "A1	Miller	David	1131	13	1229	7th	3	3				13W12	4:10WD2:14	11:6LW8:1"
+  Actual:   "A1	Miller	David	1131	13	1133	7th	3	3				12W13_	11:12DD13:14_	13L14_	1W13_	5D13_	11L13_	12W13_	6:13WD9:11_	1:3DW13:14_	12D13_"
+Line 15:
+  Expected: "C	Williams	Robert	1066	14	1033	3th	5	5				7:6DD8:5	9:12WL11:10	13:14DL3:1	2:4WD1:1	1W1"
+  Actual:   "C	Williams	Robert	1066	14	1083	3th	5	5				11:12DD13:14_	13L14_	7:10DD8:14_	2:14LL3:8_	2:14LD4:10_	2:14DW10:11_	2:3WD11:14_	1:3DW13:14_	4:14WW6:7_"
+
+--- End diff ---
 

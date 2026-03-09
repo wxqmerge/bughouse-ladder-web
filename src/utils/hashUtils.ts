@@ -784,8 +784,6 @@ export function processGameResults(
         continue;
       }
 
-      if (processedPairs.has(hashValue.toString())) continue;
-
       const player1Rank = parsedPlayersList[0];
       const player2Rank = parsedPlayersList[1]; // BUG FIX: was [3], should be [1]
       const player3Rank = parsedPlayersList[2];

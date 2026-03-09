@@ -188,13 +188,6 @@ export default function LadderForm({
   const [pendingPlayerResultsByMatch, setPendingPlayerResultsByMatch] =
     useState<Map<string, PlayerMatchResult[]> | null>(null);
 
-  // Store validated matches to avoid re-processing on subsequent recalcs
-  const [validatedMatches, setValidatedMatches] = useState<MatchData[] | null>(
-    null,
-  );
-  const [validatedPlayerResultsByMatch, setValidatedPlayerResultsByMatch] =
-    useState<Map<string, PlayerMatchResult[]> | null>(null);
-
   const [entryCell, setEntryCell] = useState<{
     playerRank: number;
     round: number;
@@ -393,9 +386,6 @@ export default function LadderForm({
         setPlayers(loadedPlayers);
         setHasData(true);
         setSortBy(null);
-        // Clear validated matches cache when new data is loaded
-        setValidatedMatches(null);
-        setValidatedPlayerResultsByMatch(null);
       } else {
       }
     };
@@ -446,35 +436,11 @@ export default function LadderForm({
       );
     }
 
-    // If we already have validated matches, use them to avoid re-processing
-    let matches: MatchData[];
-    let playerResultsByMatch: Map<string, PlayerMatchResult[]> | undefined;
-
-    if (shouldLog(5)) {
-      console.log(
-        `validatedMatches: ${validatedMatches ? validatedMatches.length : 0}`,
-      );
-    }
-
-    if (validatedMatches && validatedPlayerResultsByMatch) {
-      if (shouldLog(5)) {
-        console.log(
-          `Using cached validated matches: ${validatedMatches.length}`,
-        );
-      }
-      matches = validatedMatches;
-      playerResultsByMatch = validatedPlayerResultsByMatch;
-    } else {
-      const result = checkGameErrors();
-      matches = result.matches;
-      playerResultsByMatch = result.playerResultsByMatch;
-
-      // ALWAYS cache matches (even with errors) to avoid re-processing repopulated data
-      if (matches.length > 0) {
-        setValidatedMatches(matches);
-        setValidatedPlayerResultsByMatch(result.playerResultsByMatch || null);
-      }
-    }
+    // Always build fresh matches from current UI state (no caching)
+    const result = checkGameErrors();
+    let matches: MatchData[] = result.matches;
+    let playerResultsByMatch: Map<string, PlayerMatchResult[]> | undefined =
+      result.playerResultsByMatch;
 
     if (shouldLog(5)) {
       console.log(`\n=== RECALC START ===`);
@@ -750,10 +716,6 @@ export default function LadderForm({
     );
     setPlayers(calculatedPlayers);
     localStorage.setItem("ladder_players", JSON.stringify(calculatedPlayers));
-
-    // Cache the validated matches for future recalcs
-    setValidatedMatches(pendingMatches);
-    setValidatedPlayerResultsByMatch(pendingPlayerResultsByMatch || null);
 
     setPendingPlayers(null);
     setPendingMatches(null);
