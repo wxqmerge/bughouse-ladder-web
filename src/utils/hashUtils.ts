@@ -599,8 +599,18 @@ export interface MatchData {
   score2: number;
 }
 
+export interface PlayerMatchResult {
+  playerRank: number;
+  resultString: string;
+}
+
+export interface MatchWithResults extends MatchData {
+  playerResults: PlayerMatchResult[];
+}
+
 export interface ProcessResult {
   matches: MatchData[];
+  playerResultsByMatch: Map<string, PlayerMatchResult[]>;
   hasErrors: boolean;
   errorCount: number;
   errors: ValidationResult[];
@@ -631,8 +641,108 @@ export function processGameResults(
       round: number;
     }[]
   >();
+  const matchPlayerResults = new Map<
+    string,
+    {
+      playerRank: number;
+      resultString: string;
+    }[]
+  >();
 
   hashInitialize();
+
+  // Helper to convert score code between pairs (for perspective swapping)
+  const swapScore = (code: number): number => {
+    if (code === 0) return 0; // O stays O
+    if (code === 1) return 3; // L becomes W
+    if (code === 2) return 2; // D stays D
+    if (code === 3) return 1; // W becomes L
+    return 0;
+  };
+
+  // Helper to normalize a result string for comparison (converts to canonical form)
+  const normalizeResultForComparison = (
+    _result: string,
+    playerRank: number,
+    parsedPlayers: number[],
+    scores: number[],
+  ): string => {
+    const is4Player = parsedPlayers[2] > 0 && parsedPlayers[3] > 0;
+
+    if (!is4Player) {
+      // For 2-player games, normalize by sorting players
+      const p1 = parsedPlayers[0];
+      const p2 = parsedPlayers[1];
+      const score = scores[0];
+
+      // Find which player entered this result
+      let canonicalScore = score;
+      if (playerRank === p2) {
+        canonicalScore = swapScore(score);
+      }
+
+      // Convert score to letter
+      const scoreLetter =
+        canonicalScore === 0
+          ? "O"
+          : canonicalScore === 1
+            ? "L"
+            : canonicalScore === 2
+              ? "D"
+              : "W";
+
+      // Return in sorted player order (within pair)
+      const sortedPair = [p1, p2].sort((a, b) => a - b);
+      return `${sortedPair[0]}${scoreLetter}${sortedPair[1]}`;
+    } else {
+      // For 4-player games: normalize each pair separately, then sort pairs by lowest player
+      const pair1 = [parsedPlayers[0], parsedPlayers[1]].sort((a, b) => a - b);
+      const pair2 = [parsedPlayers[2], parsedPlayers[3]].sort((a, b) => a - b);
+
+      // Sort pairs so the pair with lower minimum player comes first
+      const minPair1 = Math.min(pair1[0], pair1[1]);
+      const minPair2 = Math.min(pair2[0], pair2[1]);
+
+      let normPair1: number[];
+      let normPair2: number[];
+      let normScore1: number;
+      let normScore2: number;
+
+      if (minPair1 < minPair2) {
+        // Pair 1 comes first
+        normPair1 = pair1;
+        normPair2 = pair2;
+        normScore1 = scores[0];
+        normScore2 = scores[1];
+      } else {
+        // Pair 2 comes first, swap perspectives
+        normPair1 = pair2;
+        normPair2 = pair1;
+        normScore1 = swapScore(scores[1]);
+        normScore2 = swapScore(scores[0]);
+      }
+
+      const score1Letter =
+        normScore1 === 0
+          ? "O"
+          : normScore1 === 1
+            ? "L"
+            : normScore1 === 2
+              ? "D"
+              : "W";
+      const score2Letter =
+        normScore2 === 0
+          ? "O"
+          : normScore2 === 1
+            ? "L"
+            : normScore2 === 2
+              ? "D"
+              : "W";
+
+      // Return with both pairs sorted internally and in correct order
+      return `${normPair1[0]}:${normPair1[1]}${score1Letter}${score2Letter}${normPair2[0]}:${normPair2[1]}`;
+    }
+  };
 
   let errorCount = 0;
 
@@ -741,10 +851,21 @@ export function processGameResults(
       }
 
       // Include all players in key to distinguish 2-player vs 4-player games
+      // Normalize by sorting player ranks so same game has same key regardless of who entered it
       const is4Player = parsedPlayersList[2] > 0 && parsedPlayersList[3] > 0;
-      const key = is4Player
-        ? `${parsedPlayersList[0]}-${parsedPlayersList[1]}-${parsedPlayersList[2]}-${parsedPlayersList[3]}`
-        : `${player1Rank}-${player2Rank}`;
+      let key: string;
+      if (is4Player) {
+        const sortedPlayers = [
+          parsedPlayersList[0],
+          parsedPlayersList[1],
+          parsedPlayersList[2],
+          parsedPlayersList[3],
+        ].sort((a, b) => a - b);
+        key = `${sortedPlayers[0]}-${sortedPlayers[1]}-${sortedPlayers[2]}-${sortedPlayers[3]}`;
+      } else {
+        const sortedPair = [player1Rank, player2Rank].sort((a, b) => a - b);
+        key = `${sortedPair[0]}-${sortedPair[1]}`;
+      }
 
       if (!matchResults.has(key)) {
         matchResults.set(key, []);
@@ -759,6 +880,15 @@ export function processGameResults(
         score1: parsedScoreList[0],
         score2: parsedScoreList[1],
         round,
+      });
+
+      // Store original result string for each player
+      if (!matchPlayerResults.has(key)) {
+        matchPlayerResults.set(key, []);
+      }
+      matchPlayerResults.get(key)!.push({
+        playerRank: player.rank,
+        resultString: result,
       });
 
       processedPairs.add(hashValue);
@@ -827,8 +957,20 @@ export function processGameResults(
   for (const [_, entries] of matchResults.entries()) {
     if (entries.length < 2) continue;
 
-    const allSame = entries.every(
-      (e, i) => i === 0 || e.result === entries[0].result,
+    // Normalize all results to the same perspective for comparison
+    const normalizedEntries = entries.map((e) => {
+      const parsedPlayers = [e.player1, e.player2, e.player3, e.player4];
+      const scores = [e.score1, e.score2];
+      return normalizeResultForComparison(
+        e.result,
+        e.playerRank,
+        parsedPlayers,
+        scores,
+      );
+    });
+
+    const allSame = normalizedEntries.every(
+      (n, i) => i === 0 || n === normalizedEntries[0],
     );
     if (!allSame) {
       // Collect all conflicting results for this match
@@ -876,6 +1018,7 @@ export function processGameResults(
 
   return {
     matches: results,
+    playerResultsByMatch: matchPlayerResults,
     hasErrors: errorCount > 0,
     errorCount: errorCount,
     errors,
@@ -940,13 +1083,13 @@ export function repopulateGameResults(
   playersList: PlayerData[],
   matches: MatchData[],
   numRounds: number = 31,
+  playerResultsByMatch?: Map<string, PlayerMatchResult[]>,
 ): PlayerData[] {
   const playersCopy = playersList.map((p) => ({
     ...p,
     gameResults: new Array(numRounds).fill(null),
   }));
 
-  let resultIndex = 0;
   let totalSet = 0;
 
   // Helper function to find the lowest empty round for a player
@@ -959,12 +1102,35 @@ export function repopulateGameResults(
     return -1;
   };
 
+  // Helper function to get match key (normalized for consistent lookup)
+  const getMatchKey = (match: MatchData): string => {
+    const is4Player = match.player3 > 0 && match.player4 > 0;
+    if (is4Player) {
+      // Sort all 4 players to normalize the key
+      const sortedPlayers = [
+        match.player1,
+        match.player2,
+        match.player3,
+        match.player4,
+      ].sort((a, b) => a - b);
+      return `${sortedPlayers[0]}-${sortedPlayers[1]}-${sortedPlayers[2]}-${sortedPlayers[3]}`;
+    }
+    // Sort 2 players to normalize
+    const sortedPair = [match.player1, match.player2].sort((a, b) => a - b);
+    return `${sortedPair[0]}-${sortedPair[1]}`;
+  };
+
   if (shouldLog(5)) {
     console.log(`\n=== START REPOPULATION ===`);
     console.log(`Total matches to process: ${matches.length}`);
   }
 
   for (const match of matches) {
+    const matchKey = getMatchKey(match);
+
+    // Get original result strings for this match if available
+    const playerResults = playerResultsByMatch?.get(matchKey) || [];
+
     const p1Index = match.player1 - 1;
     const p2Index = match.player2 - 1;
 
@@ -976,56 +1142,145 @@ export function repopulateGameResults(
 
     if (!p1 || !p2) continue;
 
-    // Build full result strings for all players involved
-    const result1ForP1 = buildResultStringForPlayer(match.player1, match, 0);
-    const result1ForP2 = buildResultStringForPlayer(match.player2, match, 0);
+    // Helper to build result string from match data if original not available
+    const buildResultForPlayer = (playerRank: number): string => {
+      // Determine score for this player's perspective
+      let scoreCode = match.score1;
+      if (playerRank === match.player2) {
+        scoreCode =
+          match.score1 === 1 ? 3 : match.score1 === 3 ? 1 : match.score1;
+      } else if (match.player3 > 0 && match.player4 > 0) {
+        if (playerRank === match.player3 || playerRank === match.player4) {
+          scoreCode = match.score2;
+        }
+        if (playerRank === match.player4) {
+          scoreCode =
+            match.score2 === 1 ? 3 : match.score2 === 3 ? 1 : match.score2;
+        }
+      }
+
+      // Convert score to letter
+      const scoreLetter =
+        scoreCode === 0
+          ? "O"
+          : scoreCode === 1
+            ? "L"
+            : scoreCode === 2
+              ? "D"
+              : "W";
+
+      if (match.player3 > 0 && match.player4 > 0) {
+        // 4-player game: need both scores
+        const score1Letter =
+          match.score1 === 0
+            ? "O"
+            : match.score1 === 1
+              ? "L"
+              : match.score1 === 2
+                ? "D"
+                : "W";
+        const score2Letter =
+          match.score2 === 0
+            ? "O"
+            : match.score2 === 1
+              ? "L"
+              : match.score2 === 2
+                ? "D"
+                : "W";
+        const combined = score1Letter + score2Letter;
+
+        if (playerRank === match.player1) {
+          return `${match.player1}:${match.player2}${combined}${match.player3}:${match.player4}`;
+        } else if (playerRank === match.player2) {
+          const oppScore1 =
+            match.score1 === 1 ? 3 : match.score1 === 3 ? 1 : match.score1;
+          const oppLetter =
+            oppScore1 === 0
+              ? "O"
+              : oppScore1 === 1
+                ? "L"
+                : oppScore1 === 2
+                  ? "D"
+                  : "W";
+          return `${match.player2}:${match.player1}${oppLetter}${score2Letter}${match.player4}:${match.player3}`;
+        } else if (playerRank === match.player3) {
+          return `${match.player3}:${match.player4}${combined}${match.player1}:${match.player2}`;
+        } else if (playerRank === match.player4) {
+          const oppScore2 =
+            match.score2 === 1 ? 3 : match.score2 === 3 ? 1 : match.score2;
+          const oppLetter =
+            oppScore2 === 0
+              ? "O"
+              : oppScore2 === 1
+                ? "L"
+                : oppScore2 === 2
+                  ? "D"
+                  : "W";
+          return `${match.player4}:${match.player3}${score1Letter}${oppLetter}${match.player2}:${match.player1}`;
+        }
+      } else {
+        // 2-player game
+        if (playerRank === match.player1) {
+          return `${match.player1}${scoreLetter}${match.player2}`;
+        } else if (playerRank === match.player2) {
+          return `${match.player2}${scoreLetter}${match.player1}`;
+        }
+      }
+      return "";
+    };
+
+    // Use original result strings if available, otherwise build them
+    const p1Result =
+      playerResults.find((r) => r.playerRank === match.player1)?.resultString ||
+      buildResultForPlayer(match.player1);
+    const p2Result =
+      playerResults.find((r) => r.playerRank === match.player2)?.resultString ||
+      buildResultForPlayer(match.player2);
 
     if (shouldLog(5)) {
       console.log(
-        `[REPOPULATE #${resultIndex}] Match: p1=${match.player1} (${p1.firstName}), p2=${match.player2} (${p2.firstName})`,
+        `[REPOPULATE] Match: p1=${match.player1} (${p1.firstName}), p2=${match.player2} (${p2.firstName})`,
       );
-      console.log(
-        `  result1ForP1="${result1ForP1}", result1ForP2="${result1ForP2}"`,
-      );
+      if (playerResults.length > 0) {
+        console.log(
+          `  Using ORIGINAL results: p1="${p1Result}", p2="${p2Result}"`,
+        );
+      } else {
+        console.log(
+          `  BUILT results from match data: p1="${p1Result}", p2="${p2Result}"`,
+        );
+      }
     }
 
     // Set result for player 1 in their lowest empty round
-    if (result1ForP1) {
+    if (p1Result) {
       const p1Round = findLowestEmptyRound(p1);
       if (p1Round >= 0) {
-        p1.gameResults[p1Round] = result1ForP1 + "_";
+        p1.gameResults[p1Round] = p1Result + "_";
         totalSet++;
         if (shouldLog(5)) {
-          console.log(`  -> Set p1[${p1Round}] = "${result1ForP1}_"`);
+          console.log(`  -> Set p1[${p1Round}] = "${p1Result}_"`);
         }
       } else {
         if (shouldLog(5)) {
           console.log(`  -> SKIPPED p1 (no empty rounds available)`);
         }
       }
-    } else {
-      if (shouldLog(5)) {
-        console.log(`  -> SKIPPED p1 (no result string)`);
-      }
     }
 
     // Set result for player 2 in their lowest empty round
-    if (result1ForP2) {
+    if (p2Result) {
       const p2Round = findLowestEmptyRound(p2);
       if (p2Round >= 0) {
-        p2.gameResults[p2Round] = result1ForP2 + "_";
+        p2.gameResults[p2Round] = p2Result + "_";
         totalSet++;
         if (shouldLog(5)) {
-          console.log(`  -> Set p2[${p2Round}] = "${result1ForP2}_"`);
+          console.log(`  -> Set p2[${p2Round}] = "${p2Result}_"`);
         }
       } else {
         if (shouldLog(5)) {
           console.log(`  -> SKIPPED p2 (no empty rounds available)`);
         }
-      }
-    } else {
-      if (shouldLog(5)) {
-        console.log(`  -> SKIPPED p2 (no result string)`);
       }
     }
 
@@ -1034,77 +1289,56 @@ export function repopulateGameResults(
       const p3Index = match.player3 - 1;
       const p4Index = match.player4 - 1;
 
-      if (
-        p3Index >= 0 &&
-        p3Index < playersCopy.length &&
-        p3Index !== p1Index &&
-        p3Index !== p2Index
-      ) {
+      // Get original result strings for p3 and p4, or build them
+      const p3Result =
+        playerResults.find((r) => r.playerRank === match.player3)
+          ?.resultString || buildResultForPlayer(match.player3);
+      const p4Result =
+        playerResults.find((r) => r.playerRank === match.player4)
+          ?.resultString || buildResultForPlayer(match.player4);
+
+      if (shouldLog(5)) {
+        console.log(`  4-player game: p3="${p3Result}", p4="${p4Result}"`);
+      }
+
+      // Set result for player 3
+      if (p3Index >= 0 && p3Index < playersCopy.length) {
         const p3 = playersCopy[p3Index];
-        if (p3) {
-          const result2ForP3 = buildResultStringForPlayer(
-            match.player3,
-            match,
-            1,
-          );
-          if (result2ForP3) {
-            const p3Round = findLowestEmptyRound(p3);
-            if (p3Round >= 0) {
-              p3.gameResults[p3Round] = result2ForP3 + "_";
-              totalSet++;
-              if (shouldLog(5)) {
-                console.log(`  -> Set p3[${p3Round}] = "${result2ForP3}_"`);
-              }
-            } else {
-              if (shouldLog(5)) {
-                console.log(`  -> SKIPPED p3 (no empty rounds available)`);
-              }
+        if (p3 && p3Result) {
+          const p3Round = findLowestEmptyRound(p3);
+          if (p3Round >= 0) {
+            p3.gameResults[p3Round] = p3Result + "_";
+            totalSet++;
+            if (shouldLog(5)) {
+              console.log(`  -> Set p3[${p3Round}] = "${p3Result}_"`);
             }
           } else {
             if (shouldLog(5)) {
-              console.log(`  -> SKIPPED p3 (no result string)`);
+              console.log(`  -> SKIPPED p3 (no empty rounds available)`);
             }
           }
         }
       }
 
-      if (
-        p4Index >= 0 &&
-        p4Index < playersCopy.length &&
-        p4Index !== p1Index &&
-        p4Index !== p2Index &&
-        p4Index !== p3Index
-      ) {
+      // Set result for player 4
+      if (p4Index >= 0 && p4Index < playersCopy.length) {
         const p4 = playersCopy[p4Index];
-        if (p4) {
-          const result2ForP4 = buildResultStringForPlayer(
-            match.player4,
-            match,
-            1,
-          );
-          if (result2ForP4) {
-            const p4Round = findLowestEmptyRound(p4);
-            if (p4Round >= 0) {
-              p4.gameResults[p4Round] = result2ForP4 + "_";
-              totalSet++;
-              if (shouldLog(5)) {
-                console.log(`  -> Set p4[${p4Round}] = "${result2ForP4}_"`);
-              }
-            } else {
-              if (shouldLog(5)) {
-                console.log(`  -> SKIPPED p4 (no empty rounds available)`);
-              }
+        if (p4 && p4Result) {
+          const p4Round = findLowestEmptyRound(p4);
+          if (p4Round >= 0) {
+            p4.gameResults[p4Round] = p4Result + "_";
+            totalSet++;
+            if (shouldLog(5)) {
+              console.log(`  -> Set p4[${p4Round}] = "${p4Result}_"`);
             }
           } else {
             if (shouldLog(5)) {
-              console.log(`  -> SKIPPED p4 (no result string)`);
+              console.log(`  -> SKIPPED p4 (no empty rounds available)`);
             }
           }
         }
       }
     }
-
-    resultIndex++;
   }
 
   // Summary: show all non-null game results
@@ -1148,75 +1382,6 @@ export function repopulateGameResults(
   }
 
   return playersCopy;
-}
-
-function resultCodeToString(code: number): string {
-  if (code === 0) return "O";
-  if (code === 1) return "L";
-  if (code === 2) return "D";
-  if (code === 3) return "W";
-  return "O";
-}
-
-/**
- * Build result string for a specific player in a match
- * @param playerRank - The rank of the player this result is for
- * @param match - The match data containing all players and scores
- * @param scoreIndex - Which score to use (0 for first, 1 for second)
- */
-function buildResultStringForPlayer(
-  playerRank: number,
-  match: MatchData,
-  scoreIndex: number,
-): string {
-  const resultCodes = [
-    resultCodeToString(match.score1),
-    resultCodeToString(match.score2),
-  ];
-
-  if (match.player3 > 0 && match.player4 > 0) {
-    // 4-player game: format is "A:BWC:D" where A,B are first pair, C,D are second pair
-    const p1 = match.player1;
-    const p2 = match.player2;
-    const p3 = match.player3;
-    const p4 = match.player4;
-
-    // Combine both result codes for 4-player games (e.g., "LL", "WW", "WD", etc.)
-    const combinedResultCodes = resultCodes[0] + resultCodes[1];
-
-    if (playerRank === p1) {
-      // Player 1 is in first pair, has score1
-      return `${p1}:${p2}${combinedResultCodes}${p3}:${p4}`;
-    } else if (playerRank === p2) {
-      // Player 2 is in first pair, has score1 (opposite of p1)
-      const oppScore =
-        match.score1 === 1 ? 3 : match.score1 === 3 ? 1 : match.score1;
-      return `${p2}:${p1}${resultCodeToString(oppScore)}${resultCodes[1]}${p4}:${p3}`;
-    } else if (playerRank === p3) {
-      // Player 3 is in second pair, has score2
-      return `${p3}:${p4}${combinedResultCodes}${p1}:${p2}`;
-    } else if (playerRank === p4) {
-      // Player 4 is in second pair, has score2 (opposite of p3)
-      const oppScore =
-        match.score2 === 1 ? 3 : match.score2 === 3 ? 1 : match.score2;
-      return `${p4}:${p3}${resultCodes[0]}${resultCodeToString(oppScore)}${p2}:${p1}`;
-    }
-  } else {
-    // 2-player game: format is "AWB" or "AWBLC" for multiple results
-    const p1 = match.player1;
-    const p2 = match.player2;
-
-    if (playerRank === p1) {
-      return `${p1}${resultCodes[scoreIndex]}${p2}`;
-    } else if (playerRank === p2) {
-      // Opposite score
-      const oppScore =
-        match.score1 === 1 ? 3 : match.score1 === 3 ? 1 : match.score1;
-      return `${p2}${resultCodeToString(oppScore)}${p1}`;
-    }
-  }
-
-  return "";
 }
 
 export const ERROR_MESSAGES: Record<number, string> = {

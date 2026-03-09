@@ -3,6 +3,7 @@ import type {
   PlayerData,
   ValidationResult,
   MatchData,
+  PlayerMatchResult,
 } from "../utils/hashUtils";
 import {
   processGameResults,
@@ -184,6 +185,8 @@ export default function LadderForm({
     null,
   );
   const [pendingMatches, setPendingMatches] = useState<any[] | null>(null);
+  const [pendingPlayerResultsByMatch, setPendingPlayerResultsByMatch] =
+    useState<Map<string, PlayerMatchResult[]> | null>(null);
   const [entryCell, setEntryCell] = useState<{
     playerRank: number;
     round: number;
@@ -394,16 +397,15 @@ export default function LadderForm({
     matches: MatchData[];
     errors: ValidationResult[];
     errorCount: number;
+    playerResultsByMatch?: Map<string, any[]>;
   } => {
     if (players.length === 0) {
       console.error("No players to process");
       return { hasErrors: false, matches: [], errors: [], errorCount: 0 };
     }
 
-    const { matches, hasErrors, errorCount, errors } = processGameResults(
-      players,
-      31,
-    );
+    const { matches, hasErrors, errorCount, errors, playerResultsByMatch } =
+      processGameResults(players, 31);
     if (shouldLog(4)) {
       console.log(`Validated ${matches.length} matches, errors: ${errorCount}`);
     }
@@ -413,6 +415,7 @@ export default function LadderForm({
       setIsRecalculating(true);
       setPendingPlayers(players);
       setPendingMatches(matches);
+      setPendingPlayerResultsByMatch(playerResultsByMatch);
       setCurrentError(errors[0]);
       setEntryCell({
         playerRank: errors[0].playerRank,
@@ -422,7 +425,7 @@ export default function LadderForm({
       setWalkthroughIndex(0);
     }
 
-    return { hasErrors, matches, errors, errorCount };
+    return { hasErrors, matches, errors, errorCount, playerResultsByMatch };
   };
 
   const recalculateRatings = () => {
@@ -432,14 +435,19 @@ export default function LadderForm({
       );
     }
 
-    const { hasErrors, matches } = checkGameErrors();
+    const { hasErrors, matches, playerResultsByMatch } = checkGameErrors();
 
     if (!hasErrors) {
       if (shouldLog(10)) {
         console.log("No errors. Clearing and repopulating game results.");
       }
       setIsRecalculating(false);
-      const processedPlayers = repopulateGameResults(players, matches, 31);
+      const processedPlayers = repopulateGameResults(
+        players,
+        matches,
+        31,
+        playerResultsByMatch,
+      );
       const calculatedPlayers = calculateRatings(processedPlayers, matches);
       setPlayers(calculatedPlayers);
       localStorage.setItem("ladder_players", JSON.stringify(calculatedPlayers));
@@ -677,6 +685,7 @@ export default function LadderForm({
       playersToUse,
       pendingMatches,
       31,
+      pendingPlayerResultsByMatch || undefined,
     );
     const calculatedPlayers = calculateRatings(
       processedPlayers,
