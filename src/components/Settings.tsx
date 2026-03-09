@@ -46,7 +46,7 @@ export default function Settings({
   };
 
   const handleClearAll = () => {
-    console.log(">>> [BUTTON PRESSED] Clear All Data");
+    console.log(">>> [BUTTON PRESSED] Set Sample Data");
     if (
       window.confirm(
         "Are you sure you want to reset all data to sample data? This will clear all loaded players and game results.",
@@ -224,7 +224,7 @@ export default function Settings({
             }}
           >
             <Trash2 size={16} />
-            Clear All Data
+            Set Sample Data
           </button>
           <p
             style={{

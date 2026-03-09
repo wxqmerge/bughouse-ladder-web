@@ -4,7 +4,7 @@
   "expectedOutputFile": "test-cases/recalculate_ratings.tab",
   "actions": [
     { "type": "clickMenu", "menu": "Settings" },
-    { "type": "clickButtonByText", "text": "Clear All Data" },
+    { "type": "clickButtonByText", "text": "Set Sample Data" },
     { "type": "recalculateRatings" },
     { "type": "fillCorrection", "correctionValue": "5W3" },
     { "type": "submitCorrection" },

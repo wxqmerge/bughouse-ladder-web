@@ -130,7 +130,7 @@ async function runTest(config, rebuildApp = false, logFile = null) {
 
     const page = await context.newPage();
 
-    // Handle confirm dialogs (e.g., Clear All Data confirmation)
+    // Handle confirm dialogs (e.g., Set Sample Data confirmation)
     page.on("dialog", async (dialog) => {
       logLine(`-- Dialog: ${dialog.message()}`);
       await dialog.accept();
@@ -254,10 +254,12 @@ async function runTest(config, rebuildApp = false, logFile = null) {
         if (action.type === "clearAllData") {
           logLine("-- Clearing all data...");
           await sleep(1000);
-          const clearButton = await page.$('button:has-text("Clear All Data")');
+          const clearButton = await page.$(
+            'button:has-text("Set Sample Data")',
+          );
           if (clearButton) {
             await clearButton.click();
-            logLine(`-- Button pressed: Clear All Data`);
+            logLine(`-- Button pressed: Set Sample Data`);
             await sleep(2000);
 
             // Wait for page reload triggered by window.location.reload()
