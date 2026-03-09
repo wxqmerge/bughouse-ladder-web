@@ -469,10 +469,10 @@ Total player result entries: 142
 -- Cancelling dialog...
 -- Clicking Export button...
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Export_Results_2026-03-09T18-08-08-330Z.tab
+>>> [LOG] Exported 14 players to Export_Results_2026-03-09T18-16-06-643Z.tab
 -- Button pressed: Export
--- Download detected: Export_Results_2026-03-09T18-08-08-330Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T18-08-08-330Z.tab
+-- Download detected: Export_Results_2026-03-09T18-16-06-643Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T18-16-06-643Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\recalculate_ratings.tab
 

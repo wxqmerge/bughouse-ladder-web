@@ -2,5 +2,10 @@
   "name": "01-kings-cross",
   "inputFilePath": "kings_cross.tab",
   "expectedOutputFile": "test-cases/kings_cross.tab",
+  "actions": [
+    {
+      "type": "recalculateRatings"
+    }
+   ],
   "clickExportButton": true
 }

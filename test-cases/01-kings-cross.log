@@ -21,14 +21,183 @@ Server started on port 5173
 -- Player count after load: 26
 -- First player: Cullano Dylan
 -- Successfully loaded 26 players
+-- Executing actions: recalculateRatings
+-- Clicking Recalculate Ratings...
+>>> [LOG] >>> [BUTTON PRESSED] Recalculate Ratings - 26 players
+>>> [LOG] [ADDED] Player 7 round 0: "2L8" -> normKey="2-8"
+>>> [LOG] dataHash: skey="135296_0", sval="2L8", lKeyVal=49352960, startIdx=256
+>>> [LOG] dataHash: EMPTY slot at idx 256, storing keyVal=49352960, value="2L8"
+>>> [LOG] Storing hashValue=135296, round=0, is4Player=false, result="2L8", player1=2, player2=8
+>>> [LOG] [ADDED] Player 22 round 0: "5L25" -> normKey="5-25"
+>>> [LOG] dataHash: skey="340608_0", sval="5L25", lKeyVal=51406080, startIdx=1280
+>>> [LOG] dataHash: EMPTY slot at idx 1280, storing keyVal=51406080, value="5L25"
+>>> [LOG] Storing hashValue=340608, round=0, is4Player=false, result="5L25", player1=5, player2=25
+>>> [LOG] [ADDED] Player 1 round 1: "12:1LD3:4" -> normKey="1-3-4-12"
+>>> [LOG] dataHash: skey="135153153_1", sval="12:1LD3:4", lKeyVal=49351531531, startIdx=1035
+>>> [LOG] dataHash: EMPTY slot at idx 1035, storing keyVal=49351531531, value="12:1LD3:4"
+>>> [LOG] Storing hashValue=135153153, round=1, is4Player=true, result="12:1LD3:4", player1=1, player2=12
+>>> [LOG] [ADDED] Player 26 round 1: "11D26" -> normKey="11-26"
+>>> [LOG] dataHash: skey="734464_1", sval="11D26", lKeyVal=55344641, startIdx=1537
+>>> [LOG] dataHash: EMPTY slot at idx 1537, storing keyVal=55344641, value="11D26"
+>>> [LOG] Storing hashValue=734464, round=1, is4Player=false, result="11D26", player1=11, player2=26
+>>> [LOG] [DUPLICATE DETECTED] Player 10 round 1: "12:1LD3:4" -> normKey="1-3-4-12" (already processed)
+>>> [LOG] [ADDED] Player 3 round 2: "12:6LD3:4" -> normKey="3-4-6-12"
+>>> [LOG] dataHash: skey="404406787_2", sval="12:6LD3:4", lKeyVal=52044067872, startIdx=1056
+>>> [LOG] dataHash: EMPTY slot at idx 1056, storing keyVal=52044067872, value="12:6LD3:4"
+>>> [LOG] Storing hashValue=404406787, round=2, is4Player=true, result="12:6LD3:4", player1=3, player2=4
+>>> [LOG] 
+=== HASH TABLE DEBUG ===
+>>> [LOG] Hash[256]: keyVal=49352960, value="2L8"
+>>> [LOG] Hash[1035]: keyVal=49351531531, value="12:1LD3:4"
+>>> [LOG] Hash[1056]: keyVal=52044067872, value="12:6LD3:4"
+>>> [LOG] Hash[1280]: keyVal=51406080, value="5L25"
+>>> [LOG] Hash[1537]: keyVal=55344641, value="11D26"
+>>> [LOG] Total hash entries stored: 5
+>>> [LOG] Hash table results: 2L8, 12:1LD3:4, 12:6LD3:4, 5L25, 11D26
+>>> [LOG] 
+[processGameResults] Total matches created: 5
+>>> [LOG] 2-player matches: 3
+>>> [LOG] 4-player matches: 2
+>>> [LOG] ========================
+
+>>> [LOG] 
+[FINAL] Matches built: 5
+>>> [LOG] 
+=== RECALC START ===
+>>> [LOG] Matches to process: 5
+>>> [LOG] Total existing game results: 801
+>>> [LOG] After clear - verifying arrays are empty:
+>>> [LOG] Player 8: 0 results (should be 0), array length: 31
+>>> [LOG] Player 7: 0 results (should be 0), array length: 31
+>>> [LOG] Player 22: 0 results (should be 0), array length: 31
+>>> [LOG] Player 1: 0 results (should be 0), array length: 31
+>>> [LOG] 
+=== START REPOPULATION ===
+>>> [LOG] Total matches to process: 5
+>>> [LOG] Players input: 26
+>>> [LOG] Player 1: 30 existing results - 12:1LD3:4, , , , , , , , , , , , , , , , , , , , , , , , , , , , , 
+>>> [LOG] Player 3: 29 existing results - 12:6LD3:4, , , , , , , , , , , , , , , , , , , , , , , , , , , , 
+>>> [LOG] Player 2: 31 existing results - , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , 
+>>> [LOG] Player 4: 31 existing results - , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , 
+>>> [LOG] Total input game results: 801
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=8 -> "2L8"
+>>> [LOG]   -> Set player 2[0] = "2L8_"
+>>> [LOG]   -> Set player 8[0] = "2L8_"
+>>> [LOG] [REPOPULATE] Match: p1=5, p2=25 -> "5L25"
+>>> [LOG]   -> Set player 5[0] = "5L25_"
+>>> [LOG]   -> Set player 25[0] = "5L25_"
+>>> [LOG] [REPOPULATE] Match: p1=1, p2=12 -> "1:12LD3:4"
+>>> [LOG]   -> Set player 1[0] = "1:12LD3:4_"
+>>> [LOG]   -> Set player 12[0] = "1:12LD3:4_"
+>>> [LOG]   -> Set player 3[0] = "1:12LD3:4_"
+>>> [LOG]   -> Set player 4[0] = "1:12LD3:4_"
+>>> [LOG] [REPOPULATE] Match: p1=11, p2=26 -> "11D26"
+>>> [LOG]   -> Set player 11[0] = "11D26_"
+>>> [LOG]   -> Set player 26[0] = "11D26_"
+>>> [LOG] [REPOPULATE] Match: p1=3, p2=4 -> "3:4WD6:12"
+>>> [LOG]   -> Set player 3[1] = "3:4WD6:12_"
+>>> [LOG]   -> Set player 4[1] = "3:4WD6:12_"
+>>> [LOG]   -> Set player 6[0] = "3:4WD6:12_"
+>>> [LOG]   -> Set player 12[1] = "3:4WD6:12_"
+>>> [LOG] 
+=== REPOPULATION SUMMARY ===
+>>> [LOG] Total entries SET during loop: 14
+>>> [LOG] 
+Player 1 (Dylan Cullano) gameResults:
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (1): [1:12LD3:4_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG] 
+Player 2 (Ryan Layman) gameResults:
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (1): [2L8_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG] 
+Player 3 (James Nuesea) gameResults:
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (2): [1:12LD3:4_, 3:4WD6:12_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG] 
+Player 8 (Dylan Cullano): 1 results
+>>> [LOG] 
+Player 7 (Ryan Layman): 1 results
+>>> [LOG] 
+Player 22 (James Nuesea): 2 results
+>>> [LOG] 
+Player 1 (Jermaine Morehedd): 2 results
+>>> [LOG] 
+Player 25 (Jan Arauz): 1 results
+>>> [LOG] 
+Player 26 (Alan Filion): 1 results
+>>> [LOG] 
+Player 3 (Jayden Ibarra): 1 results
+>>> [LOG] 
+Player 5 (Daniel Smith): 1 results
+>>> [LOG] 
+Player 2 (Kieran Williams): 2 results
+>>> [LOG] 
+Player 16 (Francisco Sr.): 1 results
+>>> [LOG] 
+Player 18 (Dave adult): 1 results
+>>> [LOG] 
+Total player result entries: 18
+>>> [LOG] Expected: 10 (2 per match)
+>>> [LOG] Difference: -4
+>>> [LOG] ============================
+
+>>> [LOG] Total results after repopulation: 14
+>>> [LOG] Rating calculation complete
+
+-- Button pressed: Recalculate Ratings
 -- Clicking Export button...
 >>> [LOG] >>> [BUTTON PRESSED] Export - 26 players
->>> [LOG] Exported 26 players to Export_Results_2026-03-09T13-58-54-468Z.tab
+>>> [LOG] Exported 26 players to Export_Results_2026-03-09T18-26-42-779Z.tab
 -- Button pressed: Export
--- Download detected: Export_Results_2026-03-09T13-58-54-468Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T13-58-54-468Z.tab
+-- Download detected: Export_Results_2026-03-09T18-26-42-779Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T18-26-42-779Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\kings_cross.tab
 
 -- Comparing output...
--- Test PASSED - Output matches expected file!
+-- Test FAILED - Output does not match
+
+--- Diff ---
+Line 2:
+  Expected: "A1	Cullano	Dylan	1279	8		8	0"
+  Actual:   "A1	Cullano	Dylan	1279	8	1282	8	0					1:12LD3:4_"
+Line 3:
+  Expected: "A1	Layman	Ryan	957	7		8	0	1				2L8"
+  Actual:   "A1	Layman	Ryan	957	7	958	8	0	1				2L8_"
+Line 4:
+  Expected: "A1	Nuesea	James	956	22		6	0	1				5L25"
+  Actual:   "A1	Nuesea	James	956	22	945	6	0	1				1:12LD3:4_	3:4WD6:12_"
+Line 5:
+  Expected: "A1	Morehedd	Jermaine	908	1		8	0	1					12:1LD3:4"
+  Actual:   "A1	Morehedd	Jermaine	908	1	919	8	0	1				1:12LD3:4_	3:4WD6:12_"
+Line 6:
+  Expected: "A	Arauz	Jan	1084	25			0"
+  Actual:   "A	Arauz	Jan	1084	25	1090		0					5L25_"
+Line 7:
+  Expected: "A	Filion	Alan	1	26		6	0						11D26"
+  Actual:   "A	Filion	Alan	1	26		6	0					3:4WD6:12_"
+Line 9:
+  Expected: "B	Ibarra	Jayden	400	3		5	0							12:6LD3:4"
+  Actual:   "B	Ibarra	Jayden	400	3	399	5	0					2L8_"
+Line 11:
+  Expected: "A	Chavez	Cali	899	10		1	0						12:1LD3:4"
+  Actual:   "A	Chavez	Cali	899	10		1	0"
+Line 12:
+  Expected: "B	Smith	Daniel	634	5		4	0"
+  Actual:   "B	Smith	Daniel	634	5	643	4	0					11D26_"
+Line 13:
+  Expected: "B	Williams	Kieran	986	2		1	0"
+  Actual:   "B	Williams	Kieran	986	2	983	1	0					1:12LD3:4_	3:4WD6:12_"
+Line 26:
+  Expected: "	Sr.	Francisco	-927	16			0"
+  Actual:   "	Sr.	Francisco	-927	16	921		0					5L25_"
+Line 27:
+  Expected: "	adult	Dave	-1245	18			0	1"
+  Actual:   "	adult	Dave	-1245	18	1236		0	1				11D26_"
+
+--- End diff ---
+

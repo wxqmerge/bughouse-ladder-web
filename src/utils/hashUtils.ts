@@ -807,7 +807,14 @@ export function processGameResults(
       }
 
       // Check normalized key to catch different orderings of same players
-      if (processedPairs.has(normKey)) continue;
+      if (processedPairs.has(normKey)) {
+        if (shouldLog(5)) {
+          console.log(
+            `[DUPLICATE DETECTED] Player ${player.rank} round ${round}: "${result}" -> normKey="${normKey}" (already processed)`,
+          );
+        }
+        continue;
+      }
 
       // DEBUG: Log validation errors around player rank checks
       if (player1Rank <= 0 || player2Rank <= 0) {
@@ -912,6 +919,12 @@ export function processGameResults(
       // Use normalized key for deduplication to catch different orderings
       processedPairs.add(normKey);
 
+      if (shouldLog(5)) {
+        console.log(
+          `[ADDED] Player ${player.rank} round ${round}: "${result}" -> normKey="${normKey}"`,
+        );
+      }
+
       const _matchKey = `${hashValue}_${round}`;
       dataHash(_matchKey, result, 0);
 
@@ -972,6 +985,11 @@ export function processGameResults(
 
       console.log("========================\n");
     }
+  }
+
+  // DEBUG: Log final match count
+  if (shouldLog(5)) {
+    console.log(`\n[FINAL] Matches built: ${results.length}`);
   }
 
   // Process match results and check for conflicts
