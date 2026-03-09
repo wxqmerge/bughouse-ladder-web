@@ -23,10 +23,10 @@ Server started on port 5173
 -- Successfully loaded 26 players
 -- Clicking Export button...
 >>> [LOG] >>> [BUTTON PRESSED] Export - 26 players
->>> [LOG] Exported 26 players to Export_Results_2026-03-07T18-25-44-343Z.tab
+>>> [LOG] Exported 26 players to Export_Results_2026-03-09T13-58-54-468Z.tab
 -- Button pressed: Export
--- Download detected: Export_Results_2026-03-07T18-25-44-343Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-07T18-25-44-343Z.tab
+-- Download detected: Export_Results_2026-03-09T13-58-54-468Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T13-58-54-468Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\kings_cross.tab
 
