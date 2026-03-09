@@ -436,6 +436,18 @@ export default function LadderForm({
 
     // Always build fresh matches from current UI state (no caching)
     const result = checkGameErrors();
+
+    // If there are errors, show the error dialog and return early
+    if (result.hasErrors && result.errors.length > 0) {
+      if (shouldLog(5)) {
+        console.log(`\n=== RECALC PAUSED ===`);
+        console.log(
+          `Found ${result.errors.length} errors - showing error dialog`,
+        );
+      }
+      return;
+    }
+
     let matches: MatchData[] = result.matches;
     let playerResultsByMatch: Map<string, PlayerMatchResult[]> | undefined =
       result.playerResultsByMatch;
@@ -452,7 +464,6 @@ export default function LadderForm({
       console.log(`Total existing game results: ${totalExisting}`);
     }
 
-    setIsRecalculating(false);
     const processedPlayers = repopulateGameResults(
       players,
       matches,
