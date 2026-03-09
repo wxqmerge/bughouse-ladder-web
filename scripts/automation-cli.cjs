@@ -95,6 +95,8 @@ async function runTest(config, rebuildApp = false, logFile = null) {
     if (logFile) logStream += msg + "\n";
   };
 
+  let testOutputContent = null; // Track output content for potential update
+
   logLine("\n========================================");
   logLine(`-- Running test: ${config.name}`);
   logLine("========================================\n");
@@ -150,6 +152,7 @@ async function runTest(config, rebuildApp = false, logFile = null) {
         const filePath = join(downloadsPath, suggestedName);
         await download.saveAs(filePath);
         outputContent = await fs.readFile(filePath, "utf-8");
+        testOutputContent = outputContent; // Save for potential update
         logLine(`-- Download saved to: ${filePath}`);
       } catch (err) {
         logLine(`Failed to save download: ${err.message}`);
@@ -587,17 +590,17 @@ async function runTest(config, rebuildApp = false, logFile = null) {
 
     if (comparison.match) {
       logLine("-- Test PASSED - Output matches expected file!");
-      return true;
+      return { success: true, outputContent: testOutputContent };
     } else {
       logLine("-- Test FAILED - Output does not match");
       logLine("\n--- Diff ---");
       logLine(comparison.diff);
       logLine("--- End diff ---\n");
-      return false;
+      return { success: false, outputContent: testOutputContent };
     }
   } catch (error) {
     logLine(`-- Test error: ${error.message}`);
-    return false;
+    return { success: false, outputContent: null };
   } finally {
     if (browser) {
       await browser.close();
@@ -623,6 +626,7 @@ async function main() {
 
   let configPath = "";
   let rebuild = false;
+  let updateExpected = false;
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "--config" && args[i + 1]) {
@@ -630,6 +634,8 @@ async function main() {
       i++;
     } else if (args[i] === "--rebuild") {
       rebuild = true;
+    } else if (args[i] === "--update-expected") {
+      updateExpected = true;
     }
   }
 
@@ -649,6 +655,7 @@ async function main() {
       let allPassed = true;
       let passedCount = 0;
       let failedCount = 0;
+      const failedTests = []; // Track failed tests with their expected output files
 
       for (let i = 0; i < config.tests.length; i++) {
         const testConfig = config.tests[i];
@@ -669,7 +676,8 @@ async function main() {
         const baseName = configFileName.replace(/\.json$/i, "");
         const testLogFile = `test-cases/${baseName}.log`;
 
-        const success = await runTest(individualConfig, rebuild, testLogFile);
+        const result = await runTest(individualConfig, rebuild, testLogFile);
+        const success = result.success;
 
         if (success) {
           passedCount++;
@@ -678,6 +686,14 @@ async function main() {
           allPassed = false;
           failedCount++;
           console.log(`\n[FAIL] Test ${i + 1}`);
+          // Track failed test with expected output file and actual output content
+          if (individualConfig.expectedOutputFile) {
+            failedTests.push({
+              testName: baseName,
+              expectedOutputFile: individualConfig.expectedOutputFile,
+              actualOutput: result.outputContent,
+            });
+          }
         }
       }
 
@@ -691,8 +707,93 @@ async function main() {
         console.log("\nAll tests passed!");
         process.exit(0);
       } else {
-        console.log("\nSome tests failed.");
-        process.exit(1);
+        // Show failed tests and ask if user wants to update expected outputs
+        console.log("\n\nFailed tests:");
+        failedTests.forEach((test, idx) => {
+          console.log(
+            `  ${idx + 1}. ${test.testName}: ${test.expectedOutputFile}`,
+          );
+        });
+
+        // If --update-expected flag was passed, update automatically
+        if (updateExpected) {
+          console.log(
+            "\n\n-- Updating expected output files with test outputs...",
+          );
+          for (const test of failedTests) {
+            try {
+              if (test.actualOutput) {
+                const normalizedContent = normalizeContent(test.actualOutput);
+                await fs.writeFile(
+                  test.expectedOutputFile,
+                  normalizedContent,
+                  "utf-8",
+                );
+                console.log(`  Updated: ${test.expectedOutputFile}`);
+              } else {
+                console.log(
+                  `  Skipped ${test.expectedOutputFile} (no output content available)`,
+                );
+              }
+            } catch (err) {
+              console.log(
+                `  Error updating ${test.expectedOutputFile}: ${err.message}`,
+              );
+            }
+          }
+          console.log("\nExpected output files updated!");
+        } else {
+          // Interactive prompt for manual update
+          const readline = require("readline").createInterface({
+            input: process.stdin,
+            output: process.stdout,
+          });
+
+          readline.question(
+            "\nDo you want to update expected output files with test outputs? (y/n): ",
+            async (answer) => {
+              readline.close();
+
+              if (
+                answer.toLowerCase() === "y" ||
+                answer.toLowerCase() === "yes"
+              ) {
+                console.log(
+                  "\n\n-- Updating expected output files with test outputs...",
+                );
+                for (const test of failedTests) {
+                  try {
+                    if (test.actualOutput) {
+                      const normalizedContent = normalizeContent(
+                        test.actualOutput,
+                      );
+                      await fs.writeFile(
+                        test.expectedOutputFile,
+                        normalizedContent,
+                        "utf-8",
+                      );
+                      console.log(`  Updated: ${test.expectedOutputFile}`);
+                    } else {
+                      console.log(
+                        `  Skipped ${test.expectedOutputFile} (no output content available)`,
+                      );
+                    }
+                  } catch (err) {
+                    console.log(
+                      `  Error updating ${test.expectedOutputFile}: ${err.message}`,
+                    );
+                  }
+                }
+                console.log("\nExpected output files updated!");
+              } else {
+                console.log("\nSkipping expected output file updates.");
+              }
+
+              process.exit(1);
+            },
+          );
+          return; // Don't exit yet, wait for user input
+        }
       }
     }
 
@@ -702,9 +803,9 @@ async function main() {
     const logFile = `test-cases/${baseName}.log`;
 
     console.log("\n=== Running test ===");
-    const success = await runTest(config, rebuild, logFile);
+    const result = await runTest(config, rebuild, logFile);
 
-    if (success) {
+    if (result.success) {
       console.log("Test completed successfully!");
       process.exit(0);
     } else {

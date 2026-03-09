@@ -9,30 +9,38 @@
 ## Build and Development Commands
 
 ### Development
+
 - **Start the development server**: `npm run dev`
 - **Build for production**: `npm run build`
 - **Preview production build**: `npm run preview`
 
 ### Code Quality
+
 - **Run ESLint**: `npm run lint`
 - **Run type checking**: `npx tsc -b` or included in `npm run build`
 - **Project uses ESLint** (no separate formatter configured)
 
 ### Testing
-- **No test framework currently configured** in package.json
-- Tests are not part of the build pipeline
-- If adding tests, install a test framework (Vitest recommended for Vite projects)
-- If you need to test existing functionality, use `npm run build` to ensure code correctness
+
+- **Automation CLI**: `npm run test:automation -- --config <test-config.json>`
+- **Run all tests**: `npm run test:automation:all` (runs 00-test_all.json)
+- **Rebuild before tests**: `npm run test:automation -- --rebuild`
+- **Update expected outputs**: After failed tests, you'll be prompted to update expected output files. Or use `--update-expected` flag to auto-update.
+- Test configs are in `test-cases/` directory
+- Each test config specifies input file, actions to perform, and expected output file
+- Logs are saved to `test-cases/<test-name>.log`
 
 ## Code Style Guidelines
 
 ### Imports
+
 1. React hooks and utilities first: `import { useState, useEffect, useRef } from 'react'`
 2. Then component imports: `import ComponentName from './path'`
 3. External libraries in dependency order (UI libraries first, then utilities)
 4. Local imports last: `import './css/index.css'`
 
 ### Components
+
 1. **Functional components only** with `export default`
 2. **PascalCase** naming convention
 3. **Type annotations** required for props interfaces
@@ -42,6 +50,7 @@
 7. No side effects in render functions—use `useEffect` or `useMemo`
 
 ### TypeScript
+
 1. All files must be `.tsx` or `.ts`
 2. Use **strict types** and optional chaining (`?.`) frequently
 3. Provide fallback values: `value || defaultValue`
@@ -53,6 +62,7 @@
 9. Explicitly cast when necessary: `as Type`
 
 ### Naming Conventions
+
 - **Components**: PascalCase (e.g., `LadderForm`, `Settings`, `AppForm`)
 - **Functions**: camelCase (e.g., `loadPlayers`, `handleSort`, `formatDate`)
 - **Variables**: camelCase (e.g., `players`, `isWide`, `fileName`)
@@ -61,6 +71,7 @@
 - **File names**: match component names (e.g., `LadderForm.tsx`, `App.tsx`)
 
 ### Styling
+
 1. Use **inline styles** with template literals for component-specific styles
 2. Consistent spacing: `padding: '0.5rem'`, `gap: '1rem'`, `margin: '1rem'`
 3. Use hex colors (avoid standard color names like 'red', 'blue')
@@ -71,6 +82,7 @@
 8. Style objects should be consistent with one another
 
 ### Error Handling
+
 1. **Try-catch for localStorage**: `try { localStorage.setItem(...) } catch (err) {}`
 2. **Validate before parsing**: `if (col[4] && !isNaN(parseInt(col[4])))`
 3. **Null safety**: `e.target?.result`, `file?.[0]`, `prevChar ? prevChar.match(pattern) : null`
@@ -79,6 +91,7 @@
 6. **Graceful degradation** for missing data
 
 ### React Best Practices
+
 1. **Hooks must be at top** of functional components, before any return
 2. **Avoid side effects in render**—use `useEffect` or `useMemo`
 3. **Key props** for list rendering: `{items.map((item) => <div key={item.id}>`
@@ -89,6 +102,7 @@
 8. **Separation of concerns**: State declarations, handlers, and JSX grouped separately
 
 ### Formatting and Organization
+
 1. Group logical statements together in functions
 2. Import statements at top of file (no inline imports)
 3. Comments for complex logic (especially parsing)
@@ -97,12 +111,14 @@
 6. Use `const` for immutability, `let` for mutable (rarely needed)
 
 ### Accessibility
+
 1. Proper button labels and semantic HTML elements
 2. Accessibility attributes: `aria-label`, `role` where appropriate
 3. Keyboard navigation considerations
 4. Focus management for modals/overlays
 
 ### File Structure
+
 1. **Root**: `src/` - Contains components, types, utilities
 2. **Components**: `src/components/` - Named exports if needed
 3. **Types**: `src/types.ts` - Shared interfaces and types
@@ -110,11 +126,13 @@
 5. **Entry**: `src/main.tsx`
 
 ### External Libraries
+
 1. **lucide-react**: Icon library—`import { IconName } from 'lucide-react'`
 2. **SheetJS/xlsx**: Excel file handling
 3. **@tanstack/react-table**: Table component and features
 
 ### Known Issues to Avoid
+
 1. Don't duplicate extensive logic (runTests manually reads and parses kings_cross.tab file, then calls recalculateRatings and exportPlayers)
 2. Don't use `any` type when proper typing exists
 3. Don't access localStorage synchronously in render without checks
@@ -124,15 +142,17 @@
 ## Function Implementation Details
 
 ### runTests() Function
+
 The `runTests()` function in `LadderForm.tsx` is a testing utility that:
+
 - **Purpose**: to simulate pressing buttons in GUI
 - **Workflow**:
   1. Creates a hidden file input element
   2. Triggers file selection dialog
   3. When user selects a file, reads it as text
-  5. Sets player data from parsing results
-  6. Calls `recalculateRatings()` to calculate new ratings based on game results
-  7. Calls `exportPlayers()` to export the updated data
+  4. Sets player data from parsing results
+  5. Calls `recalculateRatings()` to calculate new ratings based on game results
+  6. Calls `exportPlayers()` to export the updated data
 
 ## Getting Started for New Agents
 

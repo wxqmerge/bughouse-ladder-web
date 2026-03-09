@@ -292,10 +292,10 @@ Total player result entries: 18
 -- Button pressed: Recalculate Ratings
 -- Clicking Export button...
 >>> [LOG] >>> [BUTTON PRESSED] Export - 26 players
->>> [LOG] Exported 26 players to Export_Results_2026-03-09T19-04-49-224Z.tab
+>>> [LOG] Exported 26 players to Export_Results_2026-03-09T19-23-17-538Z.tab
 -- Button pressed: Export
--- Download detected: Export_Results_2026-03-09T19-04-49-224Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T19-04-49-224Z.tab
+-- Download detected: Export_Results_2026-03-09T19-23-17-538Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T19-23-17-538Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\kings_cross.tab
 

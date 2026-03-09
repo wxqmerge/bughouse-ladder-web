@@ -501,59 +501,12 @@ Total player result entries: 134
 -- Cancelling dialog...
 -- Clicking Export button...
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Export_Results_2026-03-09T19-06-30-108Z.tab
+>>> [LOG] Exported 14 players to Export_Results_2026-03-09T19-24-58-358Z.tab
 -- Button pressed: Export
--- Download detected: Export_Results_2026-03-09T19-06-30-108Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T19-06-30-108Z.tab
+-- Download detected: Export_Results_2026-03-09T19-24-58-358Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T19-24-58-358Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\recalculate_ratings.tab
 
 -- Comparing output...
--- Test FAILED - Output does not match
-
---- Diff ---
-Line 2:
-  Expected: "	Garcia	Sarah	1351	1	1226	6th	2	2				4W5	8L11"
-  Actual:   "	Garcia	Sarah	1351	1	1344	6th	2	2				1W2_	1W13_	1:12WW6:8_	1L4_	1D8_	1:5LL4:6_	1:8WL6:11_	1:3DW13:14_	1D3_"
-Line 3:
-  Expected: "B	Smith	Jane	1008	2	1386	2th	4	4				12:11LL10:9	13W1	5:3DD2:8	6:7LL14:4"
-  Actual:   "B	Smith	Jane	1008	2	1000	2th	4	4				2W3_	2:3DD4:5_	1W2_	2:14LL3:8_	2:14LD4:10_	2:8DD3:5_	2:14DW10:11_	2:3WD11:14_"
-Line 4:
-  Expected: "C	Moore	James	1061	3	1109	2th	2	2				2W3	5D13"
-  Actual:   "C	Moore	James	1061	3	1068	2th	2	2				2W3_	2:3DD4:5_	2:14LL3:8_	3L4_	3:8DL7:9_	2:8DD3:5_	2:3WD11:14_	1:3DW13:14_	1D3_"
-Line 5:
-  Expected: "A1	Jackson	Daniel	1351	4	1255	6th	4	4				2:3DD4:5	10:7DD8:14	13:6WD9:11"
-  Actual:   "A1	Jackson	Daniel	1351	4	1334	6th	4	4				4W5_	2:3DD4:5_	4:7WW5:6_	3L4_	1L4_	2:14LD4:10_	1:5LL4:6_	4:14WW6:7_"
-Line 6:
-  Expected: "D	Brown	Emily	1068	5	1010	4th	2	2				10W9	3:8WW14:2"
-  Actual:   "D	Brown	Emily	1068	5	1062	4th	2	2				4W5_	2:3DD4:5_	4:7WW5:6_	5:8DD6:7_	5D13_	2:8DD3:5_	1:5LL4:6_	5W10_"
-Line 7:
-  Expected: "E	Anderson	Thomas	1228	6	1088	4th	4	4				5:6LL7:4	11L13	9L12	3D1"
-  Actual:   "E	Anderson	Thomas	1228	6	1215	4th	4	4				4:7WW5:6_	5:8DD6:7_	1:12WW6:8_	6:13WD9:11_	1:5LL4:6_	1:8WL6:11_	4:14WW6:7_"
-Line 8:
-  Expected: "A1	Johnson	John	1000	7	1000	1th	2	2				1W2	12W13"
-  Actual:   "A1	Johnson	John	1000	7	1005	1th	2	2				4:7WW5:6_	7:10DD8:9_	5:8DD6:7_	7:10DD8:14_	3:8DL7:9_	4:14WW6:7_"
-Line 9:
-  Expected: "B	Wilson	Lisa	1031	8	1206	1th	3	3				13W12	3L4	2:14DW11:10"
-  Actual:   "B	Wilson	Lisa	1031	8	1048	1th	3	3				7:10DD8:9_	5:8DD6:7_	8L11_	7:10DD8:14_	2:14LL3:8_	3:8DL7:9_	1:12WW6:8_	1D8_	2:8DD3:5_	1:8WL6:11_"
-Line 10:
-  Expected: "B	White	Jennifer	1133	9	1276	7th	5	5				14:13DD12:11	7:9DW8:3	4:6WW5:1		1W1"
-  Actual:   "B	White	Jennifer	1133	9	1145	7th	5	5				9:10WW11:12_	9W10_	7:10DD8:9_	3:8DL7:9_	6:13WD9:11_	9L12_"
-Line 11:
-  Expected: "E	Davis	Michael	1207	10	1303	5th	2	2				2W3	1:12WW8:6"
-  Actual:   "E	Davis	Michael	1207	10	1213	5th	2	2				9:10WW11:12_	9W10_	7:10DD8:9_	7:10DD8:14_	2:14LD4:10_	2:14DW10:11_	5W10_"
-Line 12:
-  Expected: "	Thomas	Maria	1375	11	1358	5th	4	4				9:8DD7:10	4L1	2:3WD11:14	12D13"
-  Actual:   "	Thomas	Maria	1375	11	1379	5th	4	4				9:10WW11:12_	11:12DD13:14_	8L11_	11L13_	6:13WD9:11_	2:14DW10:11_	2:3WD11:14_	1:8WL6:11_"
-Line 13:
-  Expected: "D	Taylor	Anna	1203	12	1254	3th	3	3				14L13	8D1	5W10"
-  Actual:   "D	Taylor	Anna	1203	12	1191	3th	3	3				9:10WW11:12_	12W13_	11:12DD13:14_	1:12WW6:8_	9L12_"
-Line 14:
-  Expected: "A1	Miller	David	1131	13	1229	7th	3	3				13W12	4:10WD2:14	11:6LW8:1"
-  Actual:   "A1	Miller	David	1131	13	1144	7th	3	3				12W13_	11:12DD13:14_	13L14_	1W13_	5D13_	11L13_	6:13WD9:11_	1:3DW13:14_"
-Line 15:
-  Expected: "C	Williams	Robert	1066	14	1033	3th	5	5				7:6DD8:5	9:12WL11:10	13:14DL3:1	2:4WD1:1	1W1"
-  Actual:   "C	Williams	Robert	1066	14	1083	3th	5	5				11:12DD13:14_	13L14_	7:10DD8:14_	2:14LL3:8_	2:14LD4:10_	2:14DW10:11_	2:3WD11:14_	1:3DW13:14_	4:14WW6:7_"
-
---- End diff ---
-
+-- Test PASSED - Output matches expected file!
