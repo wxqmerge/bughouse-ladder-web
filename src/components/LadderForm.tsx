@@ -382,7 +382,7 @@ export default function LadderForm({
 
         localStorage.setItem("ladder_players", JSON.stringify(loadedPlayers));
         setPlayers(loadedPlayers);
-        
+
         setSortBy(null);
       } else {
       }
@@ -1010,7 +1010,6 @@ export default function LadderForm({
 
   const handleSort = (sortMethod: "rank" | "nRating" | "rating" | "byName") => {
     setSortBy(sortMethod);
-    
 
     const playersWithResults = players.map((player) => ({
       ...player,
@@ -1176,8 +1175,8 @@ export default function LadderForm({
         isAdmin={isAdmin}
       />
 
-      {/* Desktop menu bar */}
-      <div className="desktop-menu-bar" style={{ display: "flex" }}>
+      {/* Desktop combined header with menu and title */}
+      <div className="desktop-header-hidden" style={{ display: "flex" }}>
         <MenuBar
           onFileAction={handleFileAction}
           onSort={handleSort}
@@ -1188,11 +1187,14 @@ export default function LadderForm({
           onOpenSettings={() => setShowSettings?.(true)}
           isAdmin={isAdmin}
           isWide={zoomLevel === "140%"}
+          projectName={projectName}
+          playerCount={players.length}
         />
       </div>
 
       {/* Mobile header with menu trigger */}
       <header
+        className="mobile-menu-trigger"
         style={{
           background: "linear-gradient(135deg, #0f172a 0%, #334155 100%)",
           color: "white",
@@ -1221,7 +1223,6 @@ export default function LadderForm({
           </div>
           <button
             onClick={() => setIsMobileMenuOpen(true)}
-            className="mobile-menu-trigger"
             style={{
               background: "rgba(255, 255, 255, 0.1)",
               color: "white",
@@ -1255,9 +1256,9 @@ export default function LadderForm({
       <style>{`
         @media (max-width: 767px) {
           .mobile-menu-trigger {
-            display: block !important;
+            display: flex !important;
           }
-          .desktop-menu-bar {
+          .desktop-header-hidden {
             display: none !important;
           }
         }
@@ -1265,7 +1266,7 @@ export default function LadderForm({
           .mobile-menu-trigger {
             display: none !important;
           }
-          .desktop-menu-bar {
+          .desktop-header-hidden {
             display: flex !important;
           }
         }

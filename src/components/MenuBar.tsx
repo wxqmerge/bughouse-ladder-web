@@ -30,6 +30,8 @@ interface MenuBarProps {
   onOpenSettings: () => void;
   isAdmin: boolean;
   isWide: boolean;
+  projectName?: string;
+  playerCount?: number;
 }
 
 interface MenuItem {
@@ -48,6 +50,8 @@ export default function MenuBar({
   onSetZoom,
   onOpenSettings,
   isAdmin,
+  projectName,
+  playerCount,
 }: MenuBarProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
@@ -285,42 +289,98 @@ export default function MenuBar({
         onMouseLeave={closeAllMenus}
         style={{
           display: "flex",
-          gap: "0.5rem",
-          padding: "0.75rem 1rem",
+          alignItems: "center",
           backgroundColor: "#1e293b",
           borderBottom: "1px solid #334155",
         }}
       >
-        {renderMenuTrigger("File", <Folder size={16} />, fileMenuItems)}
-        {renderMenuTrigger("Sort", <ListFilter size={16} />, sortMenuItems)}
-        {renderMenuTrigger(
-          "Operations",
-          <SettingsIcon size={16} />,
-          operationsMenuItems,
-        )}
-        {renderMenuTrigger("View", <ZoomIn size={16} />, viewMenuItems)}
-        <button
-          data-menu="Settings"
-          onClick={() => {
-            onOpenSettings();
-            closeAllMenus();
-          }}
+        <div
           style={{
-            background: "transparent",
-            color: "white",
-            border: "none",
-            padding: "0.5rem 1rem",
-            cursor: "pointer",
             display: "flex",
-            alignItems: "center",
             gap: "0.5rem",
-            fontSize: "0.875rem",
-            borderRadius: "0.25rem",
+            flex: 1,
           }}
         >
-          <SettingsIcon size={16} />
-          <span>Settings</span>
-        </button>
+          {renderMenuTrigger("File", <Folder size={16} />, fileMenuItems)}
+          {renderMenuTrigger("Sort", <ListFilter size={16} />, sortMenuItems)}
+          {renderMenuTrigger(
+            "Operations",
+            <SettingsIcon size={16} />,
+            operationsMenuItems,
+          )}
+          {renderMenuTrigger("View", <ZoomIn size={16} />, viewMenuItems)}
+          <button
+            data-menu="Settings"
+            onClick={() => {
+              onOpenSettings();
+              closeAllMenus();
+            }}
+            style={{
+              background: "transparent",
+              color: "white",
+              border: "none",
+              padding: "0.5rem 1rem",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              fontSize: "0.875rem",
+              borderRadius: "0.25rem",
+            }}
+          >
+            <SettingsIcon size={16} />
+            <span>Settings</span>
+          </button>
+        </div>
+
+        {/* Title and player count */}
+        {projectName && (
+          <h1
+            style={{
+              margin: 0,
+              fontSize: "0.875rem",
+              color: "white",
+              padding: "0 1rem",
+            }}
+          >
+            {projectName} v1.0.0
+          </h1>
+        )}
+        {playerCount !== undefined && (
+          <div style={{ padding: "0.75rem 1rem" }}>
+            <span
+              style={{
+                fontSize: "0.875rem",
+                color: "rgba(255, 255, 255, 0.7)",
+              }}
+            >
+              Total Players
+            </span>
+            <div
+              style={{
+                fontSize: "0.875rem",
+                fontWeight: "600",
+                color: "white",
+              }}
+            >
+              {playerCount}
+            </div>
+          </div>
+        )}
+        {playerCount !== undefined && (
+          <div style={{ padding: "0.75rem 1rem" }}>
+            <span
+              style={{ fontSize: "0.75rem", color: "rgba(255, 255, 255, 0.7)" }}
+            >
+              Total Players
+            </span>
+            <div
+              style={{ fontSize: "1rem", fontWeight: "600", color: "white" }}
+            >
+              {playerCount}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
