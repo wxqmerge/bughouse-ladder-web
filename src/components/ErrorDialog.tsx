@@ -829,9 +829,11 @@ export default function ErrorDialog({
               justifyContent: "flex-end",
             }}
           >
-            {isWalkthrough &&
+            {(isWalkthrough || isRecalculate) &&
               walkthroughIndex !== undefined &&
-              walkthroughErrors && (
+              totalRounds &&
+              onWalkthroughPrev &&
+              onWalkthroughNext && (
                 <>
                   <button
                     type="button"
@@ -854,25 +856,25 @@ export default function ErrorDialog({
                   <button
                     type="button"
                     onClick={onWalkthroughNext}
-                    disabled={walkthroughIndex === walkthroughErrors.length - 1}
+                    disabled={walkthroughIndex === totalRounds - 1}
                     style={{
                       padding: "0.5rem 1rem",
                       background:
-                        walkthroughIndex === walkthroughErrors.length - 1
+                        walkthroughIndex === totalRounds - 1
                           ? "#e5e7eb"
                           : "#f59e0b",
                       border:
-                        walkthroughIndex === walkthroughErrors.length - 1
+                        walkthroughIndex === totalRounds - 1
                           ? "1px solid #d1d5db"
                           : "none",
                       borderRadius: "0.25rem",
                       cursor:
-                        walkthroughIndex === walkthroughErrors.length - 1
+                        walkthroughIndex === totalRounds - 1
                           ? "not-allowed"
                           : "pointer",
                       fontSize: "0.875rem",
                       color:
-                        walkthroughIndex === walkthroughErrors.length - 1
+                        walkthroughIndex === totalRounds - 1
                           ? "#9ca3af"
                           : "white",
                     }}

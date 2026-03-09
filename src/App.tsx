@@ -30,6 +30,7 @@ function App() {
         const players: Record<number, PlayerData> = JSON.parse(playersJson);
         Object.values(players).forEach((player) => {
           player.rating = player.nRating;
+          player.gameResults = Array(31).fill(null);
         });
         localStorage.setItem("ladder_players", JSON.stringify(players));
         localStorage.removeItem("ladder_settings");
