@@ -1155,22 +1155,25 @@ function buildResultStringForPlayer(
     const p3 = match.player3;
     const p4 = match.player4;
 
+    // Combine both result codes for 4-player games (e.g., "LL", "WW", "WD", etc.)
+    const combinedResultCodes = resultCodes[0] + resultCodes[1];
+
     if (playerRank === p1) {
       // Player 1 is in first pair, has score1
-      return `${p1}:${p2}${resultCodes[scoreIndex]}${p3}:${p4}`;
+      return `${p1}:${p2}${combinedResultCodes}${p3}:${p4}`;
     } else if (playerRank === p2) {
       // Player 2 is in first pair, has score1 (opposite of p1)
       const oppScore =
         match.score1 === 1 ? 3 : match.score1 === 3 ? 1 : match.score1;
-      return `${p2}:${p1}${resultCodeToString(oppScore)}${p4}:${p3}`;
+      return `${p2}:${p1}${resultCodeToString(oppScore)}${resultCodes[1]}${p4}:${p3}`;
     } else if (playerRank === p3) {
       // Player 3 is in second pair, has score2
-      return `${p3}:${p4}${resultCodes[scoreIndex]}${p1}:${p2}`;
+      return `${p3}:${p4}${combinedResultCodes}${p1}:${p2}`;
     } else if (playerRank === p4) {
       // Player 4 is in second pair, has score2 (opposite of p3)
       const oppScore =
         match.score2 === 1 ? 3 : match.score2 === 3 ? 1 : match.score2;
-      return `${p4}:${p3}${resultCodeToString(oppScore)}${p2}:${p1}`;
+      return `${p4}:${p3}${resultCodes[0]}${resultCodeToString(oppScore)}${p2}:${p1}`;
     }
   } else {
     // 2-player game: format is "AWB" or "AWBLC" for multiple results
