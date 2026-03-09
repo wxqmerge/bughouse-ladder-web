@@ -747,7 +747,7 @@ export function processGameResults(
   let errorCount = 0;
 
   for (let round = 0; round < numRounds; round++) {
-    const processedPairs = new Set<number>();
+    const processedPairs = new Set<string>(); // Use string keys for normalized deduplication
 
     for (let i = 0; i < playersList.length; i++) {
       const player = playersList[i];
@@ -784,12 +784,32 @@ export function processGameResults(
         continue;
       }
 
-      if (processedPairs.has(hashValue)) continue;
+      if (processedPairs.has(hashValue.toString())) continue;
 
       const player1Rank = parsedPlayersList[0];
       const player2Rank = parsedPlayersList[1]; // BUG FIX: was [3], should be [1]
+      const player3Rank = parsedPlayersList[2];
+      const player4Rank = parsedPlayersList[3];
       const player1Score = parsedScoreList[0];
       const player2Score = parsedScoreList[1];
+
+      // Create normalized key for deduplication (sorted players)
+      let normKey: string;
+      if (player3Rank > 0 && player4Rank > 0) {
+        const sortedPlayers = [
+          player1Rank,
+          player2Rank,
+          player3Rank,
+          player4Rank,
+        ].sort((a, b) => a - b);
+        normKey = `${sortedPlayers[0]}-${sortedPlayers[1]}-${sortedPlayers[2]}-${sortedPlayers[3]}`;
+      } else {
+        const sortedPair = [player1Rank, player2Rank].sort((a, b) => a - b);
+        normKey = `${sortedPair[0]}-${sortedPair[1]}`;
+      }
+
+      // Check normalized key to catch different orderings of same players
+      if (processedPairs.has(normKey)) continue;
 
       // DEBUG: Log validation errors around player rank checks
       if (player1Rank <= 0 || player2Rank <= 0) {
@@ -891,7 +911,8 @@ export function processGameResults(
         resultString: result,
       });
 
-      processedPairs.add(hashValue);
+      // Use normalized key for deduplication to catch different orderings
+      processedPairs.add(normKey);
 
       const _matchKey = `${hashValue}_${round}`;
       dataHash(_matchKey, result, 0);
@@ -945,7 +966,9 @@ export function processGameResults(
       const fourPlayerMatches = results.filter(
         (m) => m.player3 > 0 && m.player4 > 0,
       );
-      console.log(`\nTotal matches: ${results.length}`);
+      console.log(
+        `\n[processGameResults] Total matches created: ${results.length}`,
+      );
       console.log(`2-player matches: ${twoPlayerMatches.length}`);
       console.log(`4-player matches: ${fourPlayerMatches.length}`);
 
@@ -1092,9 +1115,11 @@ export function repopulateGameResults(
 
   if (shouldLog(5)) {
     console.log(`After clear - verifying arrays are empty:`);
-    for (const p of playersCopy.slice(0, 3)) {
+    for (const p of playersCopy.slice(0, 4)) {
       const filled = p.gameResults.filter((r) => r !== null && r !== "");
-      console.log(`Player ${p.rank}: ${filled.length} results (should be 0)`);
+      console.log(
+        `Player ${p.rank}: ${filled.length} results (should be 0), array length: ${p.gameResults.length}`,
+      );
     }
   }
 
@@ -1115,10 +1140,17 @@ export function repopulateGameResults(
     console.log(`Total matches to process: ${matches.length}`);
     console.log(`Players input: ${playersList.length}`);
     // Check if players already have game results filled
-    for (const p of playersList.slice(0, 3)) {
+    let totalInputResults = 0;
+    for (const p of playersList) {
       const filled = p.gameResults.filter((r) => r !== null && r !== "");
-      console.log(`Player ${p.rank}: ${filled.length} existing results`);
+      totalInputResults += filled.length;
+      if (p.rank <= 4) {
+        console.log(
+          `Player ${p.rank}: ${filled.length} existing results - ${filled.join(", ")}`,
+        );
+      }
     }
+    console.log(`Total input game results: ${totalInputResults}`);
   }
 
   // Helper to convert score code

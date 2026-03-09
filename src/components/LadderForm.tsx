@@ -469,16 +469,25 @@ export default function LadderForm({
       matches = result.matches;
       playerResultsByMatch = result.playerResultsByMatch;
 
-      // Cache the validated matches for future recalcs
-      if (!result.hasErrors && matches.length > 0) {
+      // ALWAYS cache matches (even with errors) to avoid re-processing repopulated data
+      if (matches.length > 0) {
         setValidatedMatches(matches);
         setValidatedPlayerResultsByMatch(result.playerResultsByMatch || null);
       }
     }
 
-    if (shouldLog(10)) {
-      console.log("Clearing and repopulating game results.");
+    if (shouldLog(5)) {
+      console.log(`\n=== RECALC START ===`);
+      console.log(`Matches to process: ${matches.length}`);
+      // Count existing game results before clear
+      let totalExisting = 0;
+      for (const p of players) {
+        const filled = p.gameResults.filter((r) => r !== null && r !== "");
+        totalExisting += filled.length;
+      }
+      console.log(`Total existing game results: ${totalExisting}`);
     }
+
     setIsRecalculating(false);
     const processedPlayers = repopulateGameResults(
       players,
@@ -486,16 +495,22 @@ export default function LadderForm({
       31,
       playerResultsByMatch,
     );
+
+    if (shouldLog(5)) {
+      // Count results after repopulation
+      let totalAfterRepop = 0;
+      for (const p of processedPlayers) {
+        const filled = p.gameResults.filter((r) => r !== null && r !== "");
+        totalAfterRepop += filled.length;
+      }
+      console.log(`Total results after repopulation: ${totalAfterRepop}`);
+    }
+
     const calculatedPlayers = calculateRatings(processedPlayers, matches);
     setPlayers(calculatedPlayers);
     localStorage.setItem("ladder_players", JSON.stringify(calculatedPlayers));
-
-    // Clear cache so next click processes fresh data from UI
-    setValidatedMatches(null);
-    setValidatedPlayerResultsByMatch(null);
-
     if (shouldLog(10)) {
-      console.log("Rating calculation complete");
+      console.log("Rating calculation complete\n");
     }
   };
 
