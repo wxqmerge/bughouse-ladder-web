@@ -630,44 +630,108 @@ export default function ErrorDialog({
           </p>
         )}
 
-        {!isGameEntry &&
-          displayError &&
-          correctedResult === displayOriginalString && (
-            <div style={{ marginBottom: "1rem" }}>
-              <p
+        {!isGameEntry && displayError && (
+          <div style={{ marginBottom: "1rem" }}>
+            <p
+              style={{
+                fontSize: "0.875rem",
+                color: "#6b7280",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <strong>Original String:</strong>{" "}
+              <code
                 style={{
-                  fontSize: "0.875rem",
-                  color: "#6b7280",
-                  marginBottom: "0.5rem",
+                  backgroundColor: "#f3f4f6",
+                  padding: "0.25rem 0.5rem",
+                  borderRadius: "0.25rem",
+                  fontSize: "0.75rem",
                 }}
               >
-                <strong>Original String:</strong>{" "}
-                <code
-                  style={{
-                    backgroundColor: "#f3f4f6",
-                    padding: "0.25rem 0.5rem",
-                    borderRadius: "0.25rem",
-                    fontSize: "0.75rem",
-                  }}
-                >
-                  {displayOriginalString || "(empty)"}
-                </code>
-              </p>
-              {parseStatus && parseStatus.isValid === false && (
+                {displayOriginalString || "(empty)"}
+              </code>
+            </p>
+            <p
+              style={{
+                fontSize: "0.875rem",
+                color: "#ef4444",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <strong>Error:</strong>{" "}
+              {parseStatus && !parseStatus.isValid
+                ? parseStatus.message ||
+                  getValidationErrorMessage(displayError.error)
+                : getValidationErrorMessage(displayError.error)}
+            </p>
+            {displayError.error === 10 && displayError.conflictingResults && (
+              <div
+                style={{
+                  marginTop: "0.5rem",
+                  padding: "0.75rem",
+                  backgroundColor: "#fef3c7",
+                  borderRadius: "0.25rem",
+                  border: "1px solid #f59e0b",
+                }}
+              >
                 <p
                   style={{
-                    fontSize: "0.875rem",
-                    color: "#ef4444",
+                    fontSize: "0.75rem",
+                    fontWeight: "600",
+                    color: "#92400e",
                     marginBottom: "0.5rem",
                   }}
                 >
-                  <strong>Error:</strong>{" "}
-                  {parseStatus.message ||
-                    getValidationErrorMessage(displayError.error)}
+                  Conflicting Results (all players in this match):
                 </p>
-              )}
-            </div>
-          )}
+                {displayError.conflictingResults.map((conflict, idx) => {
+                  const player = players.find(
+                    (p) => p.rank === conflict.playerRank,
+                  );
+                  return (
+                    <div
+                      key={idx}
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "#78350f",
+                        marginBottom: "0.25rem",
+                        padding: "0.25rem",
+                        backgroundColor:
+                          conflict.playerRank === displayError.playerRank
+                            ? "#fde68a"
+                            : "transparent",
+                        borderRadius: "0.25rem",
+                      }}
+                    >
+                      <strong>Player {conflict.playerRank}</strong>
+                      {player && (
+                        <span style={{ color: "#6b7280" }}>
+                          {" "}
+                          ({player.firstName} {player.lastName})
+                        </span>
+                      )}
+                      :{" "}
+                      <code
+                        style={{
+                          backgroundColor: "#fffbeb",
+                          padding: "0.125rem 0.375rem",
+                          borderRadius: "0.125rem",
+                        }}
+                      >
+                        {conflict.result}
+                      </code>
+                      {conflict.playerRank === displayError.playerRank && (
+                        <span style={{ color: "#ef4444", fontWeight: "600" }}>
+                          {" ← Your result"}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <label

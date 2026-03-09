@@ -1,5 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import type { PlayerData, ValidationResult } from "../utils/hashUtils";
+import type {
+  PlayerData,
+  ValidationResult,
+  MatchData,
+} from "../utils/hashUtils";
 import {
   processGameResults,
   calculateRatings,
@@ -385,20 +389,15 @@ export default function LadderForm({
     reader.readAsText(fileToLoad);
   };
 
-  const recalculateRatings = () => {
-    if (shouldLog(10)) {
-      console.log(
-        `>>> [BUTTON PRESSED] Recalculate Ratings - ${players.length} players`,
-      );
-    }
+  const checkGameErrors = (): {
+    hasErrors: boolean;
+    matches: MatchData[];
+    errors: ValidationResult[];
+    errorCount: number;
+  } => {
     if (players.length === 0) {
       console.error("No players to process");
-      return;
-    }
-
-    if (shouldLog(10)) {
-      console.log("Starting rating calculation with validation");
-      console.log(`Processing ${players.length} players`);
+      return { hasErrors: false, matches: [], errors: [], errorCount: 0 };
     }
 
     const { matches, hasErrors, errorCount, errors } = processGameResults(
@@ -421,7 +420,21 @@ export default function LadderForm({
       });
       setWalkthroughErrors(errors);
       setWalkthroughIndex(0);
-    } else {
+    }
+
+    return { hasErrors, matches, errors, errorCount };
+  };
+
+  const recalculateRatings = () => {
+    if (shouldLog(10)) {
+      console.log(
+        `>>> [BUTTON PRESSED] Recalculate Ratings - ${players.length} players`,
+      );
+    }
+
+    const { hasErrors, matches } = checkGameErrors();
+
+    if (!hasErrors) {
       if (shouldLog(10)) {
         console.log("No errors. Clearing and repopulating game results.");
       }
@@ -1226,6 +1239,20 @@ export default function LadderForm({
           onClick={recalculateRatings}
         >
           Recalculate Ratings
+        </button>
+
+        <button
+          style={{
+            background: "#f59e0b",
+            color: "white",
+            border: "none",
+            padding: "0.5rem 1rem",
+            borderRadius: "0.25rem",
+            cursor: "pointer",
+          }}
+          onClick={() => checkGameErrors()}
+        >
+          Check Errors
         </button>
 
         <button

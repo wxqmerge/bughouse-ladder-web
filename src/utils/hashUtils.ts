@@ -587,6 +587,7 @@ export interface ValidationResult {
   error: number;
   originalString: string;
   playerRank: number; // The rank of the player with the invalid result
+  conflictingResults?: { playerRank: number; result: string }[];
 }
 
 export interface MatchData {
@@ -627,6 +628,7 @@ export function processGameResults(
       player4: number;
       score1: number;
       score2: number;
+      round: number;
     }[]
   >();
 
@@ -751,6 +753,7 @@ export function processGameResults(
         player4: parsedPlayersList[3], // BUG FIX: was [4]
         score1: parsedScoreList[0],
         score2: parsedScoreList[1],
+        round,
       });
 
       processedPairs.add(hashValue);
@@ -823,28 +826,46 @@ export function processGameResults(
       (e, i) => i === 0 || e.result === entries[0].result,
     );
     if (!allSame) {
-      for (const entry of entries) {
-        errorCount++;
-        if (shouldLog(10)) {
-          console.log(
-            `ERROR [conflict]: Players disagree on result - p1=${entry.player1}, p2=${entry.player2}, p3=${entry.player3}, p4=${entry.player4}, result="${entry.result}"`,
-          );
-        }
-        errors.push({
-          hashValue: 0,
-          player1: entry.player1,
-          player2: entry.player2,
-          player3: entry.player3,
-          player4: entry.player4,
-          score1: entry.score1,
-          score2: entry.score2,
-          resultIndex: 0,
-          isValid: false,
-          error: 10,
-          originalString: entry.result,
-          playerRank: entry.playerRank,
+      // Collect all conflicting results for this match
+      const conflicts = entries.map((e) => ({
+        playerRank: e.playerRank,
+        result: e.result,
+        round: e.round,
+      }));
+
+      // Only create one error for the conflict (use first entry as primary)
+      errorCount++;
+      const primaryEntry = entries[0];
+      if (shouldLog(10)) {
+        console.log(
+          `ERROR [conflict]: Players disagree on result - p1=${primaryEntry.player1}, p2=${primaryEntry.player2}, p3=${primaryEntry.player3}, p4=${primaryEntry.player4}`,
+        );
+        conflicts.forEach((c) => {
+          console.log(`  Player ${c.playerRank}: "${c.result}"`);
         });
       }
+
+      // Create a combined conflicting results array for display
+      const conflictDetails = conflicts.map((c) => ({
+        playerRank: c.playerRank,
+        result: c.result,
+      }));
+
+      errors.push({
+        hashValue: 0,
+        player1: primaryEntry.player1,
+        player2: primaryEntry.player2,
+        player3: primaryEntry.player3,
+        player4: primaryEntry.player4,
+        score1: primaryEntry.score1,
+        score2: primaryEntry.score2,
+        resultIndex: primaryEntry.round,
+        isValid: false,
+        error: 10,
+        originalString: primaryEntry.result,
+        playerRank: primaryEntry.playerRank,
+        conflictingResults: conflictDetails,
+      });
     }
   }
 
