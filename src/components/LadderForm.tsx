@@ -755,6 +755,48 @@ export default function LadderForm({
     }
   };
 
+  const clearCurrentCell = () => {
+    if (!entryCell) return;
+
+    const updatedPlayers = players.map((p) => ({ ...p }));
+    const playerIdx = entryCell.playerRank - 1;
+    if (playerIdx >= 0 && playerIdx < updatedPlayers.length) {
+      const player = updatedPlayers[playerIdx];
+      if (player) {
+        const newGameResults = [...(player.gameResults || [])];
+        newGameResults[entryCell.round] = "";
+        player.gameResults = newGameResults;
+      }
+    }
+    setPlayers(updatedPlayers);
+    localStorage.setItem("ladder_players", JSON.stringify(updatedPlayers));
+
+    // Remove error from walkthrough if in recalculate mode
+    if (walkthroughErrors.length > 0) {
+      const newWalkthroughErrors = walkthroughErrors.filter(
+        (error) =>
+          !(
+            error.playerRank === entryCell.playerRank &&
+            error.resultIndex === entryCell.round
+          ),
+      );
+      setWalkthroughErrors(newWalkthroughErrors);
+
+      if (newWalkthroughErrors.length > 0) {
+        const nextError =
+          newWalkthroughErrors[walkthroughIndex] || newWalkthroughErrors[0];
+        setCurrentError(nextError);
+        setEntryCell({
+          playerRank: nextError.playerRank,
+          round: nextError.resultIndex,
+        });
+      } else {
+        setCurrentError(null);
+        setIsRecalculating(false);
+      }
+    }
+  };
+
   const handleGameEntrySubmit = (correctedString: string) => {
     if (!entryCell) return;
 
@@ -1304,18 +1346,6 @@ export default function LadderForm({
 
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "1rem",
-          marginBottom: "1rem",
-          padding: "1rem",
-          backgroundColor: "#f8fafc",
-          borderRadius: "0.5rem",
-        }}
-      />
-
-      <div
-        style={{
           overflow: "auto",
           border: "1px solid #cbd5e1",
           borderRadius: "0.5rem",
@@ -1684,6 +1714,7 @@ export default function LadderForm({
             setIsWalkthrough(false);
           }}
           onSubmit={handleCorrectionSubmit}
+          onClearCell={clearCurrentCell}
           onUpdatePlayerData={handleUpdatePlayerData}
         />
       )}
@@ -1705,6 +1736,7 @@ export default function LadderForm({
               setTempGameResult(null);
             }}
             onSubmit={handleGameEntrySubmit}
+            onClearCell={clearCurrentCell}
             onUpdatePlayerData={handleUpdatePlayerData}
           />
         )}

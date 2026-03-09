@@ -740,7 +740,12 @@ export function processGameResults(
         continue;
       }
 
-      const key = `${player1Rank}-${player2Rank}`;
+      // Include all players in key to distinguish 2-player vs 4-player games
+      const is4Player = parsedPlayersList[2] > 0 && parsedPlayersList[3] > 0;
+      const key = is4Player
+        ? `${parsedPlayersList[0]}-${parsedPlayersList[1]}-${parsedPlayersList[2]}-${parsedPlayersList[3]}`
+        : `${player1Rank}-${player2Rank}`;
+
       if (!matchResults.has(key)) {
         matchResults.set(key, []);
       }

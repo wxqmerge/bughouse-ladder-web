@@ -43,6 +43,7 @@ export default function ErrorDialog({
   players,
   onClose,
   onSubmit,
+  onClearCell,
   mode,
   walkthroughErrors,
   walkthroughIndex,
@@ -252,6 +253,13 @@ export default function ErrorDialog({
     setDisplayPlayer2(null);
     setDisplayPlayer3(null);
     setDisplayPlayer4(null);
+
+    // Use onClearCell prop if provided (for recalculate mode - don't close dialog)
+    if (mode === "recalculate" && onClearCell) {
+      onClearCell();
+      // Don't close dialog - let user continue clearing errors
+      return;
+    }
 
     if (mode === "walkthrough" && walkthroughErrors) {
       const currentError = walkthroughErrors[walkthroughIndex ?? 0];
