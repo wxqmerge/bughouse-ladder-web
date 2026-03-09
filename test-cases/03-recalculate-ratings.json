@@ -3,31 +3,15 @@
   "inputFilePath": "kings_cross.tab",
   "expectedOutputFile": "test-cases/recalculate_ratings.tab",
   "actions": [
-    {
-      "type": "openSettings"
-    },
-    {
-      "type": "clearAllData"
-    },
-    {
-      "type": "recalculateRatings"
-    },
-    {
-      "type": "fillCorrection",
-      "correctionValue": "5W3"
-    },
-    {
-      "type": "submitCorrection"
-    },
-    {
-      "type": "submitCorrection"
-    },
-    {
-      "type": "clearCell"
-    },
-    {
-      "type": "cancelDialog"
-    }
+    { "type": "clickMenu", "menu": "Settings" },
+    { "type": "clickButtonByText", "text": "Clear All Data" },
+    { "type": "recalculateRatings" },
+    { "type": "fillCorrection", "correctionValue": "5W3" },
+    { "type": "submitCorrection" },
+    { "type": "submitCorrection" },
+    { "type": "clearCell" },
+    { "type": "cancelDialog" }
   ],
-  "clickExportButton": true
+  "clickMenu": "File",
+  "selectMenuItem": "Export"
 }

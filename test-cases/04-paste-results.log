@@ -21,11 +21,10 @@ Server started on port 5173
 -- Player count after load: 26
 -- First player: Cullano Dylan
 -- Successfully loaded 26 players
--- Executing actions: openSettings, clearAllData, pasteResults
--- Opening settings...
->>> [LOG] >>> [BUTTON PRESSED] Settings
--- Button pressed: Settings
--- Clearing all data...
+-- Executing actions: clickMenu, clickButtonByText, pasteResults
+-- Clicking menu: Settings
+-- Menu opened: Settings
+-- Clicking button with text: "Clear All Data"
 >>> [LOG] >>> [BUTTON PRESSED] Clear All Data
 -- Dialog: Are you sure you want to reset all data to sample data? This will clear all loaded players and game results.
 -- Button pressed: Clear All Data
@@ -34,26 +33,31 @@ Server started on port 5173
 >>> [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 >>> [LOG] [LadderForm] Loaded 14 players from localStorage
 >>> [LOG] [LadderForm] Loaded 14 players from localStorage
--- Waiting for page reload...
--- Player count after reload: 14
 -- Pasting 5 tab-delimited results
 >>> [RESULT] 1: "5W3"
 >>> [RESULT] 2: "7L2"
 >>> [RESULT] 3: "9D4"
 >>> [RESULT] 4: "11W6"
 >>> [RESULT] 5: "3L8"
+>>> [LOG] >>> [BUTTON PRESSED] Save (Game Result)
 -- Filled cell 1 with: "5W3"
+>>> [LOG] >>> [BUTTON PRESSED] Save (Game Result)
 -- Filled cell 2 with: "7L2"
+>>> [LOG] >>> [BUTTON PRESSED] Save (Game Result)
 -- Filled cell 3 with: "9D4"
+>>> [LOG] >>> [BUTTON PRESSED] Save (Game Result)
 -- Filled cell 4 with: "11W6"
+>>> [LOG] >>> [BUTTON PRESSED] Save (Game Result)
 -- Filled cell 5 with: "3L8"
 -- Pasted 5 of 5 results
--- Clicking Export button...
+-- Clicking menu: File, then item: Export
+-- Menu opened: File
+>>> [LOG] >>> [MENU ACTION] export
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Export_Results_2026-03-09T19-25-30-068Z.tab
--- Button pressed: Export
--- Download detected: Export_Results_2026-03-09T19-25-30-068Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T19-25-30-068Z.tab
+>>> [LOG] Exported 14 players to Export_Results_2026-03-09T20-04-14-038Z.tab
+-- Download detected: Export_Results_2026-03-09T20-04-14-038Z.tab
+-- Menu item selected: Export
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T20-04-14-038Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\paste_results.tab
 

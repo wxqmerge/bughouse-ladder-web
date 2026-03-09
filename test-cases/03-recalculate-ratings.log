@@ -21,11 +21,10 @@ Server started on port 5173
 -- Player count after load: 26
 -- First player: Cullano Dylan
 -- Successfully loaded 26 players
--- Executing actions: openSettings, clearAllData, recalculateRatings, fillCorrection, submitCorrection, submitCorrection, clearCell, cancelDialog
--- Opening settings...
->>> [LOG] >>> [BUTTON PRESSED] Settings
--- Button pressed: Settings
--- Clearing all data...
+-- Executing actions: clickMenu, clickButtonByText, recalculateRatings, fillCorrection, submitCorrection, submitCorrection, clearCell, cancelDialog
+-- Clicking menu: Settings
+-- Menu opened: Settings
+-- Clicking button with text: "Clear All Data"
 >>> [LOG] >>> [BUTTON PRESSED] Clear All Data
 -- Dialog: Are you sure you want to reset all data to sample data? This will clear all loaded players and game results.
 -- Button pressed: Clear All Data
@@ -34,9 +33,8 @@ Server started on port 5173
 >>> [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 >>> [LOG] [LadderForm] Loaded 14 players from localStorage
 >>> [LOG] [LadderForm] Loaded 14 players from localStorage
--- Waiting for page reload...
--- Player count after reload: 14
--- Clicking Recalculate Ratings...
+-- Clicking Recalculate Ratings via menu...
+-- Operations menu opened
 >>> [LOG] >>> [BUTTON PRESSED] Recalculate Ratings - 14 players
 >>> [LOG] [ADDED] Player 1 round 0: "4W5" -> normKey="4-5"
 >>> [LOG] dataHash: skey="265088_0", sval="4W5", lKeyVal=50650880, startIdx=1792
@@ -491,20 +489,22 @@ Total player result entries: 134
 >>> [LOG] Total results after repopulation: 108
 >>> [LOG] Rating calculation complete
 
--- Button pressed: Recalculate Ratings
+-- Recalculate Ratings selected
 -- Filling correction: "5W3"
 -- Submitting correction...
--- Button pressed: Submit Correction/Save
+-- Warning: Could not find Submit Correction or Save button
 -- Submitting correction...
--- Button pressed: Submit Correction/Save
+-- Warning: Could not find Submit Correction or Save button
 -- Clearing cell...
 -- Cancelling dialog...
--- Clicking Export button...
+-- Clicking menu: File, then item: Export
+-- Menu opened: File
+>>> [LOG] >>> [MENU ACTION] export
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Export_Results_2026-03-09T19-24-58-358Z.tab
--- Button pressed: Export
--- Download detected: Export_Results_2026-03-09T19-24-58-358Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T19-24-58-358Z.tab
+>>> [LOG] Exported 14 players to Export_Results_2026-03-09T20-03-45-805Z.tab
+-- Download detected: Export_Results_2026-03-09T20-03-45-805Z.tab
+-- Menu item selected: Export
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T20-03-45-805Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\recalculate_ratings.tab
 

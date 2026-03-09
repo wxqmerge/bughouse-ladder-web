@@ -12,7 +12,9 @@ import {
   updatePlayerGameData,
 } from "../utils/hashUtils";
 import ErrorDialog from "./ErrorDialog";
-import { Settings as SettingsIcon, Play as PlayIcon } from "lucide-react";
+import MenuBar from "./MenuBar";
+import MobileMenu from "./MobileMenu";
+import { Menu as MenuIcon } from "lucide-react";
 import { shouldLog } from "../utils/debug";
 import "../css/index.css";
 
@@ -162,12 +164,12 @@ export default function LadderForm({
   onSetRecalculateRef,
 }: LadderFormProps = {}) {
   const [players, setPlayers] = useState<PlayerData[]>([]);
-  const [isWide, setIsWide] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState<"70%" | "100%" | "140%">("100%");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [sortBy, setSortBy] = useState<
     "rank" | "nRating" | "rating" | "byName" | null
   >(null);
-  const [hasData, setHasData] = useState(false);
   const [projectName, setProjectName] = useState<string>(
     "Bughouse Chess Ladder",
   );
@@ -232,7 +234,6 @@ export default function LadderForm({
             gameResults: player.gameResults || new Array(31).fill(null),
           }));
           setPlayers(playersWithResults);
-          setHasData(true);
           setSortBy(null);
           if (shouldLog(10)) {
             console.log(
@@ -260,7 +261,6 @@ export default function LadderForm({
     });
 
     setPlayers(samplePlayers);
-    setHasData(false);
     setSortBy(null);
   }, []);
 
@@ -277,7 +277,6 @@ export default function LadderForm({
     const projectName = fileToLoad.name.replace(/\.[^.]+$/, "");
     setProjectName(projectName);
     setLastFile(fileToLoad);
-    setHasData(false);
     setSortBy(null);
 
     const reader = new FileReader();
@@ -345,7 +344,6 @@ export default function LadderForm({
       if (loadedPlayers.length > 0) {
         const numRounds = 31;
         localStorage.clear();
-        setHasData(true);
 
         if (sortBy === "rank") {
           loadedPlayers.sort((a, b) => a.rank - b.rank);
@@ -384,7 +382,7 @@ export default function LadderForm({
 
         localStorage.setItem("ladder_players", JSON.stringify(loadedPlayers));
         setPlayers(loadedPlayers);
-        setHasData(true);
+        
         setSortBy(null);
       } else {
       }
@@ -1012,7 +1010,7 @@ export default function LadderForm({
 
   const handleSort = (sortMethod: "rank" | "nRating" | "rating" | "byName") => {
     setSortBy(sortMethod);
-    setHasData(true);
+    
 
     const playersWithResults = players.map((player) => ({
       ...player,
@@ -1064,6 +1062,50 @@ export default function LadderForm({
     } catch (err) {
       console.error("Failed to save to localStorage:", err);
     }
+  };
+
+  const handleFileAction = (action: "load" | "save" | "export") => {
+    if (shouldLog(10)) {
+      console.log(`>>> [MENU ACTION] ${action}`);
+    }
+    switch (action) {
+      case "load":
+        fileInputRef.current?.click();
+        break;
+      case "save":
+        saveLocalStorage();
+        break;
+      case "export":
+        exportPlayers();
+        break;
+    }
+  };
+
+  const handleSetZoom = (level: "70%" | "100%" | "140%") => {
+    if (shouldLog(10)) {
+      console.log(`>>> [MENU ACTION] Set zoom to ${level}`);
+    }
+    setZoomLevel(level);
+  };
+
+  const getFontSize = () => {
+    switch (zoomLevel) {
+      case "70%":
+        return "0.625rem";
+      case "100%":
+        return "0.875rem";
+      case "140%":
+        return "1.25rem";
+      default:
+        return "0.875rem";
+    }
+  };
+
+  const handleToggleAdmin = () => {
+    if (shouldLog(10)) {
+      console.log(">>> [MENU ACTION] Toggle admin mode");
+    }
+    setIsAdmin(!isAdmin);
   };
 
   const exportPlayers = () => {
@@ -1120,266 +1162,114 @@ export default function LadderForm({
 
   return (
     <div style={{ marginTop: "1rem" }}>
+      {/* Mobile menu trigger */}
+      <MobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        onFileAction={handleFileAction}
+        onSort={handleSort}
+        onRecalculateRatings={recalculateRatings}
+        onCheckErrors={() => checkGameErrors()}
+        onToggleAdmin={handleToggleAdmin}
+        onSetZoom={handleSetZoom}
+        onOpenSettings={() => setShowSettings?.(true)}
+        isAdmin={isAdmin}
+      />
+
+      {/* Desktop menu bar */}
+      <div className="desktop-menu-bar" style={{ display: "flex" }}>
+        <MenuBar
+          onFileAction={handleFileAction}
+          onSort={handleSort}
+          onRecalculateRatings={recalculateRatings}
+          onCheckErrors={() => checkGameErrors()}
+          onToggleAdmin={handleToggleAdmin}
+          onSetZoom={handleSetZoom}
+          onOpenSettings={() => setShowSettings?.(true)}
+          isAdmin={isAdmin}
+          isWide={zoomLevel === "140%"}
+        />
+      </div>
+
+      {/* Mobile header with menu trigger */}
       <header
         style={{
           background: "linear-gradient(135deg, #0f172a 0%, #334155 100%)",
           color: "white",
           padding: "1rem 2rem",
-          marginBottom: "1rem",
+          marginBottom: "0.5rem",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
         }}
       >
         <div>
-          <h1>{projectName} v1.0.0</h1>
+          <h1 style={{ margin: 0, fontSize: "1.25rem" }}>
+            {projectName} v1.0.0
+          </h1>
         </div>
-        <div style={{ display: "flex", gap: "1rem", alignItems: "flex-end" }}>
+        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <div>
             <span
               style={{ fontSize: "0.75rem", color: "rgba(255, 255, 255, 0.7)" }}
             >
               Total Players
             </span>
-            <div style={{ fontSize: "1.25rem", fontWeight: "600" }}>
+            <div style={{ fontSize: "1rem", fontWeight: "600" }}>
               {players.length}
             </div>
           </div>
-          {setShowSettings && (
-            <button
-              onClick={() => {
-                if (shouldLog(10)) {
-                  console.log(">>> [BUTTON PRESSED] Settings");
-                }
-                setShowSettings(true);
-              }}
-              style={{
-                background: "rgba(255, 255, 255, 0.1)",
-                color: "white",
-                border: "1px solid rgba(255, 255, 255, 0.2)",
-                padding: "0.5rem 1rem",
-                borderRadius: "0.25rem",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                fontSize: "0.875rem",
-              }}
-            >
-              <SettingsIcon size={18} />
-              Settings
-            </button>
-          )}
           <button
-            onClick={() => handleSort("rank")}
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="mobile-menu-trigger"
             style={{
-              background: sortBy === "rank" && hasData ? "#8b5cf6" : "#6b7280",
+              background: "rgba(255, 255, 255, 0.1)",
               color: "white",
-              border: "1px solid #4b5563",
-              padding: "0.5rem 1rem",
-              borderRadius: "9999px",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              padding: "0.5rem",
+              borderRadius: "0.25rem",
               cursor: "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              fontSize: "0.875rem",
-              outline: "2px solid transparent",
-              outlineOffset: "2px",
-              fontWeight: sortBy === "rank" && hasData ? "600" : "400",
             }}
           >
-            Sort by Rank
-          </button>
-          <button
-            onClick={() => handleSort("byName")}
-            style={{
-              background:
-                sortBy === "byName" && hasData ? "#8b5cf6" : "#6b7280",
-              color: "white",
-              border: "1px solid #4b5563",
-              padding: "0.5rem 1rem",
-              borderRadius: "9999px",
-              cursor: "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              fontSize: "0.875rem",
-              outline: "2px solid transparent",
-              outlineOffset: "2px",
-              fontWeight: sortBy === "byName" && hasData ? "600" : "400",
-            }}
-          >
-            Sort by Name
-          </button>
-          <button
-            onClick={() => handleSort("nRating")}
-            style={{
-              background:
-                sortBy === "nRating" && hasData ? "#8b5cf6" : "#6b7280",
-              color: "white",
-              border: "1px solid #4b5563",
-              padding: "0.5rem 1rem",
-              borderRadius: "9999px",
-              cursor: "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              fontSize: "0.875rem",
-              outline: "2px solid transparent",
-              outlineOffset: "2px",
-              fontWeight: sortBy === "nRating" && hasData ? "600" : "400",
-            }}
-          >
-            Sort by New Rating
-          </button>
-          <button
-            onClick={() => handleSort("rating")}
-            style={{
-              background:
-                sortBy === "rating" && hasData ? "#8b5cf6" : "#6b7280",
-              color: "white",
-              border: "1px solid #4b5563",
-              padding: "0.5rem 1rem",
-              borderRadius: "9999px",
-              cursor: "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              fontSize: "0.875rem",
-              outline: "2px solid transparent",
-              outlineOffset: "2px",
-              fontWeight: sortBy === "rating" && hasData ? "600" : "400",
-            }}
-          >
-            Sort by Previous Rating
+            <MenuIcon size={24} />
           </button>
         </div>
       </header>
 
-      <div
-        style={{
-          display: "flex",
-          gap: "1rem",
-          marginBottom: "1rem",
-          padding: "1rem",
-          flexWrap: "wrap",
+      {/* Hidden file input */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        accept=".txt,.tab,.xls"
+        style={{ display: "none" }}
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) {
+            setLastFile(file);
+            loadPlayers(file);
+          }
         }}
-      >
-        <label
-          style={{
-            background: "#10b981",
-            color: "white",
-            border: "none",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.25rem",
-            cursor: "pointer",
-            display: "inline-block",
-          }}
-        >
-          Load
-          <input
-            type="file"
-            ref={fileInputRef}
-            accept=".txt,.tab,.xls"
-            style={{ display: "none" }}
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) {
-                setLastFile(file);
-                loadPlayers(file);
-              }
-            }}
-          />
-        </label>
+      />
 
-        <button
-          style={{
-            background: "#f59e0b",
-            color: "white",
-            border: "none",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.25rem",
-            cursor: "pointer",
-          }}
-          onClick={saveLocalStorage}
-        >
-          Save
-        </button>
-
-        <button
-          style={{
-            background: "#8b5cf6",
-            color: "white",
-            border: "none",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.25rem",
-            cursor: "pointer",
-          }}
-          onClick={recalculateRatings}
-        >
-          Recalculate Ratings
-        </button>
-
-        <button
-          style={{
-            background: "#f59e0b",
-            color: "white",
-            border: "none",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.25rem",
-            cursor: "pointer",
-          }}
-          onClick={() => checkGameErrors()}
-        >
-          Check Errors
-        </button>
-
-        <button
-          style={{
-            background: "white",
-            color: "black",
-            border: "1px solid #cbd5e1",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.25rem",
-            cursor: "pointer",
-          }}
-          onClick={() => setIsWide(!isWide)}
-        >
-          Zoom: {isWide ? "140%" : "100%"}
-        </button>
-
-        <button
-          style={{
-            background: isAdmin ? "#ef4444" : "white",
-            color: isAdmin ? "white" : "black",
-            border: "1px solid #cbd5e1",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.25rem",
-            cursor: "pointer",
-          }}
-          onClick={() => setIsAdmin(!isAdmin)}
-        >
-          {isAdmin ? "Exit Admin" : "Admin Mode"}
-        </button>
-        <button
-          onClick={exportPlayers}
-          style={{
-            background: "#3b82f6",
-            color: "white",
-            border: "1px solid #1d4ed8",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.25rem",
-            cursor: "pointer",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            fontSize: "0.875rem",
-          }}
-        >
-          <PlayIcon size={18} />
-          Export
-        </button>
-      </div>
+      {/* Responsive styles */}
+      <style>{`
+        @media (max-width: 767px) {
+          .mobile-menu-trigger {
+            display: block !important;
+          }
+          .desktop-menu-bar {
+            display: none !important;
+          }
+        }
+        @media (min-width: 768px) {
+          .mobile-menu-trigger {
+            display: none !important;
+          }
+          .desktop-menu-bar {
+            display: flex !important;
+          }
+        }
+      `}</style>
 
       <div
         style={{
@@ -1392,7 +1282,7 @@ export default function LadderForm({
           style={{
             width: "100%",
             borderCollapse: "collapse",
-            fontSize: "0.875rem",
+            fontSize: getFontSize(),
           }}
         >
           <thead>

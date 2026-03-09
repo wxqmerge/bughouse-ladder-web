@@ -21,8 +21,10 @@ Server started on port 5173
 -- Player count after load: 26
 -- First player: Cullano Dylan
 -- Successfully loaded 26 players
--- Executing actions: recalculateRatings, recalculateRatings
--- Clicking Recalculate Ratings...
+-- Executing actions: clickMenu, selectMenuItem, clickMenu, selectMenuItem
+-- Clicking menu: Operations
+-- Menu opened: Operations
+-- Selecting menu item: Recalculate Ratings
 >>> [LOG] >>> [BUTTON PRESSED] Recalculate Ratings - 26 players
 >>> [LOG] [ADDED] Player 7 round 0: "2L8" -> normKey="2-8"
 >>> [LOG] dataHash: skey="135296_0", sval="2L8", lKeyVal=49352960, startIdx=256
@@ -149,8 +151,10 @@ Total player result entries: 18
 >>> [LOG] Total results after repopulation: 14
 >>> [LOG] Rating calculation complete
 
--- Button pressed: Recalculate Ratings
--- Clicking Recalculate Ratings...
+-- Menu item selected: Recalculate Ratings
+-- Clicking menu: Operations
+-- Menu opened: Operations
+-- Selecting menu item: Recalculate Ratings
 >>> [LOG] >>> [BUTTON PRESSED] Recalculate Ratings - 26 players
 >>> [LOG] [ADDED] Player 8 round 0: "1:12LD3:4_" -> normKey="1-3-4-12"
 >>> [LOG] dataHash: skey="135153153_0", sval="1:12LD3:4_", lKeyVal=49351531530, startIdx=1034
@@ -289,13 +293,15 @@ Total player result entries: 18
 >>> [LOG] Total results after repopulation: 14
 >>> [LOG] Rating calculation complete
 
--- Button pressed: Recalculate Ratings
--- Clicking Export button...
+-- Menu item selected: Recalculate Ratings
+-- Clicking menu: File, then item: Export
+-- Menu opened: File
+>>> [LOG] >>> [MENU ACTION] export
 >>> [LOG] >>> [BUTTON PRESSED] Export - 26 players
->>> [LOG] Exported 26 players to Export_Results_2026-03-09T19-23-17-538Z.tab
--- Button pressed: Export
--- Download detected: Export_Results_2026-03-09T19-23-17-538Z.tab
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T19-23-17-538Z.tab
+>>> [LOG] Exported 26 players to Export_Results_2026-03-09T20-02-22-144Z.tab
+-- Download detected: Export_Results_2026-03-09T20-02-22-144Z.tab
+-- Menu item selected: Export
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T20-02-22-144Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\kings_cross.tab
 

@@ -237,20 +237,89 @@ async function runTest(config, rebuildApp = false, logFile = null) {
       );
 
       for (const action of config.actions) {
-        if (action.type === "openSettings") {
-          logLine("-- Opening settings...");
-          const clicked = await page.evaluate(() => {
-            const buttons = Array.from(document.querySelectorAll("button"));
-            const settingsBtn = buttons.find(
-              (b) => b.textContent && b.textContent.includes("Settings"),
+        // New menu-based actions
+        if (action.type === "clickMenu") {
+          logLine(`-- Clicking menu: ${action.menu}`);
+          const clicked = await page.evaluate((menuName) => {
+            let menuButton = document.querySelector(
+              `[data-menu="${menuName}"]`,
             );
+
+            if (!menuButton) {
+              const buttons = Array.from(document.querySelectorAll("button"));
+              menuButton = buttons.find(
+                (b) => b.textContent && b.textContent.trim() === menuName,
+              );
+            }
+
+            if (menuButton) {
+              menuButton.click();
+              return true;
+            }
+            return false;
+          }, action.menu);
+
+          if (clicked) {
+            logLine(`-- Menu opened: ${action.menu}`);
+          } else {
+            logLine(`-- Warning: Could not find menu: ${action.menu}`);
+          }
+          await sleep(500);
+        }
+
+        if (action.type === "selectMenuItem") {
+          logLine(`-- Selecting menu item: ${action.item}`);
+          const clicked = await page.evaluate((itemName) => {
+            let menuItem = document.querySelector(
+              `[data-menu-item="${itemName}"]`,
+            );
+
+            if (!menuItem) {
+              const allElements = Array.from(
+                document.querySelectorAll(
+                  "button, [role=menuitem], div[data-menu-item]",
+                ),
+              );
+              menuItem = allElements.find(
+                (el) => el.textContent && el.textContent.trim() === itemName,
+              );
+            }
+
+            if (menuItem) {
+              menuItem.click();
+              return true;
+            }
+            return false;
+          }, action.item);
+
+          if (clicked) {
+            logLine(`-- Menu item selected: ${action.item}`);
+          } else {
+            logLine(`-- Warning: Could not find menu item: ${action.item}`);
+          }
+          await sleep(1500);
+        }
+
+        // Legacy action: openSettings (now uses menu)
+        if (action.type === "openSettings") {
+          logLine("-- Opening settings via menu...");
+          const clicked = await page.evaluate(() => {
+            let settingsBtn = document.querySelector(`[data-menu="Settings"]`);
+
+            if (!settingsBtn) {
+              const buttons = Array.from(document.querySelectorAll("button"));
+              settingsBtn = buttons.find(
+                (b) => b.textContent && b.textContent.includes("Settings"),
+              );
+            }
+
             if (settingsBtn) {
               settingsBtn.click();
               return true;
             }
             return false;
           });
-          if (clicked) logLine(`-- Button pressed: Settings`);
+          if (clicked) logLine(`-- Settings menu clicked`);
           await sleep(1500);
         }
 
@@ -277,21 +346,63 @@ async function runTest(config, rebuildApp = false, logFile = null) {
         }
 
         if (action.type === "recalculateRatings") {
-          logLine("-- Clicking Recalculate Ratings...");
-          await sleep(2000);
-          const clicked = await page.evaluate(() => {
-            const buttons = Array.from(document.querySelectorAll("button"));
-            const target = buttons.find(
-              (b) =>
-                b.textContent && b.textContent.includes("Recalculate Ratings"),
-            );
-            if (target) {
-              target.click();
+          logLine("-- Clicking Recalculate Ratings via menu...");
+          await sleep(1000);
+
+          // First click Operations menu
+          const menuClicked = await page.evaluate(() => {
+            let menuButton = document.querySelector(`[data-menu="Operations"]`);
+            if (!menuButton) {
+              const buttons = Array.from(document.querySelectorAll("button"));
+              menuButton = buttons.find(
+                (b) => b.textContent && b.textContent.trim() === "Operations",
+              );
+            }
+            if (menuButton) {
+              menuButton.click();
               return true;
             }
             return false;
           });
-          if (clicked) logLine(`-- Button pressed: Recalculate Ratings`);
+
+          if (menuClicked) {
+            logLine("-- Operations menu opened");
+            await sleep(500);
+
+            // Then click Recalculate Ratings item
+            const itemClicked = await page.evaluate(() => {
+              let menuItem = document.querySelector(
+                `[data-menu-item="Recalculate Ratings"]`,
+              );
+              if (!menuItem) {
+                const allElements = Array.from(
+                  document.querySelectorAll(
+                    "button, [role=menuitem], div[data-menu-item]",
+                  ),
+                );
+                menuItem = allElements.find(
+                  (el) =>
+                    el.textContent &&
+                    el.textContent.includes("Recalculate Ratings"),
+                );
+              }
+              if (menuItem) {
+                menuItem.click();
+                return true;
+              }
+              return false;
+            });
+
+            if (itemClicked) {
+              logLine(`-- Recalculate Ratings selected`);
+            } else {
+              logLine(
+                `-- Warning: Could not find Recalculate Ratings menu item`,
+              );
+            }
+          } else {
+            logLine(`-- Warning: Could not find Operations menu`);
+          }
           await sleep(3000);
         }
 
@@ -356,6 +467,32 @@ async function runTest(config, rebuildApp = false, logFile = null) {
             logLine(`-- Button pressed: Cancel`);
             await sleep(1500);
           }
+        }
+
+        // New action: click button by text (for Settings modal buttons)
+        if (action.type === "clickButtonByText") {
+          logLine(`-- Clicking button with text: "${action.text}"`);
+          await sleep(1000);
+          const clicked = await page.evaluate((buttonText) => {
+            const buttons = Array.from(document.querySelectorAll("button"));
+            const target = buttons.find(
+              (b) => b.textContent && b.textContent.includes(buttonText),
+            );
+            if (target) {
+              target.click();
+              return true;
+            }
+            return false;
+          }, action.text);
+
+          if (clicked) {
+            logLine(`-- Button pressed: ${action.text}`);
+          } else {
+            logLine(
+              `-- Warning: Could not find button with text: ${action.text}`,
+            );
+          }
+          await sleep(2000);
         }
 
         if (action.type === "pasteResults") {
@@ -472,22 +609,114 @@ async function runTest(config, rebuildApp = false, logFile = null) {
     }
 
     if (config.clickExportButton) {
-      logLine("-- Clicking Export button...");
-      const exportClicked = await page.evaluate(() => {
-        const buttons = Array.from(document.querySelectorAll("button"));
-        const target = buttons.find(
-          (b) => b.textContent && b.textContent.includes("Export"),
-        );
-        if (target) {
-          target.click();
+      logLine("-- Clicking Export via File menu...");
+
+      // Click File menu
+      const menuClicked = await page.evaluate(() => {
+        let menuButton = document.querySelector(`[data-menu="File"]`);
+        if (!menuButton) {
+          const buttons = Array.from(document.querySelectorAll("button"));
+          menuButton = buttons.find(
+            (b) => b.textContent && b.textContent.trim() === "File",
+          );
+        }
+        if (menuButton) {
+          menuButton.click();
           return true;
         }
         return false;
       });
-      if (exportClicked) {
-        logLine(`-- Button pressed: Export`);
+
+      if (menuClicked) {
+        logLine("-- File menu opened");
+        await sleep(500);
+
+        // Click Export item
+        const exportClicked = await page.evaluate(() => {
+          let menuItem = document.querySelector(`[data-menu-item="Export"]`);
+          if (!menuItem) {
+            const allElements = Array.from(
+              document.querySelectorAll(
+                "button, [role=menuitem], div[data-menu-item]",
+              ),
+            );
+            menuItem = allElements.find(
+              (el) => el.textContent && el.textContent.includes("Export"),
+            );
+          }
+          if (menuItem) {
+            menuItem.click();
+            return true;
+          }
+          return false;
+        });
+
+        if (exportClicked) {
+          logLine(`-- Export selected`);
+        } else {
+          logLine("-- Warning: Could not find Export menu item");
+        }
       } else {
-        logLine("-- Warning: Could not find Export button");
+        logLine("-- Warning: Could not find File menu");
+      }
+      await sleep(5000);
+    }
+
+    // Handle new menu-based export (clickMenu + selectMenuItem properties)
+    if (config.clickMenu && config.selectMenuItem) {
+      logLine(
+        `-- Clicking menu: ${config.clickMenu}, then item: ${config.selectMenuItem}`,
+      );
+
+      const menuClicked = await page.evaluate((menuName) => {
+        let menuButton = document.querySelector(`[data-menu="${menuName}"]`);
+        if (!menuButton) {
+          const buttons = Array.from(document.querySelectorAll("button"));
+          menuButton = buttons.find(
+            (b) => b.textContent && b.textContent.trim() === menuName,
+          );
+        }
+        if (menuButton) {
+          menuButton.click();
+          return true;
+        }
+        return false;
+      }, config.clickMenu);
+
+      if (menuClicked) {
+        logLine(`-- Menu opened: ${config.clickMenu}`);
+        await sleep(500);
+
+        const itemClicked = await page.evaluate((itemName) => {
+          let menuItem = document.querySelector(
+            `[data-menu-item="${itemName}"]`,
+          );
+          if (!menuItem) {
+            const allElements = Array.from(
+              document.querySelectorAll(
+                "button, [role=menuitem], div[data-menu-item]",
+              ),
+            );
+            menuItem = allElements.find(
+              (el) => el.textContent && el.textContent.trim() === itemName,
+            );
+          }
+          if (menuItem) {
+            menuItem.click();
+            return true;
+          }
+          return false;
+        }, config.selectMenuItem);
+
+        if (itemClicked) {
+          logLine(`-- Menu item selected: ${config.selectMenuItem}`);
+        } else {
+          logLine(
+            `-- Warning: Could not find menu item: ${config.selectMenuItem}`,
+          );
+        }
+      } else {
+        logLine(`-- Warning: Could not find menu: ${config.clickMenu}`);
       }
       await sleep(5000);
     }

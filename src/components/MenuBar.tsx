@@ -1,0 +1,327 @@
+import { useState } from "react";
+import {
+  Folder,
+  Upload,
+  Save,
+  Download,
+  ListFilter,
+  Hash,
+  Type,
+  TrendingUp,
+  History,
+  Settings as SettingsIcon,
+  RefreshCw,
+  AlertTriangle,
+  Shield,
+  Eye,
+  Minus,
+  Plus,
+  ZoomIn,
+  ChevronDown,
+} from "lucide-react";
+
+interface MenuBarProps {
+  onFileAction: (action: "load" | "save" | "export") => void;
+  onSort: (type: "rank" | "byName" | "nRating" | "rating") => void;
+  onRecalculateRatings: () => void;
+  onCheckErrors: () => void;
+  onToggleAdmin: () => void;
+  onSetZoom: (level: "70%" | "100%" | "140%") => void;
+  onOpenSettings: () => void;
+  isAdmin: boolean;
+  isWide: boolean;
+}
+
+interface MenuItem {
+  icon: React.ReactNode;
+  label: string;
+  onClick: () => void;
+  dataMenuItem: string;
+}
+
+export default function MenuBar({
+  onFileAction,
+  onSort,
+  onRecalculateRatings,
+  onCheckErrors,
+  onToggleAdmin,
+  onSetZoom,
+  onOpenSettings,
+  isAdmin,
+}: MenuBarProps) {
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+
+  const closeAllMenus = () => {
+    setOpenMenu(null);
+  };
+
+  const toggleMenu = (menuName: string) => {
+    setOpenMenu(openMenu === menuName ? null : menuName);
+  };
+
+  const fileMenuItems: MenuItem[] = [
+    {
+      icon: <Upload size={16} />,
+      label: "Load",
+      onClick: () => {
+        onFileAction("load");
+        closeAllMenus();
+      },
+      dataMenuItem: "Load",
+    },
+    {
+      icon: <Save size={16} />,
+      label: "Save",
+      onClick: () => {
+        onFileAction("save");
+        closeAllMenus();
+      },
+      dataMenuItem: "Save",
+    },
+    {
+      icon: <Download size={16} />,
+      label: "Export",
+      onClick: () => {
+        onFileAction("export");
+        closeAllMenus();
+      },
+      dataMenuItem: "Export",
+    },
+  ];
+
+  const sortMenuItems: MenuItem[] = [
+    {
+      icon: <Hash size={16} />,
+      label: "By Rank",
+      onClick: () => {
+        onSort("rank");
+        closeAllMenus();
+      },
+      dataMenuItem: "By Rank",
+    },
+    {
+      icon: <Type size={16} />,
+      label: "By Name",
+      onClick: () => {
+        onSort("byName");
+        closeAllMenus();
+      },
+      dataMenuItem: "By Name",
+    },
+    {
+      icon: <TrendingUp size={16} />,
+      label: "By New Rating",
+      onClick: () => {
+        onSort("nRating");
+        closeAllMenus();
+      },
+      dataMenuItem: "By New Rating",
+    },
+    {
+      icon: <History size={16} />,
+      label: "By Previous Rating",
+      onClick: () => {
+        onSort("rating");
+        closeAllMenus();
+      },
+      dataMenuItem: "By Previous Rating",
+    },
+  ];
+
+  const operationsMenuItems: MenuItem[] = [
+    {
+      icon: <RefreshCw size={16} />,
+      label: "Recalculate Ratings",
+      onClick: () => {
+        onRecalculateRatings();
+        closeAllMenus();
+      },
+      dataMenuItem: "Recalculate Ratings",
+    },
+    {
+      icon: <AlertTriangle size={16} />,
+      label: "Check Errors",
+      onClick: () => {
+        onCheckErrors();
+        closeAllMenus();
+      },
+      dataMenuItem: "Check Errors",
+    },
+    {
+      icon: <Shield size={16} />,
+      label: isAdmin ? "Exit Admin Mode" : "Admin Mode",
+      onClick: () => {
+        onToggleAdmin();
+        closeAllMenus();
+      },
+      dataMenuItem: isAdmin ? "Exit Admin Mode" : "Admin Mode",
+    },
+  ];
+
+  const viewMenuItems: MenuItem[] = [
+    {
+      icon: <Minus size={16} />,
+      label: "Zoom 70%",
+      onClick: () => {
+        onSetZoom("70%");
+        closeAllMenus();
+      },
+      dataMenuItem: "Zoom 70%",
+    },
+    {
+      icon: <Eye size={16} />,
+      label: "Zoom 100%",
+      onClick: () => {
+        onSetZoom("100%");
+        closeAllMenus();
+      },
+      dataMenuItem: "Zoom 100%",
+    },
+    {
+      icon: <Plus size={16} />,
+      label: "Zoom 140%",
+      onClick: () => {
+        onSetZoom("140%");
+        closeAllMenus();
+      },
+      dataMenuItem: "Zoom 140%",
+    },
+  ];
+
+  const renderMenuItems = (items: MenuItem[]) => (
+    <div role="menu" aria-label="Menu items">
+      {items.map((item) => (
+        <div
+          key={item.dataMenuItem}
+          data-menu-item={item.dataMenuItem}
+          role="menuitem"
+          tabIndex={0}
+          onClick={item.onClick}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              item.onClick();
+            }
+          }}
+          style={{
+            padding: "0.75rem 1rem",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            fontSize: "0.875rem",
+            color: "#374151",
+            backgroundColor: "white",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "#f1f5f9";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "white";
+          }}
+        >
+          {item.icon}
+          <span>{item.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+
+  const renderDropdown = (menuName: string, items: MenuItem[]) => {
+    if (openMenu !== menuName) return null;
+
+    return (
+      <div
+        style={{
+          position: "absolute",
+          top: "100%",
+          left: 0,
+          backgroundColor: "white",
+          border: "1px solid #e2e8f0",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+          minWidth: "200px",
+          zIndex: 100,
+          borderRadius: "0.25rem",
+          overflow: "hidden",
+        }}
+      >
+        {renderMenuItems(items)}
+      </div>
+    );
+  };
+
+  const renderMenuTrigger = (
+    menuName: string,
+    icon: React.ReactNode,
+    items: MenuItem[],
+  ) => (
+    <div style={{ position: "relative", display: "inline-block" }}>
+      <button
+        data-menu={menuName}
+        onClick={() => toggleMenu(menuName)}
+        style={{
+          background: openMenu === menuName ? "#334155" : "transparent",
+          color: "white",
+          border: "none",
+          padding: "0.5rem 1rem",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          fontSize: "0.875rem",
+          borderRadius: "0.25rem",
+        }}
+      >
+        {icon}
+        <span>{menuName}</span>
+        <ChevronDown size={14} />
+      </button>
+      {renderDropdown(menuName, items)}
+    </div>
+  );
+
+  return (
+    <>
+      <div
+        onMouseLeave={closeAllMenus}
+        style={{
+          display: "flex",
+          gap: "0.5rem",
+          padding: "0.75rem 1rem",
+          backgroundColor: "#1e293b",
+          borderBottom: "1px solid #334155",
+        }}
+      >
+        {renderMenuTrigger("File", <Folder size={16} />, fileMenuItems)}
+        {renderMenuTrigger("Sort", <ListFilter size={16} />, sortMenuItems)}
+        {renderMenuTrigger(
+          "Operations",
+          <SettingsIcon size={16} />,
+          operationsMenuItems,
+        )}
+        {renderMenuTrigger("View", <ZoomIn size={16} />, viewMenuItems)}
+        <button
+          data-menu="Settings"
+          onClick={() => {
+            onOpenSettings();
+            closeAllMenus();
+          }}
+          style={{
+            background: "transparent",
+            color: "white",
+            border: "none",
+            padding: "0.5rem 1rem",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            fontSize: "0.875rem",
+            borderRadius: "0.25rem",
+          }}
+        >
+          <SettingsIcon size={16} />
+          <span>Settings</span>
+        </button>
+      </div>
+    </>
+  );
+}
