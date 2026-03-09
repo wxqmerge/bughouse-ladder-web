@@ -504,16 +504,14 @@ export default function LadderForm({
     if (isWalkthrough && entryCell) {
       if (!correctedString.trim()) {
         // Clear the cell in players data
-        const updatedPlayers = players.map((p) => ({ ...p }));
-        const playerIdx = entryCell.playerRank - 1;
-        if (playerIdx >= 0 && playerIdx < updatedPlayers.length) {
-          const player = updatedPlayers[playerIdx];
-          if (player) {
-            const newGameResults = [...(player.gameResults || [])];
+        const updatedPlayers = players.map((p) => {
+          if (p.rank === entryCell.playerRank) {
+            const newGameResults = [...(p.gameResults || [])];
             newGameResults[entryCell.round] = "";
-            player.gameResults = newGameResults;
+            return { ...p, gameResults: newGameResults };
           }
-        }
+          return { ...p };
+        });
         setPlayers(updatedPlayers);
 
         // Advance to next cell or close dialog
@@ -542,18 +540,19 @@ export default function LadderForm({
 
       // Update the cell where the error was detected (entryCell)
       if (entryCell) {
-        const playerIdx = entryCell.playerRank - 1;
-        if (playerIdx >= 0 && playerIdx < updatedPlayers.length) {
-          const player = updatedPlayers[playerIdx];
-          const pendingPlayer = pendingUpdatedPlayers[playerIdx];
-          if (player && pendingPlayer) {
-            const newGameResults = [...player.gameResults];
-            const newPendingGameResults = [...pendingPlayer.gameResults];
-            newGameResults[entryCell.round] = "";
-            newPendingGameResults[entryCell.round] = "";
-            player.gameResults = newGameResults;
-            pendingPlayer.gameResults = newPendingGameResults;
-          }
+        const player = updatedPlayers.find(
+          (p) => p.rank === entryCell.playerRank,
+        );
+        const pendingPlayer = pendingUpdatedPlayers.find(
+          (p) => p.rank === entryCell.playerRank,
+        );
+        if (player && pendingPlayer) {
+          const newGameResults = [...player.gameResults];
+          const newPendingGameResults = [...pendingPlayer.gameResults];
+          newGameResults[entryCell.round] = "";
+          newPendingGameResults[entryCell.round] = "";
+          player.gameResults = newGameResults;
+          pendingPlayer.gameResults = newPendingGameResults;
         }
       }
 
@@ -619,18 +618,19 @@ export default function LadderForm({
 
     // Update the cell where the error was detected (entryCell)
     if (entryCell) {
-      const playerIdx = entryCell.playerRank - 1;
-      if (playerIdx >= 0 && playerIdx < updatedPlayers.length) {
-        const player = updatedPlayers[playerIdx];
-        const pendingPlayer = pendingUpdatedPlayers[playerIdx];
-        if (player && pendingPlayer) {
-          const newGameResults = [...player.gameResults];
-          const newPendingGameResults = [...pendingPlayer.gameResults];
-          newGameResults[entryCell.round] = correctedString + "_";
-          newPendingGameResults[entryCell.round] = correctedString + "_";
-          player.gameResults = newGameResults;
-          pendingPlayer.gameResults = newPendingGameResults;
-        }
+      const player = updatedPlayers.find(
+        (p) => p.rank === entryCell.playerRank,
+      );
+      const pendingPlayer = pendingUpdatedPlayers.find(
+        (p) => p.rank === entryCell.playerRank,
+      );
+      if (player && pendingPlayer) {
+        const newGameResults = [...player.gameResults];
+        const newPendingGameResults = [...pendingPlayer.gameResults];
+        newGameResults[entryCell.round] = correctedString + "_";
+        newPendingGameResults[entryCell.round] = correctedString + "_";
+        player.gameResults = newGameResults;
+        pendingPlayer.gameResults = newPendingGameResults;
       }
     }
 
@@ -791,16 +791,14 @@ export default function LadderForm({
   const clearCurrentCell = () => {
     if (!entryCell) return;
 
-    const updatedPlayers = players.map((p) => ({ ...p }));
-    const playerIdx = entryCell.playerRank - 1;
-    if (playerIdx >= 0 && playerIdx < updatedPlayers.length) {
-      const player = updatedPlayers[playerIdx];
-      if (player) {
-        const newGameResults = [...(player.gameResults || [])];
+    const updatedPlayers = players.map((p) => {
+      if (p.rank === entryCell.playerRank) {
+        const newGameResults = [...(p.gameResults || [])];
         newGameResults[entryCell.round] = "";
-        player.gameResults = newGameResults;
+        return { ...p, gameResults: newGameResults };
       }
-    }
+      return { ...p };
+    });
     setPlayers(updatedPlayers);
     localStorage.setItem("ladder_players", JSON.stringify(updatedPlayers));
 
@@ -840,17 +838,19 @@ export default function LadderForm({
 
     if (parsedResult.isValid) {
       setPlayers((prevPlayers) => {
-        const updatedPlayers = [...prevPlayers];
-        const playerIndex = entryCell.playerRank - 1;
-        if (playerIndex >= 0 && playerIndex < updatedPlayers.length) {
-          const player = updatedPlayers[playerIndex];
-          if (player) {
-            const newGameResults = [...player.gameResults];
-            newGameResults[entryCell.round] =
-              parsedResult.resultString || correctedString;
-            player.gameResults = newGameResults;
-          }
-        }
+        const player = prevPlayers.find((p) => p.rank === entryCell.playerRank);
+        if (!player) return prevPlayers;
+
+        const newGameResults = [...player.gameResults];
+        newGameResults[entryCell.round] =
+          parsedResult.resultString || correctedString;
+
+        const updatedPlayers = prevPlayers.map((p) =>
+          p.rank === entryCell.playerRank
+            ? { ...p, gameResults: newGameResults }
+            : p,
+        );
+
         localStorage.setItem("ladder_players", JSON.stringify(updatedPlayers));
         return updatedPlayers;
       });
@@ -1703,8 +1703,8 @@ export default function LadderForm({
                   const cell = getNonBlankCells()[walkthroughIndex];
                   if (!cell) return "";
                   return (
-                    players[cell.playerRank - 1]?.gameResults?.[cell.round] ||
-                    ""
+                    players.find((p) => p.rank === cell.playerRank)
+                      ?.gameResults?.[cell.round] || ""
                   );
                 })()
               : isRecalculating && walkthroughErrors[walkthroughIndex]
@@ -1712,9 +1712,9 @@ export default function LadderForm({
                     walkthroughIndex
                   ].originalString?.toUpperCase()
                 : entryCell
-                  ? players[entryCell.playerRank - 1]?.gameResults?.[
-                      entryCell.round
-                    ]?.toUpperCase() || ""
+                  ? players
+                      .find((p) => p.rank === entryCell.playerRank)
+                      ?.gameResults?.[entryCell.round]?.toUpperCase() || ""
                   : undefined
           }
           totalRounds={
@@ -1761,8 +1761,8 @@ export default function LadderForm({
             mode="game-entry"
             entryCell={entryCell}
             existingValue={
-              players[entryCell.playerRank - 1]?.gameResults[entryCell.round] ||
-              undefined
+              players.find((p) => p.rank === entryCell.playerRank)
+                ?.gameResults?.[entryCell.round] || undefined
             }
             onClose={() => {
               setEntryCell(null);

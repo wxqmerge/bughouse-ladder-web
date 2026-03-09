@@ -54,7 +54,9 @@ export default function ErrorDialog({
   onUpdatePlayerData,
   totalRounds,
 }: ErrorDialogProps) {
-  const [correctedResult, setCorrectedResult] = useState<string>("");
+  const [correctedResult, setCorrectedResult] = useState<string>(
+    existingValue?.replace(/_$/, "") || "",
+  );
   const [currentInputValue, setCurrentInputValue] = useState<string>("");
   const [cursorPosition, setCursorPosition] = useState<number>(0);
   const [parseStatus, setParseStatus] = useState<{
@@ -78,6 +80,12 @@ export default function ErrorDialog({
     : "";
   const inputRef = useRef<HTMLInputElement>(null);
   const justOpened = useRef(false);
+
+  // Sync input value when existingValue changes (e.g., clicking different cell)
+  useEffect(() => {
+    const value = existingValue?.replace(/_$/, "") || "";
+    setCurrentInputValue(value);
+  }, [existingValue]);
 
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
@@ -210,12 +218,9 @@ export default function ErrorDialog({
   }, [existingValue, error]);
 
   useEffect(() => {
-    // Clear input selection when dialog opens to prevent appending
+    // Focus input when dialog opens (selection handled in onFocus)
     if (justOpened.current && inputRef.current) {
-      const input = inputRef.current;
-      input.focus();
-      input.setSelectionRange(0, 0);
-      justOpened.current = false;
+      inputRef.current.focus();
     }
   }, [existingValue, error]);
   /* eslint-enable react-hooks/set-state-in-effect */
@@ -761,7 +766,7 @@ export default function ErrorDialog({
             id="correctedResult"
             name="correctedResult"
             ref={inputRef}
-            defaultValue={correctedResult}
+            value={currentInputValue}
             onPaste={handlePaste}
             onChange={handleInputChange}
             onFocus={(e) => {
