@@ -4,18 +4,28 @@
  */
 
 import { useState, useEffect } from "react";
-import { X, Settings as SettingsIcon, Trash2 } from "lucide-react";
+import {
+  X,
+  Settings as SettingsIcon,
+  Trash2,
+  RotateCcw,
+  CalendarDays,
+} from "lucide-react";
 import "../css/index.css";
 
 interface SettingsProps {
   onClose: () => void;
   onReset: () => void;
+  onClearAll: () => void;
+  onNewDay: () => void;
   onWalkThroughReports?: () => void;
 }
 
 export default function Settings({
   onClose,
   onReset,
+  onClearAll,
+  onNewDay,
   onWalkThroughReports,
 }: SettingsProps) {
   const [showRatings, setShowRatings] = useState(true);
@@ -54,6 +64,30 @@ export default function Settings({
     ) {
       localStorage.clear();
       onReset();
+      onClose();
+    }
+  };
+
+  const handleClearData = () => {
+    console.log(">>> [BUTTON PRESSED] Clear All");
+    if (
+      window.confirm(
+        "Are you sure you want to clear all data? This will leave the grid blank.",
+      )
+    ) {
+      onClearAll();
+      onClose();
+    }
+  };
+
+  const handleNewDay = () => {
+    console.log(">>> [BUTTON PRESSED] New Day");
+    if (
+      window.confirm(
+        "Are you sure you want to start a new day? This will copy New Rating to Previous Rating and clear reports.",
+      )
+    ) {
+      onNewDay();
       onClose();
     }
   };
@@ -205,6 +239,72 @@ export default function Settings({
             borderTop: "1px solid #e2e8f0",
           }}
         >
+          <button
+            onClick={handleNewDay}
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0.5rem",
+              padding: "0.75rem",
+              backgroundColor: "#3b82f6",
+              color: "white",
+              border: "none",
+              borderRadius: "0.25rem",
+              cursor: "pointer",
+              fontSize: "0.875rem",
+              fontWeight: "500",
+            }}
+          >
+            <CalendarDays size={16} />
+            New Day
+          </button>
+          <p
+            style={{
+              fontSize: "0.75rem",
+              color: "#6b7280",
+              marginTop: "0.5rem",
+              marginBottom: "1rem",
+              textAlign: "center",
+            }}
+          >
+            Copies New Rating to Previous Rating and clears reports
+          </p>
+
+          <button
+            onClick={handleClearData}
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0.5rem",
+              padding: "0.75rem",
+              backgroundColor: "#9ca3af",
+              color: "white",
+              border: "none",
+              borderRadius: "0.25rem",
+              cursor: "pointer",
+              fontSize: "0.875rem",
+              fontWeight: "500",
+            }}
+          >
+            <RotateCcw size={16} />
+            Clear All
+          </button>
+          <p
+            style={{
+              fontSize: "0.75rem",
+              color: "#6b7280",
+              marginTop: "0.5rem",
+              marginBottom: "1rem",
+              textAlign: "center",
+            }}
+          >
+            Clears all data and leaves the grid blank
+          </p>
+
           <button
             onClick={handleClearAll}
             style={{

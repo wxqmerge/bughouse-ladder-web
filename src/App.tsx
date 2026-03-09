@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import LadderForm from "./components/LadderForm";
 import Settings from "./components/Settings";
 import { loadSampleData } from "./components/LadderForm";
+import type { PlayerData } from "./utils/hashUtils";
 import "./css/index.css";
 
 function App() {
@@ -11,13 +12,35 @@ function App() {
 
   const handleReset = () => {
     const samplePlayers = loadSampleData();
-    // Trigger a re-render by calling loadSampleData from localStorage
     localStorage.setItem("ladder_players", JSON.stringify(samplePlayers));
     window.location.reload();
   };
 
+  const handleClearAll = () => {
+    const emptyPlayers: Record<number, PlayerData> = {};
+    localStorage.setItem("ladder_players", JSON.stringify(emptyPlayers));
+    localStorage.removeItem("ladder_settings");
+    window.location.reload();
+  };
+
+  const handleNewDay = () => {
+    const playersJson = localStorage.getItem("ladder_players");
+    if (playersJson) {
+      try {
+        const players: Record<number, PlayerData> = JSON.parse(playersJson);
+        Object.values(players).forEach((player) => {
+          player.rating = player.nRating;
+        });
+        localStorage.setItem("ladder_players", JSON.stringify(players));
+        localStorage.removeItem("ladder_settings");
+        window.location.reload();
+      } catch (err) {
+        console.error("Failed to process new day:", err);
+      }
+    }
+  };
+
   const handleWalkThroughReports = () => {
-    // Trigger walkthrough mode instead of recalculation
     setTriggerWalkthrough(true);
   };
 
@@ -37,6 +60,8 @@ function App() {
         <Settings
           onClose={() => setShowSettings(false)}
           onReset={handleReset}
+          onClearAll={handleClearAll}
+          onNewDay={handleNewDay}
           onWalkThroughReports={handleWalkThroughReports}
         />
       )}
