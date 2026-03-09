@@ -841,9 +841,13 @@ export default function LadderForm({
         const player = prevPlayers.find((p) => p.rank === entryCell.playerRank);
         if (!player) return prevPlayers;
 
+        // Remove underscore when saving from edit dialog
+        const valueToSave = (
+          parsedResult.resultString || correctedString
+        ).replace(/_$/, "");
+
         const newGameResults = [...player.gameResults];
-        newGameResults[entryCell.round] =
-          parsedResult.resultString || correctedString;
+        newGameResults[entryCell.round] = valueToSave;
 
         const updatedPlayers = prevPlayers.map((p) =>
           p.rank === entryCell.playerRank
