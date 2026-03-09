@@ -187,6 +187,14 @@ export default function LadderForm({
   const [pendingMatches, setPendingMatches] = useState<any[] | null>(null);
   const [pendingPlayerResultsByMatch, setPendingPlayerResultsByMatch] =
     useState<Map<string, PlayerMatchResult[]> | null>(null);
+
+  // Store validated matches to avoid re-processing on subsequent recalcs
+  const [validatedMatches, setValidatedMatches] = useState<MatchData[] | null>(
+    null,
+  );
+  const [validatedPlayerResultsByMatch, setValidatedPlayerResultsByMatch] =
+    useState<Map<string, PlayerMatchResult[]> | null>(null);
+
   const [entryCell, setEntryCell] = useState<{
     playerRank: number;
     round: number;
@@ -385,6 +393,9 @@ export default function LadderForm({
         setPlayers(loadedPlayers);
         setHasData(true);
         setSortBy(null);
+        // Clear validated matches cache when new data is loaded
+        setValidatedMatches(null);
+        setValidatedPlayerResultsByMatch(null);
       } else {
       }
     };
@@ -435,25 +446,56 @@ export default function LadderForm({
       );
     }
 
-    const { hasErrors, matches, playerResultsByMatch } = checkGameErrors();
+    // If we already have validated matches, use them to avoid re-processing
+    let matches: MatchData[];
+    let playerResultsByMatch: Map<string, PlayerMatchResult[]> | undefined;
 
-    if (!hasErrors) {
-      if (shouldLog(10)) {
-        console.log("No errors. Clearing and repopulating game results.");
-      }
-      setIsRecalculating(false);
-      const processedPlayers = repopulateGameResults(
-        players,
-        matches,
-        31,
-        playerResultsByMatch,
+    if (shouldLog(5)) {
+      console.log(
+        `validatedMatches: ${validatedMatches ? validatedMatches.length : 0}`,
       );
-      const calculatedPlayers = calculateRatings(processedPlayers, matches);
-      setPlayers(calculatedPlayers);
-      localStorage.setItem("ladder_players", JSON.stringify(calculatedPlayers));
-      if (shouldLog(10)) {
-        console.log("Rating calculation complete");
+    }
+
+    if (validatedMatches && validatedPlayerResultsByMatch) {
+      if (shouldLog(5)) {
+        console.log(
+          `Using cached validated matches: ${validatedMatches.length}`,
+        );
       }
+      matches = validatedMatches;
+      playerResultsByMatch = validatedPlayerResultsByMatch;
+    } else {
+      const result = checkGameErrors();
+      matches = result.matches;
+      playerResultsByMatch = result.playerResultsByMatch;
+
+      // Cache the validated matches for future recalcs
+      if (!result.hasErrors && matches.length > 0) {
+        setValidatedMatches(matches);
+        setValidatedPlayerResultsByMatch(result.playerResultsByMatch || null);
+      }
+    }
+
+    if (shouldLog(10)) {
+      console.log("Clearing and repopulating game results.");
+    }
+    setIsRecalculating(false);
+    const processedPlayers = repopulateGameResults(
+      players,
+      matches,
+      31,
+      playerResultsByMatch,
+    );
+    const calculatedPlayers = calculateRatings(processedPlayers, matches);
+    setPlayers(calculatedPlayers);
+    localStorage.setItem("ladder_players", JSON.stringify(calculatedPlayers));
+
+    // Clear cache so next click processes fresh data from UI
+    setValidatedMatches(null);
+    setValidatedPlayerResultsByMatch(null);
+
+    if (shouldLog(10)) {
+      console.log("Rating calculation complete");
     }
   };
 
@@ -693,6 +735,11 @@ export default function LadderForm({
     );
     setPlayers(calculatedPlayers);
     localStorage.setItem("ladder_players", JSON.stringify(calculatedPlayers));
+
+    // Cache the validated matches for future recalcs
+    setValidatedMatches(pendingMatches);
+    setValidatedPlayerResultsByMatch(pendingPlayerResultsByMatch || null);
+
     setPendingPlayers(null);
     setPendingMatches(null);
     setWalkthroughErrors([]);

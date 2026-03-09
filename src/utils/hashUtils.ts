@@ -1090,6 +1090,14 @@ export function repopulateGameResults(
     gameResults: new Array(numRounds).fill(null),
   }));
 
+  if (shouldLog(5)) {
+    console.log(`After clear - verifying arrays are empty:`);
+    for (const p of playersCopy.slice(0, 3)) {
+      const filled = p.gameResults.filter((r) => r !== null && r !== "");
+      console.log(`Player ${p.rank}: ${filled.length} results (should be 0)`);
+    }
+  }
+
   let totalSet = 0;
 
   // Helper function to find the lowest empty round for a player
@@ -1105,6 +1113,12 @@ export function repopulateGameResults(
   if (shouldLog(5)) {
     console.log(`\n=== START REPOPULATION ===`);
     console.log(`Total matches to process: ${matches.length}`);
+    console.log(`Players input: ${playersList.length}`);
+    // Check if players already have game results filled
+    for (const p of playersList.slice(0, 3)) {
+      const filled = p.gameResults.filter((r) => r !== null && r !== "");
+      console.log(`Player ${p.rank}: ${filled.length} existing results`);
+    }
   }
 
   // Helper to convert score code
