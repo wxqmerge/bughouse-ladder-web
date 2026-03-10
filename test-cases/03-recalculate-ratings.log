@@ -514,10 +514,10 @@ Total player result entries: 134
 -- Menu opened: File
 >>> [LOG] >>> [MENU ACTION] export
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Export_Results_2026-03-09T23-54-50-236Z.tab
--- Download detected: Export_Results_2026-03-09T23-54-50-236Z.tab
+>>> [LOG] Exported 14 players to Export_Results_2026-03-10T00-23-33-762Z.tab
+-- Download detected: Export_Results_2026-03-10T00-23-33-762Z.tab
 -- Menu item selected: Export
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T23-54-50-236Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-10T00-23-33-762Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\recalculate_ratings.tab
 
