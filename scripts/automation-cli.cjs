@@ -497,6 +497,99 @@ async function runTest(config, rebuildApp = false, logFile = null) {
           await sleep(2000);
         }
 
+        if (action.type === "newDay") {
+          const reRank = action.reRank === true;
+          logLine(`-- Clicking New Day${reRank ? " with Re-rank" : ""}...`);
+          await sleep(1000);
+
+          // Open Settings menu first
+          const settingsClicked = await page.evaluate(() => {
+            let settingsBtn = document.querySelector(`[data-menu="Settings"]`);
+            if (!settingsBtn) {
+              const buttons = Array.from(document.querySelectorAll("button"));
+              settingsBtn = buttons.find(
+                (b) => b.textContent && b.textContent.includes("Settings"),
+              );
+            }
+            if (settingsBtn) {
+              settingsBtn.click();
+              return true;
+            }
+            return false;
+          });
+
+          if (settingsClicked) {
+            logLine(`-- Settings menu clicked`);
+            await sleep(2000);
+
+            // Click the appropriate New Day button
+            const buttonText = reRank ? "New Day with Re-rank" : "New Day";
+            const newDayClicked = await page.evaluate((btnText) => {
+              const buttons = Array.from(document.querySelectorAll("button"));
+              const target = buttons.find(
+                (b) => b.textContent && b.textContent.includes(btnText),
+              );
+              if (target) {
+                target.click();
+                return true;
+              }
+              return false;
+            }, buttonText);
+
+            if (newDayClicked) {
+              logLine(`-- Button pressed: ${buttonText}`);
+
+              // Wait for recalculate to complete and page reload
+              await sleep(3000);
+
+              // Check if there's an error dialog (if recalc found errors)
+              const hasErrorDialog = await page.evaluate(() => {
+                const errorDialog = document.querySelector(
+                  '.error-dialog, [class*="dialog"]:has(input#correctedResult)',
+                );
+                return !!errorDialog;
+              });
+
+              if (hasErrorDialog) {
+                logLine(`-- Error dialog detected, cancelling...`);
+                const cancelClicked = await page.evaluate(() => {
+                  const buttons = Array.from(
+                    document.querySelectorAll("button"),
+                  );
+                  const cancelButton = buttons.find(
+                    (b) => b.textContent && b.textContent.includes("Cancel"),
+                  );
+                  if (cancelButton) {
+                    cancelButton.click();
+                    return true;
+                  }
+                  return false;
+                });
+                if (cancelClicked) {
+                  logLine(`-- Cancelled error dialog`);
+                  await sleep(2000);
+                }
+              } else {
+                // Wait for page reload after successful New Day
+                logLine(`-- Waiting for page reload...`);
+                try {
+                  await page.waitForLoadState("networkidle", {
+                    timeout: 10000,
+                  });
+                  logLine(`-- Page reloaded successfully`);
+                } catch (err) {
+                  logLine(`-- Warning: Page reload timeout`);
+                }
+                await sleep(3000);
+              }
+            } else {
+              logLine(`-- Warning: Could not find button: ${buttonText}`);
+            }
+          } else {
+            logLine(`-- Warning: Could not find Settings menu`);
+          }
+        }
+
         if (action.type === "pasteResults") {
           // Parse tab-delimited results into array
           const results = action.results
