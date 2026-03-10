@@ -15,7 +15,10 @@ const MINI_GAMES = [
 ] as const;
 
 function getNextTitle(currentTitle: string): string {
-  const index = MINI_GAMES.indexOf(currentTitle as any);
+  // Case-insensitive match to find the mini-game
+  const index = MINI_GAMES.findIndex(
+    (game) => game.toLowerCase() === currentTitle.toLowerCase(),
+  );
   if (index !== -1) {
     return MINI_GAMES[(index + 1) % MINI_GAMES.length];
   }
@@ -89,12 +92,33 @@ function App() {
     }
   };
 
+  const triggerNewDay = (reRank: boolean) => {
+    console.log(`>>> [NEW DAY TRIGGERED] reRank=${reRank}`);
+    // First, trigger recalculate ratings to check for errors
+    if (recalculateRef.current) {
+      // Set a flag indicating New Day is pending
+      localStorage.setItem("ladder_pending_newday", JSON.stringify({ reRank }));
+      console.log(
+        `>>> [NEW DAY] Pending flag set: ${JSON.stringify({ reRank })}`,
+      );
+      // Call recalculate - if there are errors, it will show the error dialog
+      // and not complete, so New Day won't proceed
+      recalculateRef.current();
+    } else {
+      // Fallback: just process New Day directly
+      console.warn(
+        ">>> [NEW DAY] Recalculate ref not available, using fallback",
+      );
+      processNewDay(reRank);
+    }
+  };
+
   const handleNewDay = () => {
-    processNewDay(false);
+    triggerNewDay(false);
   };
 
   const handleNewDayWithReRank = () => {
-    processNewDay(true);
+    triggerNewDay(true);
   };
 
   const handleWalkThroughReports = () => {

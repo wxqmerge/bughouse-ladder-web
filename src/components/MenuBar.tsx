@@ -122,7 +122,7 @@ export default function MenuBar({
       closeAllMenus();
     },
     dataMenuItem: `Title-${title}`,
-    hasCheckmark: projectName === title,
+    hasCheckmark: projectName?.toLowerCase() === title.toLowerCase(),
   }));
 
   const sortMenuItems: MenuItem[] = [

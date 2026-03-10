@@ -495,6 +495,87 @@ export default function LadderForm({
     }
 
     const calculatedPlayers = calculateRatings(processedPlayers, matches);
+
+    // Check for pending New Day operation (set by App.tsx before calling recalculate)
+    const pendingNewDayJson = localStorage.getItem("ladder_pending_newday");
+    if (pendingNewDayJson) {
+      console.log(
+        `>>> [RECALC COMPLETE] Pending New Day detected: ${pendingNewDayJson}`,
+      );
+      try {
+        const pendingNewDay = JSON.parse(pendingNewDayJson);
+        const reRank = pendingNewDay.reRank === true;
+        console.log(`>>> [NEW DAY] Processing with reRank=${reRank}`);
+
+        // Get current title and determine next title for mini-games
+        const MINI_GAMES = [
+          "BG_Game",
+          "Bishop_Game",
+          "Pillar_Game",
+          "Kings_Cross",
+          "Pawn_Game",
+          "Queen_Game",
+        ];
+        const currentTitle =
+          localStorage.getItem("ladder_project_name") ||
+          "Bughouse Chess Ladder";
+        const nextTitle = (() => {
+          const index = MINI_GAMES.findIndex(
+            (game) => game.toLowerCase() === currentTitle.toLowerCase(),
+          );
+          if (index !== -1) {
+            return MINI_GAMES[(index + 1) % MINI_GAMES.length];
+          }
+          return currentTitle;
+        })();
+
+        // Apply New Day transformations to calculatedPlayers
+        const newDayPlayers = calculatedPlayers.map((player) => ({
+          ...player,
+          rating: player.nRating || 0,
+          num_games: (player.gameResults || []).filter(
+            (r) => r !== null && r !== "",
+          ).length,
+          attendance: 0,
+          gameResults: Array(31).fill(null),
+        }));
+
+        // Apply re-ranking if requested
+        let finalPlayers = newDayPlayers;
+        if (reRank) {
+          finalPlayers = [...newDayPlayers].sort((a, b) => {
+            const ratingA = a.rating || 0;
+            const ratingB = b.rating || 0;
+            if (ratingA !== ratingB) return ratingB - ratingA;
+            return a.rank - b.rank;
+          });
+          finalPlayers = finalPlayers.map((player, index) => ({
+            ...player,
+            rank: index + 1,
+          }));
+        }
+
+        setPlayers(finalPlayers);
+        localStorage.setItem("ladder_players", JSON.stringify(finalPlayers));
+        localStorage.setItem("ladder_project_name", nextTitle);
+        localStorage.removeItem("ladder_pending_newday");
+        localStorage.removeItem("ladder_settings");
+
+        if (shouldLog(10)) {
+          console.log(
+            `New Day complete - Title: ${nextTitle}, ReRank: ${reRank}\n`,
+          );
+        }
+
+        // Reload to apply changes
+        window.location.reload();
+        return;
+      } catch (err) {
+        console.error("Failed to process pending New Day:", err);
+        localStorage.removeItem("ladder_pending_newday");
+      }
+    }
+
     setPlayers(calculatedPlayers);
     localStorage.setItem("ladder_players", JSON.stringify(calculatedPlayers));
     if (shouldLog(10)) {
@@ -705,6 +786,10 @@ export default function LadderForm({
     if (shouldLog(10)) {
       console.log(">>> [BUTTON PRESSED] Cancel");
     }
+
+    // Clear pending New Day flag since user is cancelling
+    localStorage.removeItem("ladder_pending_newday");
+
     // If we have pendingPlayers with corrections, complete the calculation first
     // Use the ref to get the latest updated players (not the stale state)
     if (latestPendingPlayersRef.current && pendingMatches) {
@@ -732,10 +817,98 @@ export default function LadderForm({
       31,
       pendingPlayerResultsByMatch || undefined,
     );
-    const calculatedPlayers = calculateRatings(
-      processedPlayers,
-      pendingMatches,
-    );
+    let calculatedPlayers = calculateRatings(processedPlayers, pendingMatches);
+
+    // Check for pending New Day operation
+    const pendingNewDayJson = localStorage.getItem("ladder_pending_newday");
+    if (pendingNewDayJson) {
+      console.log(
+        `>>> [COMPLETE CALC] Pending New Day detected: ${pendingNewDayJson}`,
+      );
+      try {
+        const pendingNewDay = JSON.parse(pendingNewDayJson);
+        const reRank = pendingNewDay.reRank === true;
+        console.log(`>>> [NEW DAY] Processing with reRank=${reRank}`);
+
+        // Get current title and determine next title for mini-games
+        const MINI_GAMES = [
+          "BG_Game",
+          "Bishop_Game",
+          "Pillar_Game",
+          "Kings_Cross",
+          "Pawn_Game",
+          "Queen_Game",
+        ];
+        const currentTitle =
+          localStorage.getItem("ladder_project_name") ||
+          "Bughouse Chess Ladder";
+        const nextTitle = (() => {
+          const index = MINI_GAMES.findIndex(
+            (game) => game.toLowerCase() === currentTitle.toLowerCase(),
+          );
+          if (index !== -1) {
+            return MINI_GAMES[(index + 1) % MINI_GAMES.length];
+          }
+          return currentTitle;
+        })();
+
+        // Apply New Day transformations
+        const newDayPlayers = calculatedPlayers.map((player) => ({
+          ...player,
+          rating: player.nRating || 0,
+          num_games: (player.gameResults || []).filter(
+            (r) => r !== null && r !== "",
+          ).length,
+          attendance: 0,
+          gameResults: Array(31).fill(null),
+        }));
+
+        // Apply re-ranking if requested
+        let finalPlayers = newDayPlayers;
+        if (reRank) {
+          finalPlayers = [...newDayPlayers].sort((a, b) => {
+            const ratingA = a.rating || 0;
+            const ratingB = b.rating || 0;
+            if (ratingA !== ratingB) return ratingB - ratingA;
+            return a.rank - b.rank;
+          });
+          finalPlayers = finalPlayers.map((player, index) => ({
+            ...player,
+            rank: index + 1,
+          }));
+        }
+
+        calculatedPlayers = finalPlayers;
+
+        localStorage.setItem("ladder_players", JSON.stringify(finalPlayers));
+        localStorage.setItem("ladder_project_name", nextTitle);
+        localStorage.removeItem("ladder_pending_newday");
+        localStorage.removeItem("ladder_settings");
+
+        if (shouldLog(10)) {
+          console.log(
+            `New Day complete - Title: ${nextTitle}, ReRank: ${reRank}`,
+          );
+        }
+
+        setPlayers(finalPlayers);
+        setPendingPlayers(null);
+        setPendingMatches(null);
+        setWalkthroughErrors([]);
+        setWalkthroughIndex(0);
+        setCurrentError(null);
+        setEntryCell(null);
+        setIsRecalculating(false);
+
+        // Reload to apply changes
+        window.location.reload();
+        return;
+      } catch (err) {
+        console.error("Failed to process pending New Day:", err);
+        localStorage.removeItem("ladder_pending_newday");
+      }
+    }
+
     setPlayers(calculatedPlayers);
     localStorage.setItem("ladder_players", JSON.stringify(calculatedPlayers));
 

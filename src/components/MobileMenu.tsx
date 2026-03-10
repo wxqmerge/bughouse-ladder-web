@@ -86,7 +86,7 @@ export default function MobileMenu({
     label: title,
     onClick: () => handleItemClick(() => onSetTitle?.(title)),
     dataMenuItem: `Title-${title}`,
-    hasCheckmark: projectName === title,
+    hasCheckmark: projectName?.toLowerCase() === title.toLowerCase(),
   }));
 
   const sortItems: MenuItem[] = [
