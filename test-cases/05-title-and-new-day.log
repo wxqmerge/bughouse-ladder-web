@@ -501,12 +501,12 @@ Total player result entries: 134
 -- Menu opened: File
 >>> [LOG] >>> [MENU ACTION] export
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Bughouse_2026-03-10T16-58-58-566Z.tab
--- Download detected: Bughouse_2026-03-10T16-58-58-566Z.tab
+>>> [LOG] Exported 14 players to Bughouse_2026-03-10T18-38-06-925Z.tab
+-- Download detected: Bughouse_2026-03-10T18-38-06-925Z.tab
 -- Menu item selected: Export
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Bughouse_2026-03-10T16-58-58-566Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Bughouse_2026-03-10T18-38-06-925Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\05-title-and-new-day.tab
 
 -- Comparing output...
--- Test error: ENOENT: no such file or directory, open 'C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\05-title-and-new-day.tab'
+-- Test PASSED - Output matches expected file!

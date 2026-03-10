@@ -391,7 +391,7 @@ export default function LadderForm({
         loadedPlayers.forEach((player) => {
           const gameResults: (string | null)[] = [];
           for (let g = 0; g < numRounds; g++) {
-            gameResults.push(allGameResults[player.rank - 1]?.[g] || null);
+            gameResults.push(allGameResults[player.rank - 1]?.[g] ?? null);
           }
           const playerIndex = loadedPlayers.indexOf(player);
           sortedGameResults[playerIndex] = gameResults;
@@ -1110,7 +1110,7 @@ export default function LadderForm({
       const startRound = entryCell.round + 1;
 
       for (let rank = startRank; rank <= players.length; rank++) {
-        const player = players[rank - 1];
+        const player = players.find((p) => p.rank === rank);
         if (!player) continue;
 
         // If this is the starting rank, start from next round
@@ -1134,7 +1134,7 @@ export default function LadderForm({
       // If no more cells found from current position, search from beginning
       if (!foundCell) {
         for (let rank = 1; rank <= players.length; rank++) {
-          const player = players[rank - 1];
+          const player = players.find((p) => p.rank === rank);
           if (!player) continue;
 
           for (let round = 0; round < 31; round++) {
@@ -1756,47 +1756,49 @@ export default function LadderForm({
                               const value = e.target.textContent;
                               setPlayers((prevPlayers) => {
                                 const updatedPlayers = [...prevPlayers];
-                                const index = player.rank - 1;
-                                if (updatedPlayers[index]) {
+                                const targetPlayer = updatedPlayers.find(
+                                  (p) => p.rank === player.rank,
+                                );
+                                if (targetPlayer) {
                                   switch (field) {
                                     case "group":
-                                      updatedPlayers[index].group = value;
+                                      targetPlayer.group = value;
                                       break;
                                     case "lastName":
-                                      updatedPlayers[index].lastName = value;
+                                      targetPlayer.lastName = value;
                                       break;
                                     case "firstName":
-                                      updatedPlayers[index].firstName = value;
+                                      targetPlayer.firstName = value;
                                       break;
                                     case "rating":
-                                      updatedPlayers[index].rating =
+                                      targetPlayer.rating =
                                         parseInt(value) || 0;
                                       break;
                                     case "nRating":
-                                      updatedPlayers[index].nRating =
+                                      targetPlayer.nRating =
                                         parseInt(value) || 0;
                                       break;
                                     case "grade":
-                                      updatedPlayers[index].grade = value;
+                                      targetPlayer.grade = value;
                                       break;
                                     case "num_games":
-                                      updatedPlayers[index].num_games =
+                                      targetPlayer.num_games =
                                         parseInt(value) || 0;
                                       break;
                                     case "attendance":
-                                      updatedPlayers[index].attendance = value;
+                                      targetPlayer.attendance = value;
                                       break;
                                     case "phone":
-                                      updatedPlayers[index].phone = value;
+                                      targetPlayer.phone = value;
                                       break;
                                     case "info":
-                                      updatedPlayers[index].info = value;
+                                      targetPlayer.info = value;
                                       break;
                                     case "school":
-                                      updatedPlayers[index].school = value;
+                                      targetPlayer.school = value;
                                       break;
                                     case "room":
-                                      updatedPlayers[index].room = value;
+                                      targetPlayer.room = value;
                                       break;
                                   }
                                 }
@@ -1805,8 +1807,8 @@ export default function LadderForm({
                               localStorage.setItem(
                                 "ladder_players",
                                 JSON.stringify(
-                                  players.map((p, i) =>
-                                    i === player.rank - 1
+                                  players.map((p) =>
+                                    p.rank === player.rank
                                       ? ({
                                           ...p,
                                           [field]:
@@ -1870,19 +1872,21 @@ export default function LadderForm({
                           if (isEditable && e.target.textContent) {
                             const value = e.target.textContent;
                             setPlayers((prevPlayers) => {
-                              const updatedPlayers = [...prevPlayers];
-                              const index = player.rank - 1;
-                              if (updatedPlayers[index]) {
-                                const newGameResults = [
-                                  ...updatedPlayers[index].gameResults,
-                                ];
-                                newGameResults[gCol] = value;
-                                updatedPlayers[index] = {
-                                  ...updatedPlayers[index],
-                                  gameResults: newGameResults,
-                                };
-                              }
-                              return updatedPlayers;
+                              const targetPlayer = prevPlayers.find(
+                                (p) => p.rank === player.rank,
+                              );
+                              if (!targetPlayer) return prevPlayers;
+
+                              const newGameResults = [
+                                ...targetPlayer.gameResults,
+                              ];
+                              newGameResults[gCol] = value;
+
+                              return prevPlayers.map((p) =>
+                                p.rank === player.rank
+                                  ? { ...p, gameResults: newGameResults }
+                                  : p,
+                              );
                             });
                           }
                         }}

@@ -12,6 +12,12 @@
     },
     {
       "config": "test-cases/04-paste-results.json"
+    },    
+    {
+      "config": "test-cases/05-title-and-new-day.json"
+    },
+    {
+      "config": "test-cases/06-pawn-game-recalculate.json"
     }
   ]
 }

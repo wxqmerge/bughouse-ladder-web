@@ -663,7 +663,7 @@ export function processGameResults(
   // Helper to normalize a result string for comparison (converts to canonical form)
   const normalizeResultForComparison = (
     _result: string,
-    playerRank: number,
+    _playerRank: number,
     parsedPlayers: number[],
     scores: number[],
   ): string => {
@@ -675,21 +675,9 @@ export function processGameResults(
       const p2 = parsedPlayers[1];
       const score = scores[0];
 
-      // Find which player entered this result
-      let canonicalScore = score;
-      if (playerRank === p2) {
-        canonicalScore = swapScore(score);
-      }
-
-      // Convert score to letter
+      // Convert score to letter (no perspective swap - score is already from first player's perspective)
       const scoreLetter =
-        canonicalScore === 0
-          ? "O"
-          : canonicalScore === 1
-            ? "L"
-            : canonicalScore === 2
-              ? "D"
-              : "W";
+        score === 0 ? "O" : score === 1 ? "L" : score === 2 ? "D" : "W";
 
       // Return in sorted player order (within pair)
       const sortedPair = [p1, p2].sort((a, b) => a - b);
@@ -1092,14 +1080,10 @@ export function calculateRatings(
   const playersCopy = playersList.map((p) => ({ ...p }));
 
   for (const match of matches) {
-    const p1Index = match.player1 - 1;
-    const p2Index = match.player2 - 1;
+    const p1 = playersCopy.find((p) => p.rank === match.player1);
+    const p2 = playersCopy.find((p) => p.rank === match.player2);
 
-    if (p1Index < 0 || p1Index >= playersCopy.length) continue;
-    if (p2Index < 0 || p2Index >= playersCopy.length) continue;
-
-    const p1 = playersCopy[p1Index];
-    const p2 = playersCopy[p2Index];
+    if (!p1 || !p2) continue;
 
     if (!p1 || !p2) continue;
 
@@ -1273,10 +1257,7 @@ export function repopulateGameResults(
     }
 
     for (const playerRank of playerRanks) {
-      const playerIndex = playerRank - 1;
-      if (playerIndex < 0 || playerIndex >= playersCopy.length) continue;
-
-      const player = playersCopy[playerIndex];
+      const player = playersCopy.find((p) => p.rank === playerRank);
       if (!player) continue;
 
       // Set result in their lowest empty round
