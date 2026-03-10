@@ -1057,13 +1057,8 @@ export default function LadderForm({
       return 0;
     });
 
-    const sortedPlayers = playersWithResults.map((item, index) => {
-      item.rank = index + 1;
-      return item;
-    });
-
-    setPlayers(sortedPlayers);
-    localStorage.setItem("ladder_players", JSON.stringify(sortedPlayers));
+    setPlayers([...playersWithResults]);
+    localStorage.setItem("ladder_players", JSON.stringify(playersWithResults));
   };
   const saveLocalStorage = () => {
     if (players.length === 0) return;

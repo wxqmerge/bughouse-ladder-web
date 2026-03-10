@@ -18,6 +18,7 @@ interface SettingsProps {
   onReset: () => void;
   onClearAll: () => void;
   onNewDay: () => void;
+  onNewDayWithReRank: () => void;
   onWalkThroughReports?: () => void;
 }
 
@@ -26,6 +27,7 @@ export default function Settings({
   onReset,
   onClearAll,
   onNewDay,
+  onNewDayWithReRank,
   onWalkThroughReports,
 }: SettingsProps) {
   const [showRatings, setShowRatings] = useState(true);
@@ -88,6 +90,18 @@ export default function Settings({
       )
     ) {
       onNewDay();
+      onClose();
+    }
+  };
+
+  const handleNewDayWithReRank = () => {
+    console.log(">>> [BUTTON PRESSED] New Day with Re-rank");
+    if (
+      window.confirm(
+        "Are you sure you want to start a new day with re-ranking? This will copy New Rating to Previous Rating, clear reports, and sort players by rating.",
+      )
+    ) {
+      onNewDayWithReRank();
       onClose();
     }
   };
@@ -270,6 +284,40 @@ export default function Settings({
             }}
           >
             Copies New Rating to Previous Rating and clears reports
+          </p>
+
+          <button
+            onClick={handleNewDayWithReRank}
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0.5rem",
+              padding: "0.75rem",
+              backgroundColor: "#10b981",
+              color: "white",
+              border: "none",
+              borderRadius: "0.25rem",
+              cursor: "pointer",
+              fontSize: "0.875rem",
+              fontWeight: "500",
+            }}
+          >
+            <CalendarDays size={16} />
+            New Day with Re-rank
+          </button>
+          <p
+            style={{
+              fontSize: "0.75rem",
+              color: "#6b7280",
+              marginTop: "0.5rem",
+              marginBottom: "1rem",
+              textAlign: "center",
+            }}
+          >
+            Copies New Rating to Previous Rating, clears reports, and sorts by
+            rating
           </p>
 
           <button

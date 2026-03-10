@@ -23,7 +23,7 @@ function App() {
     window.location.reload();
   };
 
-  const handleNewDay = () => {
+  const processNewDay = (reRank: boolean) => {
     const playersJson = localStorage.getItem("ladder_players");
     if (playersJson) {
       try {
@@ -32,13 +32,38 @@ function App() {
           player.rating = player.nRating;
           player.gameResults = Array(31).fill(null);
         });
-        localStorage.setItem("ladder_players", JSON.stringify(players));
+
+        if (reRank) {
+          const sortedPlayers = Object.values(players).sort((a, b) => {
+            const ratingA = a.rating || 0;
+            const ratingB = b.rating || 0;
+            if (ratingA !== ratingB) return ratingB - ratingA;
+            return a.rank - b.rank;
+          });
+
+          sortedPlayers.forEach((player, index) => {
+            player.rank = index + 1;
+          });
+
+          localStorage.setItem("ladder_players", JSON.stringify(sortedPlayers));
+        } else {
+          localStorage.setItem("ladder_players", JSON.stringify(players));
+        }
+
         localStorage.removeItem("ladder_settings");
         window.location.reload();
       } catch (err) {
         console.error("Failed to process new day:", err);
       }
     }
+  };
+
+  const handleNewDay = () => {
+    processNewDay(false);
+  };
+
+  const handleNewDayWithReRank = () => {
+    processNewDay(true);
   };
 
   const handleWalkThroughReports = () => {
@@ -63,6 +88,7 @@ function App() {
           onReset={handleReset}
           onClearAll={handleClearAll}
           onNewDay={handleNewDay}
+          onNewDayWithReRank={handleNewDayWithReRank}
           onWalkThroughReports={handleWalkThroughReports}
         />
       )}
