@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import type { ValidationResult, PlayerData } from "../utils/hashUtils";
 import { updatePlayerGameData } from "../utils/hashUtils";
+import { getValidationErrorMessage } from "../utils/constants";
 
 interface ErrorDialogProps {
   error: ValidationResult | null;
@@ -22,20 +23,6 @@ interface ErrorDialogProps {
     resultString: string,
   ) => void;
   totalRounds?: number;
-}
-
-const ERROR_MESSAGES: Record<number, string> = {
-  1: "Invalid format",
-  2: "Invalid character",
-  3: "Incomplete entry",
-  4: "Duplicate players",
-  7: "Missing player 4",
-  9: "Player rank exceeds 200",
-  10: "Conflicting results - players disagree on outcome",
-};
-
-function getValidationErrorMessage(errorCode: number): string {
-  return ERROR_MESSAGES[errorCode] || "Unknown error";
 }
 
 export default function ErrorDialog({

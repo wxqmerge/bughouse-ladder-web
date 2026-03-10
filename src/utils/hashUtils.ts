@@ -3,6 +3,7 @@
  */
 
 import { shouldLog } from "./debug";
+import { getValidationErrorMessage } from "./constants";
 
 /**
  * VB6 Line: 25 - Global constants from common.bas
@@ -65,9 +66,6 @@ export const GROUP_CODES = "A1xAxBxCxDxExFxGxHxIxZx   " as const;
  */
 export let players = [0, 0, 0, 0, 0, 0];
 
-export const gameScores = [0, 0, 0];
-export const gameQuickEntry = 0;
-
 /**
  * VB6 Line: 82-83 - Global playerOrRow for type tracking
  */
@@ -82,8 +80,6 @@ export const SORT_OPTIONS = {
   SORT_FIRST_NAME: 2,
   SORT_RATING: 3,
 } as const;
-
-export const sortOptions = SORT_OPTIONS;
 
 /**
  * VB6 Line: 129-130 - Elo rating formula
@@ -362,17 +358,6 @@ export function parseEntry(
       return errorNum === 0 ? -3 : -errorNum;
     }
 
-    // VB6 Line: 262-270 - Return result
-    if (
-      errorNum !== 0 ||
-      playersList[0] === 0 ||
-      playersList[1] === 0 ||
-      playersList[2] === 0 ||
-      scoreList[0] < 0 ||
-      scoreList[1] < 0
-    ) {
-      return errorNum === 0 ? -3 : -errorNum;
-    }
     return computedRes;
   } else {
     // 2-player game
@@ -447,16 +432,6 @@ export function long2string(game: number): string {
   // VB6 Line: 122-124 - Clean up empty parts
   const finalResult = resultParts.join("").replace(/ /g, "").replace(":0", "");
   return finalResult;
-}
-
-/**
- * VB6 Line: 369-374 - Swap two integers
- */
-export function swapint(a: number, b: number): number {
-  const c = a;
-  a = b;
-  b = c;
-  return a;
 }
 
 /**
@@ -1094,8 +1069,6 @@ export function calculateRatings(
 
     if (!p1 || !p2) continue;
 
-    if (!p1 || !p2) continue;
-
     const p1Rating = Math.abs(p1.rating);
     const p2Rating = Math.abs(p2.rating);
 
@@ -1332,21 +1305,6 @@ export function repopulateGameResults(
   }
 
   return playersCopy;
-}
-
-export const ERROR_MESSAGES: Record<number, string> = {
-  1: "Invalid format",
-  2: "Invalid character",
-  3: "Incomplete entry",
-  4: "Duplicate players",
-  5: "Too many results",
-  7: "Missing player 4",
-  9: "Player rank exceeds 200",
-  10: "Conflicting results - players disagree on outcome",
-};
-
-export function getValidationErrorMessage(errorCode: number): string {
-  return ERROR_MESSAGES[errorCode] || "Unknown error";
 }
 
 export interface ValidationResultResult {

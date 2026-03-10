@@ -3,41 +3,8 @@ import LadderForm from "./components/LadderForm";
 import Settings from "./components/Settings";
 import { loadSampleData } from "./components/LadderForm";
 import type { PlayerData } from "./utils/hashUtils";
+import { getNextTitle, processNewDayTransformations } from "./utils/constants";
 import "./css/index.css";
-
-const MINI_GAMES = [
-  "BG_Game",
-  "Bishop_Game",
-  "Pillar_Game",
-  "Kings_Cross",
-  "Pawn_Game",
-  "Queen_Game",
-] as const;
-
-function getNextTitle(currentTitle: string): string {
-  // Case-insensitive match to find the mini-game
-  const normalizedTitle = String(currentTitle || "")
-    .toLowerCase()
-    .trim();
-  console.log(
-    `>>> [getNextTitle] Looking for: "${currentTitle}" (normalized: "${normalizedTitle}")`,
-  );
-  const index = MINI_GAMES.findIndex(
-    (game) => game.toLowerCase() === normalizedTitle,
-  );
-  console.log(
-    `>>> [getNextTitle] Found at index: ${index}, MINI_GAMES: ${MINI_GAMES.join(", ")}`,
-  );
-  if (index !== -1) {
-    const next = MINI_GAMES[(index + 1) % MINI_GAMES.length];
-    console.log(`>>> [getNextTitle] Next title: "${next}"`);
-    return next;
-  }
-  console.log(
-    `>>> [getNextTitle] Not found, returning current: "${currentTitle}"`,
-  );
-  return currentTitle;
-}
 
 function App() {
   const [showSettings, setShowSettings] = useState(false);
@@ -62,45 +29,16 @@ function App() {
     if (playersJson) {
       try {
         const players: Record<number, PlayerData> = JSON.parse(playersJson);
-
-        // Get current title and determine next title for mini-games
         const currentTitle =
           localStorage.getItem("ladder_project_name") ||
           "Bughouse Chess Ladder";
         const nextTitle = getNextTitle(currentTitle);
 
-        Object.values(players).forEach((player) => {
-          const gameCount = (player.gameResults || []).filter(
-            (r) => r !== null && r !== "",
-          ).length;
-          // If player had results, reset attendance to 0; otherwise increment
-          player.attendance =
-            gameCount > 0 ? 0 : (Number(player.attendance) || 0) + 1;
-          player.rating = player.nRating;
-          player.num_games = gameCount;
-          player.gameResults = Array(31).fill(null);
-        });
+        const playerArray = Object.values(players) as PlayerData[];
+        const finalPlayers = processNewDayTransformations(playerArray, reRank);
 
-        if (reRank) {
-          const sortedPlayers = Object.values(players).sort((a, b) => {
-            const ratingA = a.rating || 0;
-            const ratingB = b.rating || 0;
-            if (ratingA !== ratingB) return ratingB - ratingA;
-            return a.rank - b.rank;
-          });
-
-          sortedPlayers.forEach((player, index) => {
-            player.rank = index + 1;
-          });
-
-          localStorage.setItem("ladder_players", JSON.stringify(sortedPlayers));
-        } else {
-          localStorage.setItem("ladder_players", JSON.stringify(players));
-        }
-
-        // Update title in localStorage (will be loaded on reload)
+        localStorage.setItem("ladder_players", JSON.stringify(finalPlayers));
         localStorage.setItem("ladder_project_name", nextTitle);
-
         localStorage.removeItem("ladder_settings");
         window.location.reload();
       } catch (err) {

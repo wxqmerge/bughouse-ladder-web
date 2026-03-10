@@ -11,6 +11,7 @@ import {
   repopulateGameResults,
   updatePlayerGameData,
 } from "../utils/hashUtils";
+import { MINI_GAMES, processNewDayTransformations } from "../utils/constants";
 import ErrorDialog from "./ErrorDialog";
 import AddPlayerDialog from "./AddPlayerDialog";
 import MenuBar from "./MenuBar";
@@ -514,14 +515,6 @@ export default function LadderForm({
         console.log(`>>> [NEW DAY] Processing with reRank=${reRank}`);
 
         // Get current title and determine next title for mini-games
-        const MINI_GAMES = [
-          "BG_Game",
-          "Bishop_Game",
-          "Pillar_Game",
-          "Kings_Cross",
-          "Pawn_Game",
-          "Queen_Game",
-        ];
         const currentTitle =
           localStorage.getItem("ladder_project_name") ||
           "Bughouse Chess Ladder";
@@ -531,7 +524,6 @@ export default function LadderForm({
         console.log(
           `>>> [NEW DAY] Current title from localStorage: "${currentTitle}" (normalized: "${normalizedTitle}")`,
         );
-        console.log(`>>> [NEW DAY] MINI_GAMES array: ${MINI_GAMES.join(", ")}`);
         const nextTitle = (() => {
           const index = MINI_GAMES.findIndex(
             (game) => game.toLowerCase() === normalizedTitle,
@@ -547,37 +539,10 @@ export default function LadderForm({
         console.log(`>>> [NEW DAY] Next title will be: "${nextTitle}"`);
 
         // Apply New Day transformations to calculatedPlayers
-        const newDayPlayers = calculatedPlayers.map((player) => {
-          const gameCount = (player.gameResults || []).filter(
-            (r) => r !== null && r !== "",
-          ).length;
-          // If player had results, reset attendance to 0; otherwise increment
-          const newAttendance =
-            gameCount > 0 ? 0 : ((player.attendance as number) || 0) + 1;
-
-          return {
-            ...player,
-            rating: player.nRating || 0,
-            num_games: gameCount,
-            attendance: newAttendance,
-            gameResults: Array(31).fill(null),
-          };
-        });
-
-        // Apply re-ranking if requested
-        let finalPlayers = newDayPlayers;
-        if (reRank) {
-          finalPlayers = [...newDayPlayers].sort((a, b) => {
-            const ratingA = a.rating || 0;
-            const ratingB = b.rating || 0;
-            if (ratingA !== ratingB) return ratingB - ratingA;
-            return a.rank - b.rank;
-          });
-          finalPlayers = finalPlayers.map((player, index) => ({
-            ...player,
-            rank: index + 1,
-          }));
-        }
+        const finalPlayers = processNewDayTransformations(
+          calculatedPlayers,
+          reRank,
+        );
 
         setPlayers(finalPlayers);
         localStorage.setItem("ladder_players", JSON.stringify(finalPlayers));
@@ -855,14 +820,6 @@ export default function LadderForm({
         console.log(`>>> [NEW DAY] Processing with reRank=${reRank}`);
 
         // Get current title and determine next title for mini-games
-        const MINI_GAMES = [
-          "BG_Game",
-          "Bishop_Game",
-          "Pillar_Game",
-          "Kings_Cross",
-          "Pawn_Game",
-          "Queen_Game",
-        ];
         const currentTitle =
           localStorage.getItem("ladder_project_name") ||
           "Bughouse Chess Ladder";
@@ -880,37 +837,10 @@ export default function LadderForm({
         })();
 
         // Apply New Day transformations
-        const newDayPlayers = calculatedPlayers.map((player) => {
-          const gameCount = (player.gameResults || []).filter(
-            (r) => r !== null && r !== "",
-          ).length;
-          // If player had results, reset attendance to 0; otherwise increment
-          const newAttendance =
-            gameCount > 0 ? 0 : ((player.attendance as number) || 0) + 1;
-
-          return {
-            ...player,
-            rating: player.nRating || 0,
-            num_games: gameCount,
-            attendance: newAttendance,
-            gameResults: Array(31).fill(null),
-          };
-        });
-
-        // Apply re-ranking if requested
-        let finalPlayers = newDayPlayers;
-        if (reRank) {
-          finalPlayers = [...newDayPlayers].sort((a, b) => {
-            const ratingA = a.rating || 0;
-            const ratingB = b.rating || 0;
-            if (ratingA !== ratingB) return ratingB - ratingA;
-            return a.rank - b.rank;
-          });
-          finalPlayers = finalPlayers.map((player, index) => ({
-            ...player,
-            rank: index + 1,
-          }));
-        }
+        const finalPlayers = processNewDayTransformations(
+          calculatedPlayers,
+          reRank,
+        );
 
         calculatedPlayers = finalPlayers;
 
