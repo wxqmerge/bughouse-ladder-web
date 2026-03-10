@@ -139,7 +139,7 @@ export const loadSampleData = () => {
       rating: 1000 + Math.floor(pseudoRandom2(index * 17) * 400),
       nRating: 1000 + Math.floor(pseudoRandom2(index * 31) * 400),
       grade: `${(index % 7) + 1}th`,
-      games: numGames,
+      num_games: numGames,
       attendance: numGames,
       info: "",
       phone: "",
@@ -255,7 +255,7 @@ export default function LadderForm({
     samplePlayers.forEach((player) => {
       if (shouldLog(3)) {
         console.log(
-          `[LadderForm] Sample player: Rank=${player.rank}, Name=${player.firstName} ${player.lastName}, Rating=${player.rating}, Games=${player.games}`,
+          `[LadderForm] Sample player: Rank=${player.rank}, Name=${player.firstName} ${player.lastName}, Rating=${player.rating}, Games=${player.num_games}`,
         );
       }
     });
@@ -313,7 +313,7 @@ export default function LadderForm({
           rating: cols[3] ? parseInt(String(cols[3]).trim() || "-1") : -1,
           nRating: 0,
           grade: cols[6] !== null ? cols[6] : "N/A",
-          games: cols[7] !== null ? parseInt(cols[7]) : 0,
+          num_games: cols[7] !== null ? parseInt(cols[7]) : 0,
           attendance: cols[8] !== null ? parseInt(cols[8]) : 0,
           phone: cols[9] !== null ? cols[9] : "",
           info: cols[10] !== null ? cols[10] : "",
@@ -1126,14 +1126,14 @@ export default function LadderForm({
     const filename = `Export_Results_${timestamp}.tab`;
 
     const headerLine =
-      "Group\tLast Name\tFirst Name\tRating\tRnk\tN Rate\tGr\tX\tPhone\tInfo\tSchool\tRoom\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\t14\t15\t16\t17\t18\t19\t20\t21\t22\t23\t24\t25\t26\t27\t28\t29\t30\t31\Version 1.21";
+      "Group\tLast Name\tFirst Name\tRating\tRnk\tN Rate\tGr\tGms\tPhone\tInfo\tSchool\tRoom\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\t14\t15\t16\t17\t18\t19\t20\t21\t22\t23\t24\t25\t26\t27\t28\t29\t30\t31\Version 1.21";
 
     let output = headerLine + "\n";
 
     players.forEach((player) => {
       const gameResults = player.gameResults || new Array(31).fill(null);
 
-      output += `${player.group || ""}\t${player.lastName || ""}\t${player.firstName || ""}\t${player.rating || ""}\t${player.rank}\t${player.nRating || ""}\t${player.grade || ""}\t${player.games || 0}\t${player.attendance || ""}\t${player.phone || ""}\t${player.info || ""}\t${player.school || ""}\t${player.room || ""}`;
+      output += `${player.group || ""}\t${player.lastName || ""}\t${player.firstName || ""}\t${player.rating || ""}\t${player.rank}\t${player.nRating || ""}\t${player.grade || ""}\t${player.num_games || 0}\t${player.attendance || ""}\t${player.phone || ""}\t${player.info || ""}\t${player.school || ""}\t${player.room || ""}`;
 
       output += gameResults.map((r) => r || "").join("\t");
       output += "\n";
@@ -1373,6 +1373,101 @@ export default function LadderForm({
               >
                 New Rating
               </th>
+              {isAdmin && (
+                <>
+                  <th
+                    key="head-grade"
+                    style={{
+                      padding: "0.5rem 0.75rem",
+                      textAlign: "left",
+                      fontWeight: "500",
+                      borderBottom: "2px solid rgba(255, 255, 255, 0.1)",
+                      backgroundColor: "#0f172a",
+                      color: "white",
+                    }}
+                  >
+                    Gr
+                  </th>
+                  <th
+                    key="head-num_games"
+                    style={{
+                      padding: "0.5rem 0.75rem",
+                      textAlign: "left",
+                      fontWeight: "500",
+                      borderBottom: "2px solid rgba(255, 255, 255, 0.1)",
+                      backgroundColor: "#0f172a",
+                      color: "white",
+                    }}
+                  >
+                    Gms
+                  </th>
+                  <th
+                    key="head-attendance"
+                    style={{
+                      padding: "0.5rem 0.75rem",
+                      textAlign: "left",
+                      fontWeight: "500",
+                      borderBottom: "2px solid rgba(255, 255, 255, 0.1)",
+                      backgroundColor: "#0f172a",
+                      color: "white",
+                    }}
+                  >
+                    Attendance
+                  </th>
+                  <th
+                    key="head-phone"
+                    style={{
+                      padding: "0.5rem 0.75rem",
+                      textAlign: "left",
+                      fontWeight: "500",
+                      borderBottom: "2px solid rgba(255, 255, 255, 0.1)",
+                      backgroundColor: "#0f172a",
+                      color: "white",
+                    }}
+                  >
+                    Phone
+                  </th>
+                  <th
+                    key="head-info"
+                    style={{
+                      padding: "0.5rem 0.75rem",
+                      textAlign: "left",
+                      fontWeight: "500",
+                      borderBottom: "2px solid rgba(255, 255, 255, 0.1)",
+                      backgroundColor: "#0f172a",
+                      color: "white",
+                    }}
+                  >
+                    Info
+                  </th>
+                  <th
+                    key="head-school"
+                    style={{
+                      padding: "0.5rem 0.75rem",
+                      textAlign: "left",
+                      fontWeight: "500",
+                      borderBottom: "2px solid rgba(255, 255, 255, 0.1)",
+                      backgroundColor: "#0f172a",
+                      color: "white",
+                    }}
+                  >
+                    School
+                  </th>
+                  <th
+                    key="head-room"
+                    style={{
+                      padding: "0.5rem 0.75rem",
+                      textAlign: "left",
+                      fontWeight: "500",
+                      borderBottom: "2px solid rgba(255, 255, 255, 0.1)",
+                      backgroundColor: "#0f172a",
+                      color: "white",
+                    }}
+                  >
+                    Room
+                  </th>
+                </>
+              )}
               {Array.from({ length: 31 }).map((_, round) => (
                 <th
                   key={`head-round-${round}`}
@@ -1404,7 +1499,7 @@ export default function LadderForm({
                   }}
                 >
                   {Object.keys(player)
-                    .filter((_, i) => i < 6)
+                    .filter((_, i) => i < (isAdmin ? 13 : 6))
                     .map((field, col) => {
                       const isEditable = isAdmin && field !== "rank";
                       return (
@@ -1437,6 +1532,28 @@ export default function LadderForm({
                                       updatedPlayers[index].nRating =
                                         parseInt(value) || 0;
                                       break;
+                                    case "grade":
+                                      updatedPlayers[index].grade = value;
+                                      break;
+                                    case "num_games":
+                                      updatedPlayers[index].num_games =
+                                        parseInt(value) || 0;
+                                      break;
+                                    case "attendance":
+                                      updatedPlayers[index].attendance = value;
+                                      break;
+                                    case "phone":
+                                      updatedPlayers[index].phone = value;
+                                      break;
+                                    case "info":
+                                      updatedPlayers[index].info = value;
+                                      break;
+                                    case "school":
+                                      updatedPlayers[index].school = value;
+                                      break;
+                                    case "room":
+                                      updatedPlayers[index].room = value;
+                                      break;
                                   }
                                 }
                                 return updatedPlayers;
@@ -1450,7 +1567,8 @@ export default function LadderForm({
                                           ...p,
                                           [field]:
                                             field === "rating" ||
-                                            field === "nRating"
+                                            field === "nRating" ||
+                                            field === "games"
                                               ? parseInt(e.target.textContent)
                                               : e.target.textContent,
                                         } as any)
@@ -1479,6 +1597,13 @@ export default function LadderForm({
                           {field === "nRating" && player.nRating !== undefined
                             ? player.nRating
                             : ""}
+                          {field === "grade" && player.grade}
+                          {field === "num_games" && player.num_games}
+                          {field === "attendance" && player.attendance}
+                          {field === "phone" && player.phone}
+                          {field === "info" && player.info}
+                          {field === "school" && player.school}
+                          {field === "room" && player.room}
                         </td>
                       );
                     })}

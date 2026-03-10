@@ -41,7 +41,7 @@ export interface PlayerData {
   rating: number;
   nRating: number;
   grade: string;
-  games: number;
+  num_games: number;
   attendance: number | string;
   info: string;
   phone: string;

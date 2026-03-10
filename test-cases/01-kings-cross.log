@@ -298,12 +298,20 @@ Total player result entries: 18
 -- Menu opened: File
 >>> [LOG] >>> [MENU ACTION] export
 >>> [LOG] >>> [BUTTON PRESSED] Export - 26 players
->>> [LOG] Exported 26 players to Export_Results_2026-03-10T00-21-50-345Z.tab
--- Download detected: Export_Results_2026-03-10T00-21-50-345Z.tab
+>>> [LOG] Exported 26 players to Export_Results_2026-03-10T14-31-33-287Z.tab
 -- Menu item selected: Export
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-10T00-21-50-345Z.tab
+-- Download detected: Export_Results_2026-03-10T14-31-33-287Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-10T14-31-33-287Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\kings_cross.tab
 
 -- Comparing output...
--- Test PASSED - Output matches expected file!
+-- Test FAILED - Output does not match
+
+--- Diff ---
+Line 1:
+  Expected: "Group	Last Name	First Name	Rating	Rnk	N Rate	Gr	X	Phone	Info	School	Room	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31Version 1.21"
+  Actual:   "Group	Last Name	First Name	Rating	Rnk	N Rate	Gr	Gms	Phone	Info	School	Room	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31Version 1.21"
+
+--- End diff ---
+
