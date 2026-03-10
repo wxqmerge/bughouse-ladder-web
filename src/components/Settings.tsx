@@ -32,6 +32,7 @@ export default function Settings({
 }: SettingsProps) {
   const [showRatings, setShowRatings] = useState(true);
   const [debugLevel, setDebugLevel] = useState(5);
+  const [kFactor, setKFactor] = useState(20);
 
   useEffect(() => {
     const savedSettings = localStorage.getItem("ladder_settings");
@@ -40,6 +41,7 @@ export default function Settings({
         const parsedSettings = JSON.parse(savedSettings);
         setShowRatings(parsedSettings.showRatings ?? true);
         setDebugLevel(parsedSettings.debugLevel ?? 5);
+        setKFactor(parsedSettings.kFactor ?? 20);
       } catch (err) {
         console.error("Failed to parse settings:", err);
       }
@@ -51,6 +53,7 @@ export default function Settings({
     const settings = {
       showRatings: [showRatings, showRatings, showRatings, showRatings],
       debugLevel: debugLevel,
+      kFactor: Math.max(1, Math.min(100, kFactor || 20)),
     };
     localStorage.setItem("ladder_settings", JSON.stringify(settings));
     onClose();
@@ -152,238 +155,278 @@ export default function Settings({
           </button>
         </div>
 
-        <div style={{ marginBottom: "1.5rem" }}>
-          <label
-            style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-          >
-            <input
-              type="checkbox"
-              checked={showRatings}
-              onChange={(e) => setShowRatings(e.target.checked)}
-            />
-            <span>Show ratings</span>
-          </label>
-          <p
-            style={{
-              fontSize: "0.875rem",
-              color: "#64748b",
-              marginTop: "0.5rem",
-            }}
-          >
-            A1 - A8, I1 - I8, Z1 - Z8 groups based on rating
-          </p>
-        </div>
-
-        <div style={{ marginBottom: "1.5rem" }}>
-          <label
-            htmlFor="debugLevel"
-            style={{
-              display: "block",
-              fontSize: "0.875rem",
-              fontWeight: "500",
-              color: "#374151",
-              marginBottom: "0.5rem",
-            }}
-          >
-            Debug Level (lower = more verbose)
-          </label>
-          <input
-            type="number"
-            id="debugLevel"
-            min="0"
-            max="20"
-            value={debugLevel}
-            onChange={(e) =>
-              setDebugLevel(
-                Math.max(0, Math.min(20, parseInt(e.target.value) || 5)),
-              )
-            }
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              border: "1px solid #d1d5db",
-              borderRadius: "0.25rem",
-              fontSize: "0.875rem",
-              boxSizing: "border-box",
-            }}
-          />
-          <p
-            style={{
-              fontSize: "0.75rem",
-              color: "#6b7280",
-              marginTop: "0.5rem",
-            }}
-          >
-            Debug level 0 = all logs, 5 = default, 10+ = only critical errors
-          </p>
-        </div>
-
-        <div style={{ display: "flex", gap: "1rem" }}>
-          <button onClick={onClose}>Cancel</button>
-          <button onClick={handleSave}>Save</button>
-        </div>
-
-        {onWalkThroughReports && (
-          <button
-            onClick={() => {
-              onClose();
-              onWalkThroughReports();
-            }}
-            style={{
-              width: "100%",
-              marginTop: "1rem",
-              padding: "0.75rem",
-              backgroundColor: "#f59e0b",
-              color: "white",
-              border: "none",
-              borderRadius: "0.25rem",
-              cursor: "pointer",
-              fontSize: "0.875rem",
-              fontWeight: "500",
-            }}
-          >
-            Walk Through Reports
-          </button>
-        )}
-
         <div
           style={{
-            marginTop: "2rem",
-            paddingTop: "1.5rem",
-            borderTop: "1px solid #e2e8f0",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "2rem",
           }}
         >
-          <button
-            onClick={handleNewDay}
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "0.5rem",
-              padding: "0.75rem",
-              backgroundColor: "#3b82f6",
-              color: "white",
-              border: "none",
-              borderRadius: "0.25rem",
-              cursor: "pointer",
-              fontSize: "0.875rem",
-              fontWeight: "500",
-            }}
-          >
-            <CalendarDays size={16} />
-            New Day
-          </button>
-          <p
-            style={{
-              fontSize: "0.75rem",
-              color: "#6b7280",
-              marginTop: "0.5rem",
-              marginBottom: "1rem",
-              textAlign: "center",
-            }}
-          >
-            Copies New Rating to Previous Rating and clears reports
-          </p>
+          {/* Left Column - Configuration */}
+          <div>
+            <h3
+              style={{
+                fontSize: "0.875rem",
+                fontWeight: "600",
+                color: "#374151",
+                marginBottom: "1rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+              }}
+            >
+              Configuration
+            </h3>
 
-          <button
-            onClick={handleNewDayWithReRank}
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "0.5rem",
-              padding: "0.75rem",
-              backgroundColor: "#10b981",
-              color: "white",
-              border: "none",
-              borderRadius: "0.25rem",
-              cursor: "pointer",
-              fontSize: "0.875rem",
-              fontWeight: "500",
-            }}
-          >
-            <CalendarDays size={16} />
-            New Day with Re-rank
-          </button>
-          <p
-            style={{
-              fontSize: "0.75rem",
-              color: "#6b7280",
-              marginTop: "0.5rem",
-              marginBottom: "1rem",
-              textAlign: "center",
-            }}
-          >
-            Copies New Rating to Previous Rating, clears reports, and sorts by
-            rating
-          </p>
+            <div style={{ marginBottom: "1.5rem" }}>
+              <label
+                style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+              >
+                <input
+                  type="checkbox"
+                  checked={showRatings}
+                  onChange={(e) => setShowRatings(e.target.checked)}
+                />
+                <span>Show ratings</span>
+              </label>
+              <p
+                style={{
+                  fontSize: "0.75rem",
+                  color: "#64748b",
+                  marginTop: "0.25rem",
+                  paddingLeft: "1.5rem",
+                }}
+              >
+                A1-A8, I1-I8, Z1-Z8 groups
+              </p>
+            </div>
 
-          <button
-            onClick={handleClearData}
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "0.5rem",
-              padding: "0.75rem",
-              backgroundColor: "#9ca3af",
-              color: "white",
-              border: "none",
-              borderRadius: "0.25rem",
-              cursor: "pointer",
-              fontSize: "0.875rem",
-              fontWeight: "500",
-            }}
-          >
-            <RotateCcw size={16} />
-            Clear All
-          </button>
-          <p
-            style={{
-              fontSize: "0.75rem",
-              color: "#6b7280",
-              marginTop: "0.5rem",
-              marginBottom: "1rem",
-              textAlign: "center",
-            }}
-          >
-            Clears all data and leaves the grid blank
-          </p>
+            <div style={{ marginBottom: "1.5rem" }}>
+              <label
+                htmlFor="debugLevel"
+                style={{
+                  display: "block",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                  color: "#374151",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                Debug Level
+              </label>
+              <input
+                type="number"
+                id="debugLevel"
+                min="0"
+                max="20"
+                value={debugLevel}
+                onChange={(e) =>
+                  setDebugLevel(
+                    Math.max(0, Math.min(20, parseInt(e.target.value) || 5)),
+                  )
+                }
+                style={{
+                  width: "100%",
+                  padding: "0.5rem",
+                  border: "1px solid #d1d5db",
+                  borderRadius: "0.25rem",
+                  fontSize: "0.875rem",
+                  boxSizing: "border-box",
+                }}
+              />
+              <p
+                style={{
+                  fontSize: "0.75rem",
+                  color: "#6b7280",
+                  marginTop: "0.25rem",
+                }}
+              >
+                0=all logs, 5=default, 10+=critical
+              </p>
+            </div>
 
-          <button
-            onClick={handleClearAll}
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "0.5rem",
-              padding: "0.75rem",
-              backgroundColor: "#ef4444",
-              color: "white",
-              border: "none",
-              borderRadius: "0.25rem",
-              cursor: "pointer",
-              fontSize: "0.875rem",
-              fontWeight: "500",
-            }}
-          >
-            <Trash2 size={16} />
-            Set Sample Data
-          </button>
-          <p
-            style={{
-              fontSize: "0.75rem",
-              color: "#6b7280",
-              marginTop: "0.5rem",
-              textAlign: "center",
-            }}
-          >
-            Resets all players and game results to sample data
-          </p>
+            <div style={{ marginBottom: "1.5rem" }}>
+              <label
+                htmlFor="kFactor"
+                style={{
+                  display: "block",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                  color: "#374151",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                K-Factor (Elo volatility)
+              </label>
+              <input
+                type="number"
+                id="kFactor"
+                min="1"
+                max="100"
+                value={kFactor}
+                onChange={(e) =>
+                  setKFactor(
+                    Math.max(1, Math.min(100, parseInt(e.target.value) || 20)),
+                  )
+                }
+                style={{
+                  width: "100%",
+                  padding: "0.5rem",
+                  border: "1px solid #d1d5db",
+                  borderRadius: "0.25rem",
+                  fontSize: "0.875rem",
+                  boxSizing: "border-box",
+                }}
+              />
+              <p
+                style={{
+                  fontSize: "0.75rem",
+                  color: "#6b7280",
+                  marginTop: "0.25rem",
+                }}
+              >
+                Higher = faster rating changes (1-100)
+              </p>
+            </div>
+
+            {onWalkThroughReports && (
+              <button
+                onClick={() => {
+                  onClose();
+                  onWalkThroughReports();
+                }}
+                style={{
+                  width: "100%",
+                  padding: "0.75rem",
+                  backgroundColor: "#f59e0b",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "0.25rem",
+                  cursor: "pointer",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                }}
+              >
+                Walk Through Reports
+              </button>
+            )}
+          </div>
+
+          {/* Right Column - Actions */}
+          <div>
+            <h3
+              style={{
+                fontSize: "0.875rem",
+                fontWeight: "600",
+                color: "#374151",
+                marginBottom: "1rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+              }}
+            >
+              Actions
+            </h3>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.75rem",
+              }}
+            >
+              <button
+                onClick={handleNewDay}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem",
+                  padding: "0.75rem",
+                  backgroundColor: "#3b82f6",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "0.25rem",
+                  cursor: "pointer",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                }}
+              >
+                <CalendarDays size={16} />
+                New Day
+              </button>
+
+              <button
+                onClick={handleNewDayWithReRank}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem",
+                  padding: "0.75rem",
+                  backgroundColor: "#10b981",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "0.25rem",
+                  cursor: "pointer",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                }}
+              >
+                <CalendarDays size={16} />
+                New Day + Re-rank
+              </button>
+
+              <button
+                onClick={handleClearData}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem",
+                  padding: "0.75rem",
+                  backgroundColor: "#9ca3af",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "0.25rem",
+                  cursor: "pointer",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                }}
+              >
+                <RotateCcw size={16} />
+                Clear All
+              </button>
+
+              <button
+                onClick={handleClearAll}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem",
+                  padding: "0.75rem",
+                  backgroundColor: "#ef4444",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "0.25rem",
+                  cursor: "pointer",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                }}
+              >
+                <Trash2 size={16} />
+                Set Sample Data
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", gap: "1rem", marginTop: "2rem" }}>
+          <button onClick={onClose}>Cancel</button>
+          <button onClick={handleSave}>Save</button>
         </div>
       </div>
     </div>

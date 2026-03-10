@@ -12,6 +12,7 @@ import {
   updatePlayerGameData,
 } from "../utils/hashUtils";
 import ErrorDialog from "./ErrorDialog";
+import AddPlayerDialog from "./AddPlayerDialog";
 import MenuBar from "./MenuBar";
 import MobileMenu from "./MobileMenu";
 import { Menu as MenuIcon } from "lucide-react";
@@ -201,6 +202,7 @@ export default function LadderForm({
     parsedPlayer1Rank: number;
     parsedPlayer2Rank: number;
   } | null>(null);
+  const [isAddPlayerDialogOpen, setIsAddPlayerDialogOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const latestPendingPlayersRef = useRef<PlayerData[] | null>(null);
 
@@ -1322,6 +1324,42 @@ export default function LadderForm({
     setZoomLevel(level);
   };
 
+  const handleAddPlayer = () => {
+    if (shouldLog(10)) {
+      console.log(">>> [MENU ACTION] Add Player");
+    }
+    setIsAddPlayerDialogOpen(true);
+  };
+
+  const handleAddPlayerSubmit = (
+    playerData: Omit<PlayerData, "rank" | "nRating" | "gameResults">,
+  ) => {
+    setPlayers((prevPlayers) => {
+      const maxRank = prevPlayers.reduce(
+        (max, p) => Math.max(max, p.rank || 0),
+        0,
+      );
+      const newRank = maxRank + 1;
+
+      const newPlayer: PlayerData = {
+        ...playerData,
+        rank: newRank,
+        nRating: playerData.rating || 0,
+        gameResults: new Array(31).fill(null),
+      };
+
+      const updatedPlayers = [...prevPlayers, newPlayer];
+      updatedPlayers.sort((a, b) => a.rank - b.rank);
+
+      localStorage.setItem("ladder_players", JSON.stringify(updatedPlayers));
+      return updatedPlayers;
+    });
+
+    if (shouldLog(10)) {
+      console.log(`New player added successfully`);
+    }
+  };
+
   const getFontSize = () => {
     switch (zoomLevel) {
       case "70%":
@@ -1409,6 +1447,7 @@ export default function LadderForm({
         onToggleAdmin={handleToggleAdmin}
         onSetZoom={handleSetZoom}
         onOpenSettings={() => setShowSettings?.(true)}
+        onAddPlayer={handleAddPlayer}
         isAdmin={isAdmin}
         projectName={projectName}
         onSetTitle={(newTitle) => {
@@ -1427,6 +1466,7 @@ export default function LadderForm({
           onToggleAdmin={handleToggleAdmin}
           onSetZoom={handleSetZoom}
           onOpenSettings={() => setShowSettings?.(true)}
+          onAddPlayer={handleAddPlayer}
           isAdmin={isAdmin}
           isWide={zoomLevel === "140%"}
           zoomLevel={zoomLevel}
@@ -2077,6 +2117,14 @@ export default function LadderForm({
           </button>
         </div>
       )}
+
+      {/* Add Player Dialog */}
+      <AddPlayerDialog
+        isOpen={isAddPlayerDialogOpen}
+        onClose={() => setIsAddPlayerDialogOpen(false)}
+        onAdd={handleAddPlayerSubmit}
+        currentPlayerCount={players.length}
+      />
     </div>
   );
 }

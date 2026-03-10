@@ -55,10 +55,10 @@ Server started on port 5173
 -- Menu opened: File
 >>> [LOG] >>> [MENU ACTION] export
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Bughouse_2026-03-10T18-35-15-506Z.tab
--- Download detected: Bughouse_2026-03-10T18-35-15-506Z.tab
+>>> [LOG] Exported 14 players to Bughouse_2026-03-10T20-37-36-863Z.tab
+-- Download detected: Bughouse_2026-03-10T20-37-36-863Z.tab
 -- Menu item selected: Export
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Bughouse_2026-03-10T18-35-15-506Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Bughouse_2026-03-10T20-37-36-863Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\paste_results.tab
 

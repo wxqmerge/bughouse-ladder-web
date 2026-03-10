@@ -1076,7 +1076,16 @@ export function calculateRatings(
   playersList: PlayerData[],
   matches: MatchData[],
 ): PlayerData[] {
-  const EloK = 20;
+  // Get K-Factor from localStorage (default to 20 if not set)
+  let kFactor = 20;
+  try {
+    const savedSettings = localStorage.getItem("ladder_settings");
+    if (savedSettings) {
+      kFactor = JSON.parse(savedSettings).kFactor ?? 20;
+    }
+  } catch {}
+
+  const EloKfactor = kFactor;
   const playersCopy = playersList.map((p) => ({ ...p }));
 
   for (const match of matches) {
@@ -1106,8 +1115,12 @@ export function calculateRatings(
       actualP2 = 1;
     }
 
-    const p1NewRating = Math.round(p1Rating + EloK * (actualP1 - expectedP1));
-    const p2NewRating = Math.round(p2Rating + EloK * (actualP2 - expectedP2));
+    const p1NewRating = Math.round(
+      p1Rating + EloKfactor * (actualP1 - expectedP1),
+    );
+    const p2NewRating = Math.round(
+      p2Rating + EloKfactor * (actualP2 - expectedP2),
+    );
 
     p1.nRating = Math.max(0, p1NewRating);
     p2.nRating = Math.max(0, p2NewRating);

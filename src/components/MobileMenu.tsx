@@ -20,6 +20,7 @@ interface MobileMenuProps {
   onToggleAdmin: () => void;
   onSetZoom: (level: "70%" | "100%" | "140%") => void;
   onOpenSettings: () => void;
+  onAddPlayer?: () => void;
   isAdmin: boolean;
   projectName?: string;
   onSetTitle?: (title: string) => void;
@@ -42,6 +43,7 @@ export default function MobileMenu({
   onToggleAdmin,
   onSetZoom,
   onOpenSettings,
+  onAddPlayer,
   isAdmin,
   projectName,
   onSetTitle,
@@ -133,6 +135,15 @@ export default function MobileMenu({
       onClick: () => handleItemClick(onToggleAdmin),
       dataMenuItem: isAdmin ? "Exit Admin Mode" : "Admin Mode",
     },
+    ...(isAdmin && onAddPlayer
+      ? [
+          {
+            label: "Add Player",
+            onClick: () => handleItemClick(onAddPlayer),
+            dataMenuItem: "Add Player",
+          },
+        ]
+      : []),
   ];
 
   const viewItems: MenuItem[] = [

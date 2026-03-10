@@ -31,6 +31,7 @@ interface MenuBarProps {
   onToggleAdmin: () => void;
   onSetZoom: (level: "70%" | "100%" | "140%") => void;
   onOpenSettings: () => void;
+  onAddPlayer?: () => void;
   isAdmin: boolean;
   isWide: boolean;
   zoomLevel: "70%" | "100%" | "140%";
@@ -56,6 +57,7 @@ export default function MenuBar({
   onToggleAdmin,
   onSetZoom,
   onOpenSettings,
+  onAddPlayer,
   isAdmin,
   zoomLevel,
   projectName,
@@ -192,6 +194,19 @@ export default function MenuBar({
       },
       dataMenuItem: "Check Errors",
     },
+    ...(isAdmin && onAddPlayer
+      ? [
+          {
+            icon: <Plus size={16} />,
+            label: "Add Player",
+            onClick: () => {
+              onAddPlayer();
+              closeAllMenus();
+            },
+            dataMenuItem: "Add Player",
+          },
+        ]
+      : []),
     {
       icon: <Shield size={16} />,
       label: isAdmin ? "Exit Admin Mode" : "Admin Mode",

@@ -1,0 +1,573 @@
+=== Test: 06-pawn-game-recalculate ===
+
+
+========================================
+-- Running test: 06-pawn-game-recalculate
+========================================
+
+-- Starting HTTP server...
+Server started on port 5173
+-- Server is ready
+-- Loading app...
+>>> [DEBUG] [vite] connecting...
+>>> [DEBUG] [vite] connected.
+>>> [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+>>> [LOG] [LadderForm] Loaded 14 players from sample data
+>>> [LOG] [LadderForm] Loaded 14 players from sample data
+-- Default debug level: 5
+-- Loading input file: Pawn_Game.tab
+>>> [LOG] [LadderForm] Loading file: Pawn_Game.tab
+>>> [LOG] >>> [LOAD FILE] Setting title from filename: "Pawn_Game"
+-- File selected: Pawn_Game.tab
+-- Player count after load: 26
+-- First player: Castillo Kenneth
+-- Successfully loaded 26 players
+-- Executing actions: recalculateRatings
+-- Clicking Recalculate Ratings via menu...
+-- Operations menu opened
+>>> [LOG] >>> [BUTTON PRESSED] Recalculate Ratings - 26 players
+>>> [LOG] [ADDED] Player 11 round 0: "9L11_" -> normKey="9-11"
+>>> [LOG] dataHash: skey="595584_0", sval="9L11_", lKeyVal=53955840, startIdx=1280
+>>> [LOG] dataHash: EMPTY slot at idx 1280, storing keyVal=53955840, value="9L11_"
+>>> [LOG] Storing hashValue=595584, round=0, is4Player=false, result="9L11_", player1=9, player2=11
+>>> [LOG] [ADDED] Player 25 round 0: "2L25_" -> normKey="2-25"
+>>> [LOG] dataHash: skey="144000_0", sval="2L25_", lKeyVal=49440000, startIdx=1280
+>>> [LOG] dataHash: COLLISION at idx 1280 (keyVal=53955840 != 49440000), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1281, storing keyVal=49440000, value="2L25_"
+>>> [LOG] Storing hashValue=144000, round=0, is4Player=false, result="2L25_", player1=2, player2=25
+>>> [LOG] [ADDED] Player 26 round 0: "2L26_" -> normKey="2-26"
+>>> [LOG] dataHash: skey="144512_0", sval="2L26_", lKeyVal=49445120, startIdx=256
+>>> [LOG] dataHash: EMPTY slot at idx 256, storing keyVal=49445120, value="2L26_"
+>>> [LOG] Storing hashValue=144512, round=0, is4Player=false, result="2L26_", player1=2, player2=26
+>>> [LOG] [DUPLICATE DETECTED] Player 9 round 0: "9L11_" -> normKey="9-11" (already processed)
+>>> [LOG] [ADDED] Player 5 round 0: "5W16_" -> normKey="5-16"
+>>> [LOG] dataHash: skey="336256_0", sval="5W16_", lKeyVal=51362560, startIdx=768
+>>> [LOG] dataHash: EMPTY slot at idx 768, storing keyVal=51362560, value="5W16_"
+>>> [LOG] Storing hashValue=336256, round=0, is4Player=false, result="5W16_", player1=5, player2=16
+>>> [LOG] [ADDED] Player 10 round 0: "10W12_" -> normKey="10-12"
+>>> [LOG] dataHash: skey="661888_0", sval="10W12_", lKeyVal=54618880, startIdx=768
+>>> [LOG] dataHash: COLLISION at idx 768 (keyVal=51362560 != 54618880), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 769, storing keyVal=54618880, value="10W12_"
+>>> [LOG] Storing hashValue=661888, round=0, is4Player=false, result="10W12_", player1=10, player2=12
+>>> [LOG] [ADDED] Player 2 round 0: "2W12_" -> normKey="2-12"
+>>> [LOG] dataHash: skey="137600_0", sval="2W12_", lKeyVal=49376000, startIdx=768
+>>> [LOG] dataHash: COLLISION at idx 768 (keyVal=51362560 != 49376000), trying next...
+>>> [LOG] dataHash: COLLISION at idx 769 (keyVal=54618880 != 49376000), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 770, storing keyVal=49376000, value="2W12_"
+>>> [LOG] Storing hashValue=137600, round=0, is4Player=false, result="2W12_", player1=2, player2=12
+>>> [LOG] [ADDED] Player 21 round 0: "9W21_" -> normKey="9-21"
+>>> [LOG] dataHash: skey="600960_0", sval="9W21_", lKeyVal=54009600, startIdx=1792
+>>> [LOG] dataHash: EMPTY slot at idx 1792, storing keyVal=54009600, value="9W21_"
+>>> [LOG] Storing hashValue=600960, round=0, is4Player=false, result="9W21_", player1=9, player2=21
+>>> [LOG] [ADDED] Player 8 round 0: "8W15_" -> normKey="8-15"
+>>> [LOG] dataHash: skey="532352_0", sval="8W15_", lKeyVal=53323520, startIdx=1792
+>>> [LOG] dataHash: COLLISION at idx 1792 (keyVal=54009600 != 53323520), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1793, storing keyVal=53323520, value="8W15_"
+>>> [LOG] Storing hashValue=532352, round=0, is4Player=false, result="8W15_", player1=8, player2=15
+>>> [LOG] [ADDED] Player 13 round 0: "12W13_" -> normKey="12-13"
+>>> [LOG] dataHash: skey="793472_0", sval="12W13_", lKeyVal=55934720, startIdx=1792
+>>> [LOG] dataHash: COLLISION at idx 1792 (keyVal=54009600 != 55934720), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1793 (keyVal=53323520 != 55934720), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1794, storing keyVal=55934720, value="12W13_"
+>>> [LOG] Storing hashValue=793472, round=0, is4Player=false, result="12W13_", player1=12, player2=13
+>>> [LOG] [DUPLICATE DETECTED] Player 15 round 0: "8W15_" -> normKey="8-15" (already processed)
+>>> [LOG] [ADDED] Player 20 round 0: "13W20_" -> normKey="13-20"
+>>> [LOG] dataHash: skey="862592_0", sval="13W20_", lKeyVal=56625920, startIdx=768
+>>> [LOG] dataHash: COLLISION at idx 768 (keyVal=51362560 != 56625920), trying next...
+>>> [LOG] dataHash: COLLISION at idx 769 (keyVal=54618880 != 56625920), trying next...
+>>> [LOG] dataHash: COLLISION at idx 770 (keyVal=49376000 != 56625920), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 771, storing keyVal=56625920, value="13W20_"
+>>> [LOG] Storing hashValue=862592, round=0, is4Player=false, result="13W20_", player1=13, player2=20
+>>> [LOG] [DUPLICATE DETECTED] Player 16 round 0: "5W16_" -> normKey="5-16" (already processed)
+>>> [LOG] [DUPLICATE DETECTED] Player 12 round 0: "2W12_" -> normKey="2-12" (already processed)
+>>> [LOG] [ADDED] Player 14 round 0: "9W14_" -> normKey="9-14"
+>>> [LOG] dataHash: skey="597376_0", sval="9W14_", lKeyVal=53973760, startIdx=768
+>>> [LOG] dataHash: COLLISION at idx 768 (keyVal=51362560 != 53973760), trying next...
+>>> [LOG] dataHash: COLLISION at idx 769 (keyVal=54618880 != 53973760), trying next...
+>>> [LOG] dataHash: COLLISION at idx 770 (keyVal=49376000 != 53973760), trying next...
+>>> [LOG] dataHash: COLLISION at idx 771 (keyVal=56625920 != 53973760), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 772, storing keyVal=53973760, value="9W14_"
+>>> [LOG] Storing hashValue=597376, round=0, is4Player=false, result="9W14_", player1=9, player2=14
+>>> [LOG] [ADDED] Player 23 round 0: "2L23_" -> normKey="2-23"
+>>> [LOG] dataHash: skey="142976_0", sval="2L23_", lKeyVal=49429760, startIdx=1280
+>>> [LOG] dataHash: COLLISION at idx 1280 (keyVal=53955840 != 49429760), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1281 (keyVal=49440000 != 49429760), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1282, storing keyVal=49429760, value="2L23_"
+>>> [LOG] Storing hashValue=142976, round=0, is4Player=false, result="2L23_", player1=2, player2=23
+>>> [LOG] [ADDED] Player 11 round 1: "11W14_" -> normKey="11-14"
+>>> [LOG] dataHash: skey="728448_1", sval="11W14_", lKeyVal=55284481, startIdx=769
+>>> [LOG] dataHash: COLLISION at idx 769 (keyVal=54618880 != 55284481), trying next...
+>>> [LOG] dataHash: COLLISION at idx 770 (keyVal=49376000 != 55284481), trying next...
+>>> [LOG] dataHash: COLLISION at idx 771 (keyVal=56625920 != 55284481), trying next...
+>>> [LOG] dataHash: COLLISION at idx 772 (keyVal=53973760 != 55284481), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 773, storing keyVal=55284481, value="11W14_"
+>>> [LOG] Storing hashValue=728448, round=1, is4Player=false, result="11W14_", player1=11, player2=14
+>>> [LOG] [ADDED] Player 25 round 1: "9L25_" -> normKey="9-25"
+>>> [LOG] dataHash: skey="602752_1", sval="9L25_", lKeyVal=54027521, startIdx=1281
+>>> [LOG] dataHash: COLLISION at idx 1281 (keyVal=49440000 != 54027521), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1282 (keyVal=49429760 != 54027521), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1283, storing keyVal=54027521, value="9L25_"
+>>> [LOG] Storing hashValue=602752, round=1, is4Player=false, result="9L25_", player1=9, player2=25
+>>> [LOG] [ADDED] Player 26 round 1: "5L26_" -> normKey="5-26"
+>>> [LOG] dataHash: skey="341120_1", sval="5L26_", lKeyVal=51411201, startIdx=257
+>>> [LOG] dataHash: EMPTY slot at idx 257, storing keyVal=51411201, value="5L26_"
+>>> [LOG] Storing hashValue=341120, round=1, is4Player=false, result="5L26_", player1=5, player2=26
+>>> [LOG] [ADDED] Player 9 round 1: "9W14_" -> normKey="9-14"
+>>> [LOG] dataHash: skey="597376_1", sval="9W14_", lKeyVal=53973761, startIdx=769
+>>> [LOG] dataHash: COLLISION at idx 769 (keyVal=54618880 != 53973761), trying next...
+>>> [LOG] dataHash: COLLISION at idx 770 (keyVal=49376000 != 53973761), trying next...
+>>> [LOG] dataHash: COLLISION at idx 771 (keyVal=56625920 != 53973761), trying next...
+>>> [LOG] dataHash: COLLISION at idx 772 (keyVal=53973760 != 53973761), trying next...
+>>> [LOG] dataHash: COLLISION at idx 773 (keyVal=55284481 != 53973761), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 774, storing keyVal=53973761, value="9W14_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "9-14" already in results array (from previous round)
+>>> [LOG] [ADDED] Player 5 round 1: "5L23_" -> normKey="5-23"
+>>> [LOG] dataHash: skey="339584_1", sval="5L23_", lKeyVal=51395841, startIdx=1281
+>>> [LOG] dataHash: COLLISION at idx 1281 (keyVal=49440000 != 51395841), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1282 (keyVal=49429760 != 51395841), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1283 (keyVal=54027521 != 51395841), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1284, storing keyVal=51395841, value="5L23_"
+>>> [LOG] Storing hashValue=339584, round=1, is4Player=false, result="5L23_", player1=5, player2=23
+>>> [LOG] [ADDED] Player 10 round 1: "10L25_" -> normKey="10-25"
+>>> [LOG] dataHash: skey="668288_1", sval="10L25_", lKeyVal=54682881, startIdx=1281
+>>> [LOG] dataHash: COLLISION at idx 1281 (keyVal=49440000 != 54682881), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1282 (keyVal=49429760 != 54682881), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1283 (keyVal=54027521 != 54682881), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1284 (keyVal=51395841 != 54682881), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1285, storing keyVal=54682881, value="10L25_"
+>>> [LOG] Storing hashValue=668288, round=1, is4Player=false, result="10L25_", player1=10, player2=25
+>>> [LOG] [ADDED] Player 2 round 1: "2L23_" -> normKey="2-23"
+>>> [LOG] dataHash: skey="142976_1", sval="2L23_", lKeyVal=49429761, startIdx=1281
+>>> [LOG] dataHash: COLLISION at idx 1281 (keyVal=49440000 != 49429761), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1282 (keyVal=49429760 != 49429761), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1283 (keyVal=54027521 != 49429761), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1284 (keyVal=51395841 != 49429761), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1285 (keyVal=54682881 != 49429761), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1286, storing keyVal=49429761, value="2L23_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "2-23" already in results array (from previous round)
+>>> [LOG] [ADDED] Player 21 round 1: "14W21_" -> normKey="14-21"
+>>> [LOG] dataHash: skey="928640_1", sval="14W21_", lKeyVal=57286401, startIdx=1793
+>>> [LOG] dataHash: COLLISION at idx 1793 (keyVal=53323520 != 57286401), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1794 (keyVal=55934720 != 57286401), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1795, storing keyVal=57286401, value="14W21_"
+>>> [LOG] Storing hashValue=928640, round=1, is4Player=false, result="14W21_", player1=14, player2=21
+>>> [LOG] [ADDED] Player 8 round 1: "8D16_" -> normKey="8-16"
+>>> [LOG] dataHash: skey="532736_1", sval="8D16_", lKeyVal=53327361, startIdx=1537
+>>> [LOG] dataHash: EMPTY slot at idx 1537, storing keyVal=53327361, value="8D16_"
+>>> [LOG] Storing hashValue=532736, round=1, is4Player=false, result="8D16_", player1=8, player2=16
+>>> [LOG] [ADDED] Player 13 round 1: "13L14_" -> normKey="13-14"
+>>> [LOG] dataHash: skey="859264_1", sval="13L14_", lKeyVal=56592641, startIdx=257
+>>> [LOG] dataHash: COLLISION at idx 257 (keyVal=51411201 != 56592641), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 258, storing keyVal=56592641, value="13L14_"
+>>> [LOG] Storing hashValue=859264, round=1, is4Player=false, result="13L14_", player1=13, player2=14
+>>> [LOG] [ADDED] Player 15 round 1: "13W15_" -> normKey="13-15"
+>>> [LOG] dataHash: skey="860032_1", sval="13W15_", lKeyVal=56600321, startIdx=1793
+>>> [LOG] dataHash: COLLISION at idx 1793 (keyVal=53323520 != 56600321), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1794 (keyVal=55934720 != 56600321), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1795 (keyVal=57286401 != 56600321), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1796, storing keyVal=56600321, value="13W15_"
+>>> [LOG] Storing hashValue=860032, round=1, is4Player=false, result="13W15_", player1=13, player2=15
+>>> [LOG] [DUPLICATE DETECTED] Player 16 round 1: "8D16_" -> normKey="8-16" (already processed)
+>>> [LOG] [ADDED] Player 12 round 1: "10W12_" -> normKey="10-12"
+>>> [LOG] dataHash: skey="661888_1", sval="10W12_", lKeyVal=54618881, startIdx=769
+>>> [LOG] dataHash: COLLISION at idx 769 (keyVal=54618880 != 54618881), trying next...
+>>> [LOG] dataHash: COLLISION at idx 770 (keyVal=49376000 != 54618881), trying next...
+>>> [LOG] dataHash: COLLISION at idx 771 (keyVal=56625920 != 54618881), trying next...
+>>> [LOG] dataHash: COLLISION at idx 772 (keyVal=53973760 != 54618881), trying next...
+>>> [LOG] dataHash: COLLISION at idx 773 (keyVal=55284481 != 54618881), trying next...
+>>> [LOG] dataHash: COLLISION at idx 774 (keyVal=53973761 != 54618881), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 775, storing keyVal=54618881, value="10W12_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "10-12" already in results array (from previous round)
+>>> [LOG] [DUPLICATE DETECTED] Player 14 round 1: "11W14_" -> normKey="11-14" (already processed)
+>>> [LOG] [DUPLICATE DETECTED] Player 23 round 1: "5L23_" -> normKey="5-23" (already processed)
+>>> [LOG] [ADDED] Player 11 round 2: "11W23_" -> normKey="11-23"
+>>> [LOG] dataHash: skey="733056_2", sval="11W23_", lKeyVal=55330562, startIdx=1794
+>>> [LOG] dataHash: COLLISION at idx 1794 (keyVal=55934720 != 55330562), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1795 (keyVal=57286401 != 55330562), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1796 (keyVal=56600321 != 55330562), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1797, storing keyVal=55330562, value="11W23_"
+>>> [LOG] Storing hashValue=733056, round=2, is4Player=false, result="11W23_", player1=11, player2=23
+>>> [LOG] [ADDED] Player 25 round 2: "10L25_" -> normKey="10-25"
+>>> [LOG] dataHash: skey="668288_2", sval="10L25_", lKeyVal=54682882, startIdx=1282
+>>> [LOG] dataHash: COLLISION at idx 1282 (keyVal=49429760 != 54682882), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1283 (keyVal=54027521 != 54682882), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1284 (keyVal=51395841 != 54682882), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1285 (keyVal=54682881 != 54682882), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1286 (keyVal=49429761 != 54682882), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1287, storing keyVal=54682882, value="10L25_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "10-25" already in results array (from previous round)
+>>> [LOG] [ADDED] Player 26 round 2: "14L26_" -> normKey="14-26"
+>>> [LOG] dataHash: skey="930944_2", sval="14L26_", lKeyVal=57309442, startIdx=258
+>>> [LOG] dataHash: COLLISION at idx 258 (keyVal=56592641 != 57309442), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 259, storing keyVal=57309442, value="14L26_"
+>>> [LOG] Storing hashValue=930944, round=2, is4Player=false, result="14L26_", player1=14, player2=26
+>>> [LOG] [ADDED] Player 9 round 2: "9W21_" -> normKey="9-21"
+>>> [LOG] dataHash: skey="600960_2", sval="9W21_", lKeyVal=54009602, startIdx=1794
+>>> [LOG] dataHash: COLLISION at idx 1794 (keyVal=55934720 != 54009602), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1795 (keyVal=57286401 != 54009602), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1796 (keyVal=56600321 != 54009602), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1797 (keyVal=55330562 != 54009602), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1798, storing keyVal=54009602, value="9W21_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "9-21" already in results array (from previous round)
+>>> [LOG] [ADDED] Player 5 round 2: "5L26_" -> normKey="5-26"
+>>> [LOG] dataHash: skey="341120_2", sval="5L26_", lKeyVal=51411202, startIdx=258
+>>> [LOG] dataHash: COLLISION at idx 258 (keyVal=56592641 != 51411202), trying next...
+>>> [LOG] dataHash: COLLISION at idx 259 (keyVal=57309442 != 51411202), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 260, storing keyVal=51411202, value="5L26_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "5-26" already in results array (from previous round)
+>>> [LOG] [ADDED] Player 2 round 2: "2L25_" -> normKey="2-25"
+>>> [LOG] dataHash: skey="144000_2", sval="2L25_", lKeyVal=49440002, startIdx=1282
+>>> [LOG] dataHash: COLLISION at idx 1282 (keyVal=49429760 != 49440002), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1283 (keyVal=54027521 != 49440002), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1284 (keyVal=51395841 != 49440002), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1285 (keyVal=54682881 != 49440002), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1286 (keyVal=49429761 != 49440002), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1287 (keyVal=54682882 != 49440002), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1288, storing keyVal=49440002, value="2L25_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "2-25" already in results array (from previous round)
+>>> [LOG] [ADDED] Player 21 round 2: "15L21_" -> normKey="15-21"
+>>> [LOG] dataHash: skey="993920_2", sval="15L21_", lKeyVal=57939202, startIdx=1282
+>>> [LOG] dataHash: COLLISION at idx 1282 (keyVal=49429760 != 57939202), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1283 (keyVal=54027521 != 57939202), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1284 (keyVal=51395841 != 57939202), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1285 (keyVal=54682881 != 57939202), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1286 (keyVal=49429761 != 57939202), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1287 (keyVal=54682882 != 57939202), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1288 (keyVal=49440002 != 57939202), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1289, storing keyVal=57939202, value="15L21_"
+>>> [LOG] Storing hashValue=993920, round=2, is4Player=false, result="15L21_", player1=15, player2=21
+>>> [LOG] [ADDED] Player 13 round 2: "13W15_" -> normKey="13-15"
+>>> [LOG] dataHash: skey="860032_2", sval="13W15_", lKeyVal=56600322, startIdx=1794
+>>> [LOG] dataHash: COLLISION at idx 1794 (keyVal=55934720 != 56600322), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1795 (keyVal=57286401 != 56600322), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1796 (keyVal=56600321 != 56600322), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1797 (keyVal=55330562 != 56600322), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1798 (keyVal=54009602 != 56600322), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1799, storing keyVal=56600322, value="13W15_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "13-15" already in results array (from previous round)
+>>> [LOG] [DUPLICATE DETECTED] Player 15 round 2: "15L21_" -> normKey="15-21" (already processed)
+>>> [LOG] [ADDED] Player 12 round 2: "12W13_" -> normKey="12-13"
+>>> [LOG] dataHash: skey="793472_2", sval="12W13_", lKeyVal=55934722, startIdx=1794
+>>> [LOG] dataHash: COLLISION at idx 1794 (keyVal=55934720 != 55934722), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1795 (keyVal=57286401 != 55934722), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1796 (keyVal=56600321 != 55934722), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1797 (keyVal=55330562 != 55934722), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1798 (keyVal=54009602 != 55934722), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1799 (keyVal=56600322 != 55934722), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1800, storing keyVal=55934722, value="12W13_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "12-13" already in results array (from previous round)
+>>> [LOG] [ADDED] Player 14 round 2: "13L14_" -> normKey="13-14"
+>>> [LOG] dataHash: skey="859264_2", sval="13L14_", lKeyVal=56592642, startIdx=258
+>>> [LOG] dataHash: COLLISION at idx 258 (keyVal=56592641 != 56592642), trying next...
+>>> [LOG] dataHash: COLLISION at idx 259 (keyVal=57309442 != 56592642), trying next...
+>>> [LOG] dataHash: COLLISION at idx 260 (keyVal=51411202 != 56592642), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 261, storing keyVal=56592642, value="13L14_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "13-14" already in results array (from previous round)
+>>> [LOG] [DUPLICATE DETECTED] Player 23 round 2: "11W23_" -> normKey="11-23" (already processed)
+>>> [LOG] [ADDED] Player 26 round 3: "21L26_" -> normKey="21-26"
+>>> [LOG] dataHash: skey="1389696_3", sval="21L26_", lKeyVal=493896963, startIdx=1283
+>>> [LOG] dataHash: COLLISION at idx 1283 (keyVal=54027521 != 493896963), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1284 (keyVal=51395841 != 493896963), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1285 (keyVal=54682881 != 493896963), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1286 (keyVal=49429761 != 493896963), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1287 (keyVal=54682882 != 493896963), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1288 (keyVal=49440002 != 493896963), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1289 (keyVal=57939202 != 493896963), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1290, storing keyVal=493896963, value="21L26_"
+>>> [LOG] Storing hashValue=1389696, round=3, is4Player=false, result="21L26_", player1=21, player2=26
+>>> [LOG] [ADDED] Player 9 round 3: "9L25_" -> normKey="9-25"
+>>> [LOG] dataHash: skey="602752_3", sval="9L25_", lKeyVal=54027523, startIdx=1283
+>>> [LOG] dataHash: COLLISION at idx 1283 (keyVal=54027521 != 54027523), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1284 (keyVal=51395841 != 54027523), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1285 (keyVal=54682881 != 54027523), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1286 (keyVal=49429761 != 54027523), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1287 (keyVal=54682882 != 54027523), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1288 (keyVal=49440002 != 54027523), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1289 (keyVal=57939202 != 54027523), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1290 (keyVal=493896963 != 54027523), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1291, storing keyVal=54027523, value="9L25_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "9-25" already in results array (from previous round)
+>>> [LOG] [ADDED] Player 2 round 3: "2L26_" -> normKey="2-26"
+>>> [LOG] dataHash: skey="144512_3", sval="2L26_", lKeyVal=49445123, startIdx=259
+>>> [LOG] dataHash: COLLISION at idx 259 (keyVal=57309442 != 49445123), trying next...
+>>> [LOG] dataHash: COLLISION at idx 260 (keyVal=51411202 != 49445123), trying next...
+>>> [LOG] dataHash: COLLISION at idx 261 (keyVal=56592642 != 49445123), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 262, storing keyVal=49445123, value="2L26_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "2-26" already in results array (from previous round)
+>>> [LOG] [DUPLICATE DETECTED] Player 21 round 3: "21L26_" -> normKey="21-26" (already processed)
+>>> [LOG] [ADDED] Player 13 round 3: "13W20_" -> normKey="13-20"
+>>> [LOG] dataHash: skey="862592_3", sval="13W20_", lKeyVal=56625923, startIdx=771
+>>> [LOG] dataHash: COLLISION at idx 771 (keyVal=56625920 != 56625923), trying next...
+>>> [LOG] dataHash: COLLISION at idx 772 (keyVal=53973760 != 56625923), trying next...
+>>> [LOG] dataHash: COLLISION at idx 773 (keyVal=55284481 != 56625923), trying next...
+>>> [LOG] dataHash: COLLISION at idx 774 (keyVal=53973761 != 56625923), trying next...
+>>> [LOG] dataHash: COLLISION at idx 775 (keyVal=54618881 != 56625923), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 776, storing keyVal=56625923, value="13W20_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "13-20" already in results array (from previous round)
+>>> [LOG] [ADDED] Player 14 round 3: "14W21_" -> normKey="14-21"
+>>> [LOG] dataHash: skey="928640_3", sval="14W21_", lKeyVal=57286403, startIdx=1795
+>>> [LOG] dataHash: COLLISION at idx 1795 (keyVal=57286401 != 57286403), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1796 (keyVal=56600321 != 57286403), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1797 (keyVal=55330562 != 57286403), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1798 (keyVal=54009602 != 57286403), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1799 (keyVal=56600322 != 57286403), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1800 (keyVal=55934722 != 57286403), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1801, storing keyVal=57286403, value="14W21_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "14-21" already in results array (from previous round)
+>>> [LOG] [ADDED] Player 23 round 3: "23L26_" -> normKey="23-26"
+>>> [LOG] dataHash: skey="1520768_3", sval="23L26_", lKeyVal=495207683, startIdx=1283
+>>> [LOG] dataHash: COLLISION at idx 1283 (keyVal=54027521 != 495207683), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1284 (keyVal=51395841 != 495207683), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1285 (keyVal=54682881 != 495207683), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1286 (keyVal=49429761 != 495207683), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1287 (keyVal=54682882 != 495207683), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1288 (keyVal=49440002 != 495207683), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1289 (keyVal=57939202 != 495207683), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1290 (keyVal=493896963 != 495207683), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1291 (keyVal=54027523 != 495207683), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1292, storing keyVal=495207683, value="23L26_"
+>>> [LOG] Storing hashValue=1520768, round=3, is4Player=false, result="23L26_", player1=23, player2=26
+>>> [LOG] [ADDED] Player 26 round 4: "23L26_" -> normKey="23-26"
+>>> [LOG] dataHash: skey="1520768_4", sval="23L26_", lKeyVal=495207684, startIdx=1284
+>>> [LOG] dataHash: COLLISION at idx 1284 (keyVal=51395841 != 495207684), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1285 (keyVal=54682881 != 495207684), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1286 (keyVal=49429761 != 495207684), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1287 (keyVal=54682882 != 495207684), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1288 (keyVal=49440002 != 495207684), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1289 (keyVal=57939202 != 495207684), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1290 (keyVal=493896963 != 495207684), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1291 (keyVal=54027523 != 495207684), trying next...
+>>> [LOG] dataHash: COLLISION at idx 1292 (keyVal=495207683 != 495207684), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 1293, storing keyVal=495207684, value="23L26_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "23-26" already in results array (from previous round)
+>>> [LOG] [ADDED] Player 14 round 4: "14L26_" -> normKey="14-26"
+>>> [LOG] dataHash: skey="930944_4", sval="14L26_", lKeyVal=57309444, startIdx=260
+>>> [LOG] dataHash: COLLISION at idx 260 (keyVal=51411202 != 57309444), trying next...
+>>> [LOG] dataHash: COLLISION at idx 261 (keyVal=56592642 != 57309444), trying next...
+>>> [LOG] dataHash: COLLISION at idx 262 (keyVal=49445123 != 57309444), trying next...
+>>> [LOG] dataHash: EMPTY slot at idx 263, storing keyVal=57309444, value="14L26_"
+>>> [LOG] [SKIP DUPLICATE MATCH] Match "14-26" already in results array (from previous round)
+>>> [LOG] 
+=== HASH TABLE DEBUG ===
+>>> [LOG] Hash[256]: keyVal=49445120, value="2L26_"
+>>> [LOG] Hash[257]: keyVal=51411201, value="5L26_"
+>>> [LOG] Hash[258]: keyVal=56592641, value="13L14_"
+>>> [LOG] Hash[259]: keyVal=57309442, value="14L26_"
+>>> [LOG] Hash[260]: keyVal=51411202, value="5L26_"
+>>> [LOG] Hash[261]: keyVal=56592642, value="13L14_"
+>>> [LOG] Hash[262]: keyVal=49445123, value="2L26_"
+>>> [LOG] Hash[263]: keyVal=57309444, value="14L26_"
+>>> [LOG] Hash[768]: keyVal=51362560, value="5W16_"
+>>> [LOG] Hash[769]: keyVal=54618880, value="10W12_"
+>>> [LOG] Hash[770]: keyVal=49376000, value="2W12_"
+>>> [LOG] Hash[771]: keyVal=56625920, value="13W20_"
+>>> [LOG] Hash[772]: keyVal=53973760, value="9W14_"
+>>> [LOG] Hash[773]: keyVal=55284481, value="11W14_"
+>>> [LOG] Hash[774]: keyVal=53973761, value="9W14_"
+>>> [LOG] Hash[775]: keyVal=54618881, value="10W12_"
+>>> [LOG] Hash[776]: keyVal=56625923, value="13W20_"
+>>> [LOG] Hash[1280]: keyVal=53955840, value="9L11_"
+>>> [LOG] Hash[1281]: keyVal=49440000, value="2L25_"
+>>> [LOG] Hash[1282]: keyVal=49429760, value="2L23_"
+>>> [LOG] Hash[1283]: keyVal=54027521, value="9L25_"
+>>> [LOG] Hash[1284]: keyVal=51395841, value="5L23_"
+>>> [LOG] Hash[1285]: keyVal=54682881, value="10L25_"
+>>> [LOG] Hash[1286]: keyVal=49429761, value="2L23_"
+>>> [LOG] Hash[1287]: keyVal=54682882, value="10L25_"
+>>> [LOG] Hash[1288]: keyVal=49440002, value="2L25_"
+>>> [LOG] Hash[1289]: keyVal=57939202, value="15L21_"
+>>> [LOG] Hash[1290]: keyVal=493896963, value="21L26_"
+>>> [LOG] Hash[1291]: keyVal=54027523, value="9L25_"
+>>> [LOG] Hash[1292]: keyVal=495207683, value="23L26_"
+>>> [LOG] Hash[1293]: keyVal=495207684, value="23L26_"
+>>> [LOG] Hash[1537]: keyVal=53327361, value="8D16_"
+>>> [LOG] Hash[1792]: keyVal=54009600, value="9W21_"
+>>> [LOG] Hash[1793]: keyVal=53323520, value="8W15_"
+>>> [LOG] Hash[1794]: keyVal=55934720, value="12W13_"
+>>> [LOG] Hash[1795]: keyVal=57286401, value="14W21_"
+>>> [LOG] Hash[1796]: keyVal=56600321, value="13W15_"
+>>> [LOG] Hash[1797]: keyVal=55330562, value="11W23_"
+>>> [LOG] Hash[1798]: keyVal=54009602, value="9W21_"
+>>> [LOG] Hash[1799]: keyVal=56600322, value="13W15_"
+>>> [LOG] Hash[1800]: keyVal=55934722, value="12W13_"
+>>> [LOG] Hash[1801]: keyVal=57286403, value="14W21_"
+>>> [LOG] Total hash entries stored: 42
+>>> [LOG] Hash table results: 2L26_, 5L26_, 13L14_, 14L26_, 5L26_, 13L14_, 2L26_, 14L26_, 5W16_, 10W12_, 2W12_, 13W20_, 9W14_, 11W14_, 9W14_, 10W12_, 13W20_, 9L11_, 2L25_, 2L23_, 9L25_, 5L23_, 10L25_, 2L23_, 10L25_, 2L25_, 15L21_, 21L26_, 9L25_, 23L26_, 23L26_, 8D16_, 9W21_, 8W15_, 12W13_, 14W21_, 13W15_, 11W23_, 9W21_, 13W15_, 12W13_, 14W21_
+>>> [LOG] 
+[processGameResults] Total matches created: 26
+>>> [LOG] 2-player matches: 26
+>>> [LOG] 4-player matches: 0
+>>> [LOG] ========================
+
+>>> [LOG] 
+[FINAL] Matches built: 26
+>>> [LOG] Global duplicates filtered: 0
+>>> [LOG] 
+=== RECALC START ===
+>>> [LOG] Matches to process: 26
+>>> [LOG] Total existing game results: 806
+>>> [LOG] After clear - verifying arrays are empty:
+>>> [LOG] Player 11: 0 results (should be 0), array length: 31
+>>> [LOG] Player 25: 0 results (should be 0), array length: 31
+>>> [LOG] Player 26: 0 results (should be 0), array length: 31
+>>> [LOG] Player 7: 0 results (should be 0), array length: 31
+>>> [LOG] 
+=== START REPOPULATION ===
+>>> [LOG] Total matches to process: 26
+>>> [LOG] Players input: 26
+>>> [LOG] Player 1: 31 existing results - , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , 
+>>> [LOG] Player 2: 31 existing results - 2W12_, 2L23_, 2L25_, 2L26_, , , , , , , , , , , , , , , , , , , , , , , , , , , 
+>>> [LOG] Player 3: 31 existing results - , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , 
+>>> [LOG] Player 4: 31 existing results - , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , 
+>>> [LOG] Total input game results: 806
+>>> [LOG] [REPOPULATE] Match: p1=9, p2=11 -> "9L11"
+>>> [LOG]   -> Set player 9[0] = "9L11_"
+>>> [LOG]   -> Set player 11[0] = "9L11_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=25 -> "2L25"
+>>> [LOG]   -> Set player 2[0] = "2L25_"
+>>> [LOG]   -> Set player 25[0] = "2L25_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=26 -> "2L26"
+>>> [LOG]   -> Set player 2[1] = "2L26_"
+>>> [LOG]   -> Set player 26[0] = "2L26_"
+>>> [LOG] [REPOPULATE] Match: p1=5, p2=16 -> "5W16"
+>>> [LOG]   -> Set player 5[0] = "5W16_"
+>>> [LOG]   -> Set player 16[0] = "5W16_"
+>>> [LOG] [REPOPULATE] Match: p1=10, p2=12 -> "10W12"
+>>> [LOG]   -> Set player 10[0] = "10W12_"
+>>> [LOG]   -> Set player 12[0] = "10W12_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=12 -> "2W12"
+>>> [LOG]   -> Set player 2[2] = "2W12_"
+>>> [LOG]   -> Set player 12[1] = "2W12_"
+>>> [LOG] [REPOPULATE] Match: p1=9, p2=21 -> "9W21"
+>>> [LOG]   -> Set player 9[1] = "9W21_"
+>>> [LOG]   -> Set player 21[0] = "9W21_"
+>>> [LOG] [REPOPULATE] Match: p1=8, p2=15 -> "8W15"
+>>> [LOG]   -> Set player 8[0] = "8W15_"
+>>> [LOG]   -> Set player 15[0] = "8W15_"
+>>> [LOG] [REPOPULATE] Match: p1=12, p2=13 -> "12W13"
+>>> [LOG]   -> Set player 12[2] = "12W13_"
+>>> [LOG]   -> Set player 13[0] = "12W13_"
+>>> [LOG] [REPOPULATE] Match: p1=13, p2=20 -> "13W20"
+>>> [LOG]   -> Set player 13[1] = "13W20_"
+>>> [LOG]   -> Set player 20[0] = "13W20_"
+>>> [LOG] [REPOPULATE] Match: p1=9, p2=14 -> "9W14"
+>>> [LOG]   -> Set player 9[2] = "9W14_"
+>>> [LOG]   -> Set player 14[0] = "9W14_"
+>>> [LOG] [REPOPULATE] Match: p1=2, p2=23 -> "2L23"
+>>> [LOG]   -> Set player 2[3] = "2L23_"
+>>> [LOG]   -> Set player 23[0] = "2L23_"
+>>> [LOG] [REPOPULATE] Match: p1=11, p2=14 -> "11W14"
+>>> [LOG]   -> Set player 11[1] = "11W14_"
+>>> [LOG]   -> Set player 14[1] = "11W14_"
+>>> [LOG] [REPOPULATE] Match: p1=9, p2=25 -> "9L25"
+>>> [LOG]   -> Set player 9[3] = "9L25_"
+>>> [LOG]   -> Set player 25[1] = "9L25_"
+>>> [LOG] [REPOPULATE] Match: p1=5, p2=26 -> "5L26"
+>>> [LOG]   -> Set player 5[1] = "5L26_"
+>>> [LOG]   -> Set player 26[1] = "5L26_"
+>>> [LOG] [REPOPULATE] Match: p1=5, p2=23 -> "5L23"
+>>> [LOG]   -> Set player 5[2] = "5L23_"
+>>> [LOG]   -> Set player 23[1] = "5L23_"
+>>> [LOG] [REPOPULATE] Match: p1=10, p2=25 -> "10L25"
+>>> [LOG]   -> Set player 10[1] = "10L25_"
+>>> [LOG]   -> Set player 25[2] = "10L25_"
+>>> [LOG] [REPOPULATE] Match: p1=14, p2=21 -> "14W21"
+>>> [LOG]   -> Set player 14[2] = "14W21_"
+>>> [LOG]   -> Set player 21[1] = "14W21_"
+>>> [LOG] [REPOPULATE] Match: p1=8, p2=16 -> "8D16"
+>>> [LOG]   -> Set player 8[1] = "8D16_"
+>>> [LOG]   -> Set player 16[1] = "8D16_"
+>>> [LOG] [REPOPULATE] Match: p1=13, p2=14 -> "13L14"
+>>> [LOG]   -> Set player 13[2] = "13L14_"
+>>> [LOG]   -> Set player 14[3] = "13L14_"
+>>> [LOG] [REPOPULATE] Match: p1=13, p2=15 -> "13W15"
+>>> [LOG]   -> Set player 13[3] = "13W15_"
+>>> [LOG]   -> Set player 15[1] = "13W15_"
+>>> [LOG] [REPOPULATE] Match: p1=11, p2=23 -> "11W23"
+>>> [LOG]   -> Set player 11[2] = "11W23_"
+>>> [LOG]   -> Set player 23[2] = "11W23_"
+>>> [LOG] [REPOPULATE] Match: p1=14, p2=26 -> "14L26"
+>>> [LOG]   -> Set player 14[4] = "14L26_"
+>>> [LOG]   -> Set player 26[2] = "14L26_"
+>>> [LOG] [REPOPULATE] Match: p1=15, p2=21 -> "15L21"
+>>> [LOG]   -> Set player 15[2] = "15L21_"
+>>> [LOG]   -> Set player 21[2] = "15L21_"
+>>> [LOG] [REPOPULATE] Match: p1=21, p2=26 -> "21L26"
+>>> [LOG]   -> Set player 21[3] = "21L26_"
+>>> [LOG]   -> Set player 26[3] = "21L26_"
+>>> [LOG] [REPOPULATE] Match: p1=23, p2=26 -> "23L26"
+>>> [LOG]   -> Set player 23[3] = "23L26_"
+>>> [LOG]   -> Set player 26[4] = "23L26_"
+>>> [LOG] 
+=== REPOPULATION SUMMARY ===
+>>> [LOG] Total entries SET during loop: 52
+>>> [LOG] 
+Player 1 (Kenneth Castillo) gameResults:
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (3): [9L11_, 11W14_, 11W23_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG] 
+Player 2 (Jan Arauz) gameResults:
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (3): [2L25_, 9L25_, 10L25_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG] 
+Player 3 (Alan Filion) gameResults:
+>>> [LOG]   Total slots: 31
+>>> [LOG]   Filled (5): [2L26_, 5L26_, 14L26_, 21L26_, 23L26_]
+>>> [LOG]   Empty/null slots: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+>>> [LOG] 
+Player 11 (Kenneth Castillo): 3 results
+>>> [LOG] 
+Player 25 (Jan Arauz): 3 results
+>>> [LOG] 
+Player 26 (Alan Filion): 5 results
+>>> [LOG] 
+Player 9 (Kate Cullano): 4 results
+>>> [LOG] 
+Player 5 (Daniel Smith): 3 results
+>>> [LOG] 
+Player 10 (Cali Chavez): 2 results
+>>> [LOG] 
+Player 2 (Kieran Williams): 4 results
+>>> [LOG] 
+Player 21 (Nataila Castillo): 4 results
+>>> [LOG] 
+Player 8 (Dylan Cullano): 2 results
+>>> [LOG] 
+Player 13 (Melanie Castillo): 4 results
+>>> [LOG] 
+Player 15 (Francisco adult): 3 results
+>>> [LOG] 
+Player 20 (Lorie Adult): 1 results
+>>> [LOG] 
+Player 16 (Francisco Sr.): 2 results
+>>> [LOG] 
+Player 12 (Maria adult): 3 results
+>>> [LOG] 
+Player 14 (Erin adult): 5 results
+>>> [LOG] 
+Player 23 (Decy adult): 4 results
+>>> [LOG] 
+Total player result entries: 63
+>>> [LOG] Expected: 52 (2 per match)
+>>> [LOG] Difference: -11
+>>> [LOG] ============================
+
+>>> [LOG] Total results after repopulation: 52
+>>> [LOG] Rating calculation complete
+
+-- Recalculate Ratings selected
+-- Clicking menu: File, then item: Export
+-- Menu opened: File
+>>> [LOG] >>> [MENU ACTION] export
+>>> [LOG] >>> [BUTTON PRESSED] Export - 26 players
+>>> [LOG] Exported 26 players to Pawn_Game_2026-03-10T20-38-29-391Z.tab
+-- Download detected: Pawn_Game_2026-03-10T20-38-29-391Z.tab
+-- Menu item selected: Export
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Pawn_Game_2026-03-10T20-38-29-391Z.tab
+-- Clicking buttons: none
+-- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\pawn_game_recalculate_expected_output.tab
+
+-- Comparing output...
+-- Test PASSED - Output matches expected file!
