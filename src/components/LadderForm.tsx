@@ -280,7 +280,11 @@ export default function LadderForm({
       console.log(`[LadderForm] Loading file: ${fileToLoad.name}`);
     }
     const projectName = fileToLoad.name.replace(/\.[^.]+$/, "");
+    console.log(
+      `>>> [LOAD FILE] Setting title from filename: "${projectName}"`,
+    );
     setProjectName(projectName);
+    localStorage.setItem("ladder_project_name", projectName);
     setLastFile(fileToLoad);
     setSortBy(null);
 
@@ -519,26 +523,41 @@ export default function LadderForm({
         const currentTitle =
           localStorage.getItem("ladder_project_name") ||
           "Bughouse Chess Ladder";
+        console.log(
+          `>>> [NEW DAY] Current title from localStorage: "${currentTitle}"`,
+        );
+        console.log(`>>> [NEW DAY] MINI_GAMES array: ${MINI_GAMES.join(", ")}`);
         const nextTitle = (() => {
           const index = MINI_GAMES.findIndex(
             (game) => game.toLowerCase() === currentTitle.toLowerCase(),
+          );
+          console.log(
+            `>>> [NEW DAY] findIndex result: ${index} for "${currentTitle}"`,
           );
           if (index !== -1) {
             return MINI_GAMES[(index + 1) % MINI_GAMES.length];
           }
           return currentTitle;
         })();
+        console.log(`>>> [NEW DAY] Next title will be: "${nextTitle}"`);
 
         // Apply New Day transformations to calculatedPlayers
-        const newDayPlayers = calculatedPlayers.map((player) => ({
-          ...player,
-          rating: player.nRating || 0,
-          num_games: (player.gameResults || []).filter(
+        const newDayPlayers = calculatedPlayers.map((player) => {
+          const gameCount = (player.gameResults || []).filter(
             (r) => r !== null && r !== "",
-          ).length,
-          attendance: 0,
-          gameResults: Array(31).fill(null),
-        }));
+          ).length;
+          // If player had results, reset attendance to 0; otherwise increment
+          const newAttendance =
+            gameCount > 0 ? 0 : ((player.attendance as number) || 0) + 1;
+
+          return {
+            ...player,
+            rating: player.nRating || 0,
+            num_games: gameCount,
+            attendance: newAttendance,
+            gameResults: Array(31).fill(null),
+          };
+        });
 
         // Apply re-ranking if requested
         let finalPlayers = newDayPlayers;
@@ -853,15 +872,22 @@ export default function LadderForm({
         })();
 
         // Apply New Day transformations
-        const newDayPlayers = calculatedPlayers.map((player) => ({
-          ...player,
-          rating: player.nRating || 0,
-          num_games: (player.gameResults || []).filter(
+        const newDayPlayers = calculatedPlayers.map((player) => {
+          const gameCount = (player.gameResults || []).filter(
             (r) => r !== null && r !== "",
-          ).length,
-          attendance: 0,
-          gameResults: Array(31).fill(null),
-        }));
+          ).length;
+          // If player had results, reset attendance to 0; otherwise increment
+          const newAttendance =
+            gameCount > 0 ? 0 : ((player.attendance as number) || 0) + 1;
+
+          return {
+            ...player,
+            rating: player.nRating || 0,
+            num_games: gameCount,
+            attendance: newAttendance,
+            gameResults: Array(31).fill(null),
+          };
+        });
 
         // Apply re-ranking if requested
         let finalPlayers = newDayPlayers;

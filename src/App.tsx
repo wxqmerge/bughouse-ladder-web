@@ -16,12 +16,21 @@ const MINI_GAMES = [
 
 function getNextTitle(currentTitle: string): string {
   // Case-insensitive match to find the mini-game
+  console.log(`>>> [getNextTitle] Looking for: "${currentTitle}"`);
   const index = MINI_GAMES.findIndex(
     (game) => game.toLowerCase() === currentTitle.toLowerCase(),
   );
+  console.log(
+    `>>> [getNextTitle] Found at index: ${index}, MINI_GAMES: ${MINI_GAMES.join(", ")}`,
+  );
   if (index !== -1) {
-    return MINI_GAMES[(index + 1) % MINI_GAMES.length];
+    const next = MINI_GAMES[(index + 1) % MINI_GAMES.length];
+    console.log(`>>> [getNextTitle] Next title: "${next}"`);
+    return next;
   }
+  console.log(
+    `>>> [getNextTitle] Not found, returning current: "${currentTitle}"`,
+  );
   return currentTitle;
 }
 
@@ -56,11 +65,14 @@ function App() {
         const nextTitle = getNextTitle(currentTitle);
 
         Object.values(players).forEach((player) => {
-          player.rating = player.nRating;
-          player.num_games = (player.gameResults || []).filter(
+          const gameCount = (player.gameResults || []).filter(
             (r) => r !== null && r !== "",
           ).length;
-          player.attendance = 0;
+          // If player had results, reset attendance to 0; otherwise increment
+          player.attendance =
+            gameCount > 0 ? 0 : (Number(player.attendance) || 0) + 1;
+          player.rating = player.nRating;
+          player.num_games = gameCount;
           player.gameResults = Array(31).fill(null);
         });
 
