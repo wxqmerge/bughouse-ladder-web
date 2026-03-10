@@ -30,6 +30,10 @@ function App() {
         const players: Record<number, PlayerData> = JSON.parse(playersJson);
         Object.values(players).forEach((player) => {
           player.rating = player.nRating;
+          player.num_games = (player.gameResults || []).filter(
+            (r) => r !== null && r !== "",
+          ).length;
+          player.attendance = 0;
           player.gameResults = Array(31).fill(null);
         });
 

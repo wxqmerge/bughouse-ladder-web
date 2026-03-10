@@ -168,7 +168,7 @@ export default function LadderForm({
   const [isAdmin, setIsAdmin] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [sortBy, setSortBy] = useState<
-    "rank" | "nRating" | "rating" | "byName" | null
+    "rank" | "nRating" | "rating" | "byLastName" | "byFirstName" | null
   >(null);
   const [projectName, setProjectName] = useState<string>(
     "Bughouse Chess Ladder",
@@ -224,6 +224,11 @@ export default function LadderForm({
 
   // VB6 Line: 894 - Initialize with sample data
   useEffect(() => {
+    const savedProjectName = localStorage.getItem("ladder_project_name");
+    if (savedProjectName) {
+      setProjectName(savedProjectName);
+    }
+
     const savedPlayers = localStorage.getItem("ladder_players");
     if (savedPlayers) {
       try {
@@ -313,8 +318,14 @@ export default function LadderForm({
           rating: cols[3] ? parseInt(String(cols[3]).trim() || "-1") : -1,
           nRating: 0,
           grade: cols[6] !== null ? cols[6] : "N/A",
-          num_games: cols[7] !== null ? parseInt(cols[7]) : 0,
-          attendance: cols[8] !== null ? parseInt(cols[8]) : 0,
+          num_games:
+            cols[7] !== null && !isNaN(parseInt(cols[7]))
+              ? parseInt(cols[7])
+              : 0,
+          attendance:
+            cols[8] !== null && !isNaN(parseInt(cols[8]))
+              ? parseInt(cols[8])
+              : 0,
           phone: cols[9] !== null ? cols[9] : "",
           info: cols[10] !== null ? cols[10] : "",
           school: cols[11] !== null ? cols[11] : "",
@@ -365,8 +376,10 @@ export default function LadderForm({
             }
             return a.rank - b.rank;
           });
-        } else if (sortBy === "byName") {
+        } else if (sortBy === "byLastName") {
           loadedPlayers.sort((a, b) => Chess_Compare(a, b, "last", 0));
+        } else if (sortBy === "byFirstName") {
+          loadedPlayers.sort((a, b) => Chess_Compare(a, b, "first", 0));
         }
 
         const sortedGameResults: (string | null)[][] = [];
@@ -1019,7 +1032,9 @@ export default function LadderForm({
     return 0;
   };
 
-  const handleSort = (sortMethod: "rank" | "nRating" | "rating" | "byName") => {
+  const handleSort = (
+    sortMethod: "rank" | "nRating" | "rating" | "byLastName" | "byFirstName",
+  ) => {
     setSortBy(sortMethod);
 
     const playersWithResults = players.map((player) => ({
@@ -1044,9 +1059,18 @@ export default function LadderForm({
           return ratingB - ratingA;
         }
         return a.rank - b.rank;
-      } else if (sortMethod === "byName") {
-        const resultA = a.lastName || a.firstName;
-        const resultB = b.lastName || b.firstName;
+      } else if (sortMethod === "byLastName") {
+        const resultA = a.lastName || "";
+        const resultB = b.lastName || "";
+        if (resultA && !resultB) return 1;
+        if (!resultA && resultB) return -1;
+        if (!resultA && !resultB) return 0;
+        if (resultA < resultB) return -1;
+        if (resultA > resultB) return 1;
+        return 0;
+      } else if (sortMethod === "byFirstName") {
+        const resultA = a.firstName || "";
+        const resultB = b.firstName || "";
         if (resultA && !resultB) return 1;
         if (!resultA && resultB) return -1;
         if (!resultA && !resultB) return 0;
@@ -1123,7 +1147,8 @@ export default function LadderForm({
     }
 
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const filename = `Export_Results_${timestamp}.tab`;
+    const titleWord = projectName.split(/\s+/)[0].replace(/\s+/g, "_");
+    const filename = `${titleWord}_${timestamp}.tab`;
 
     const headerLine =
       "Group\tLast Name\tFirst Name\tRating\tRnk\tN Rate\tGr\tGms\tPhone\tInfo\tSchool\tRoom\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\t14\t15\t16\t17\t18\t19\t20\t21\t22\t23\t24\t25\t26\t27\t28\t29\t30\t31\Version 1.21";
@@ -1195,6 +1220,10 @@ export default function LadderForm({
           isWide={zoomLevel === "140%"}
           zoomLevel={zoomLevel}
           projectName={projectName}
+          onProjectNameChange={(name) => {
+            setProjectName(name);
+            localStorage.setItem("ladder_project_name", name);
+          }}
           playerCount={players.length}
         />
       </div>

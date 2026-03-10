@@ -22,7 +22,9 @@ import {
 
 interface MenuBarProps {
   onFileAction: (action: "load" | "save" | "export") => void;
-  onSort: (type: "rank" | "byName" | "nRating" | "rating") => void;
+  onSort: (
+    type: "rank" | "byLastName" | "byFirstName" | "nRating" | "rating",
+  ) => void;
   onRecalculateRatings: () => void;
   onCheckErrors: () => void;
   onToggleAdmin: () => void;
@@ -32,6 +34,7 @@ interface MenuBarProps {
   isWide: boolean;
   zoomLevel: "70%" | "100%" | "140%";
   projectName?: string;
+  onProjectNameChange?: (name: string) => void;
   playerCount?: number;
 }
 
@@ -53,6 +56,7 @@ export default function MenuBar({
   isAdmin,
   zoomLevel,
   projectName,
+  onProjectNameChange,
   playerCount,
 }: MenuBarProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -107,12 +111,21 @@ export default function MenuBar({
     },
     {
       icon: <Type size={16} />,
-      label: "By Name",
+      label: "By Last Name",
       onClick: () => {
-        onSort("byName");
+        onSort("byLastName");
         closeAllMenus();
       },
-      dataMenuItem: "By Name",
+      dataMenuItem: "By Last Name",
+    },
+    {
+      icon: <Type size={16} />,
+      label: "By First Name",
+      onClick: () => {
+        onSort("byFirstName");
+        closeAllMenus();
+      },
+      dataMenuItem: "By First Name",
     },
     {
       icon: <TrendingUp size={16} />,
@@ -348,7 +361,28 @@ export default function MenuBar({
 
         {/* Title and player count */}
         {projectName && (
-          <h1 style={{ margin: 0, color: "white", padding: "0 1rem" }}>
+          <h1
+            contentEditable={isAdmin && onProjectNameChange !== undefined}
+            suppressContentEditableWarning={true}
+            onBlur={(e) => {
+              if (isAdmin && onProjectNameChange && e.target.textContent) {
+                onProjectNameChange(e.target.textContent);
+              }
+            }}
+            style={{
+              margin: 0,
+              color: "white",
+              padding: "0 1rem",
+              cursor:
+                isAdmin && onProjectNameChange !== undefined
+                  ? "text"
+                  : "default",
+              backgroundColor:
+                isAdmin && onProjectNameChange !== undefined
+                  ? "rgba(255, 255, 255, 0.1)"
+                  : "transparent",
+            }}
+          >
             {projectName} v1.0.0
           </h1>
         )}

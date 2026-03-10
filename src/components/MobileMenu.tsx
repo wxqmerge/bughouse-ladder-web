@@ -10,7 +10,9 @@ interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
   onFileAction: (action: "load" | "save" | "export") => void;
-  onSort: (type: "rank" | "byName" | "nRating" | "rating") => void;
+  onSort: (
+    type: "rank" | "byLastName" | "byFirstName" | "nRating" | "rating",
+  ) => void;
   onRecalculateRatings: () => void;
   onCheckErrors: () => void;
   onToggleAdmin: () => void;
@@ -69,9 +71,14 @@ export default function MobileMenu({
       dataMenuItem: "By Rank",
     },
     {
-      label: "By Name",
-      onClick: () => handleItemClick(() => onSort("byName")),
-      dataMenuItem: "By Name",
+      label: "By Last Name",
+      onClick: () => handleItemClick(() => onSort("byLastName")),
+      dataMenuItem: "By Last Name",
+    },
+    {
+      label: "By First Name",
+      onClick: () => handleItemClick(() => onSort("byFirstName")),
+      dataMenuItem: "By First Name",
     },
     {
       label: "By New Rating",
