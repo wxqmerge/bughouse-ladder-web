@@ -298,10 +298,10 @@ Total player result entries: 18
 -- Menu opened: File
 >>> [LOG] >>> [MENU ACTION] export
 >>> [LOG] >>> [BUTTON PRESSED] Export - 26 players
->>> [LOG] Exported 26 players to Export_Results_2026-03-09T21-19-13-410Z.tab
--- Download detected: Export_Results_2026-03-09T21-19-13-410Z.tab
+>>> [LOG] Exported 26 players to Export_Results_2026-03-09T23-53-06-769Z.tab
+-- Download detected: Export_Results_2026-03-09T23-53-06-769Z.tab
 -- Menu item selected: Export
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T21-19-13-410Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T23-53-06-769Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\kings_cross.tab
 

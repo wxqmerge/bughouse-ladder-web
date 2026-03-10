@@ -81,6 +81,45 @@ export default function ErrorDialog({
   const inputRef = useRef<HTMLInputElement>(null);
   const justOpened = useRef(false);
 
+  // Keyboard shortcuts: Ctrl+letter for buttons
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!e.ctrlKey) return;
+
+      const key = e.key.toLowerCase();
+
+      switch (key) {
+        case "s":
+          e.preventDefault();
+          handleSubmit(e as unknown as React.FormEvent);
+          break;
+        case "c":
+          e.preventDefault();
+          handleClearCell();
+          break;
+        case "p":
+          e.preventDefault();
+          onWalkthroughPrev?.();
+          break;
+        case "n":
+          e.preventDefault();
+          onWalkthroughNext?.();
+          break;
+        case "x":
+          e.preventDefault();
+          onClose();
+          break;
+        case "escape":
+          e.preventDefault();
+          onClose();
+          break;
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onWalkthroughPrev, onWalkthroughNext, onClose]);
+
   // Sync input value when existingValue changes (e.g., clicking different cell)
   useEffect(() => {
     const value = existingValue?.replace(/_$/, "") || "";
@@ -266,15 +305,8 @@ export default function ErrorDialog({
       return;
     }
 
-    if (mode === "walkthrough" && walkthroughErrors) {
-      const currentError = walkthroughErrors[walkthroughIndex ?? 0];
-      if (currentError && onUpdatePlayerData) {
-        onUpdatePlayerData(
-          currentError.playerRank,
-          currentError.resultIndex,
-          "",
-        );
-      }
+    if (mode === "walkthrough" && entryCell && onUpdatePlayerData) {
+      onUpdatePlayerData(entryCell.playerRank, entryCell.round, "");
       onClose();
       if (onWalkthroughNext) {
         onWalkthroughNext();
@@ -851,7 +883,7 @@ export default function ErrorDialog({
                       color: walkthroughIndex === 0 ? "#9ca3af" : "#374151",
                     }}
                   >
-                    Previous
+                    Previous (Ctrl+P)
                   </button>
                   <button
                     type="button"
@@ -879,7 +911,7 @@ export default function ErrorDialog({
                           : "white",
                     }}
                   >
-                    Next
+                    Next (Ctrl+N)
                   </button>
                 </>
               )}
@@ -896,7 +928,7 @@ export default function ErrorDialog({
                 color: "white",
               }}
             >
-              Clear Cell
+              Clear Cell (Ctrl+C)
             </button>
             <button
               type="button"
@@ -911,7 +943,7 @@ export default function ErrorDialog({
                 color: "#374151",
               }}
             >
-              Cancel
+              Cancel (Ctrl+X)
             </button>
             <button
               type="submit"
@@ -925,7 +957,7 @@ export default function ErrorDialog({
                 color: "white",
               }}
             >
-              {isGameEntry ? "Save" : "Submit Correction"}
+              {isGameEntry ? "Save (Ctrl+S)" : "Submit Correction (Ctrl+S)"}
             </button>
           </div>
         </form>

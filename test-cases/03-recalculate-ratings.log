@@ -24,10 +24,10 @@ Server started on port 5173
 -- Executing actions: clickMenu, clickButtonByText, recalculateRatings, fillCorrection, submitCorrection, submitCorrection, clearCell, cancelDialog
 -- Clicking menu: Settings
 -- Menu opened: Settings
--- Clicking button with text: "Clear All Data"
->>> [LOG] >>> [BUTTON PRESSED] Clear All Data
+-- Clicking button with text: "Set Sample Data"
+>>> [LOG] >>> [BUTTON PRESSED] Set Sample Data
 -- Dialog: Are you sure you want to reset all data to sample data? This will clear all loaded players and game results.
--- Button pressed: Clear All Data
+-- Button pressed: Set Sample Data
 >>> [DEBUG] [vite] connecting...
 >>> [DEBUG] [vite] connected.
 >>> [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
@@ -274,9 +274,31 @@ Server started on port 5173
 >>> [LOG]   Player 11: "12D13"
 >>> [WARNING] Errors detected. Opening dialog for correction.
 >>> [LOG] 
-=== RECALC START ===
->>> [LOG] Matches to process: 35
->>> [LOG] Total existing game results: 45
+=== RECALC PAUSED ===
+>>> [LOG] Found 7 errors - showing error dialog
+>>> [LOG] PARSE FAILED [4-player]: "12:1LD1:1" -> duplicate players
+>>> [LOG] PARSE FAILED [4-player]: "12:1LD1:1" -> duplicate players
+-- Recalculate Ratings selected
+-- Filling correction: "5W3"
+-- Text entered: 5W3
+-- Submitting correction...
+>>> [LOG] >>> [BUTTON PRESSED] Save (Game Result)
+>>> [LOG] PARSE FAILED [4-player]: "12:1LD1:1" -> duplicate players
+>>> [LOG] PARSE FAILED [4-player]: "12:1LD1:1" -> duplicate players
+-- Dialog: Invalid format. Error code: 4
+-- Button pressed: Submit Correction/Save
+-- Submitting correction...
+>>> [LOG] >>> [BUTTON PRESSED] Save (Game Result)
+>>> [LOG] PARSE FAILED [4-player]: "12:1LD1:1" -> duplicate players
+>>> [LOG] PARSE FAILED [4-player]: "12:1LD1:1" -> duplicate players
+-- Dialog: Invalid format. Error code: 4
+-- Button pressed: Submit Correction/Save
+-- Clearing cell...
+>>> [LOG] >>> [BUTTON PRESSED] Clear Cell
+>>> [LOG] PARSE FAILED [4-player]: "2:10DD1:1" -> duplicate players
+-- Button pressed: Clear Cell
+-- Cancelling dialog...
+>>> [LOG] >>> [BUTTON PRESSED] Cancel
 >>> [LOG] After clear - verifying arrays are empty:
 >>> [LOG] Player 1: 0 results (should be 0), array length: 31
 >>> [LOG] Player 2: 0 results (should be 0), array length: 31
@@ -486,25 +508,16 @@ Total player result entries: 134
 >>> [LOG] Difference: -26
 >>> [LOG] ============================
 
->>> [LOG] Total results after repopulation: 108
 >>> [LOG] Rating calculation complete
-
--- Recalculate Ratings selected
--- Filling correction: "5W3"
--- Submitting correction...
--- Warning: Could not find Submit Correction or Save button
--- Submitting correction...
--- Warning: Could not find Submit Correction or Save button
--- Clearing cell...
--- Cancelling dialog...
+-- Button pressed: Cancel
 -- Clicking menu: File, then item: Export
 -- Menu opened: File
 >>> [LOG] >>> [MENU ACTION] export
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Export_Results_2026-03-09T21-20-37-175Z.tab
--- Download detected: Export_Results_2026-03-09T21-20-37-175Z.tab
+>>> [LOG] Exported 14 players to Export_Results_2026-03-09T23-54-50-236Z.tab
+-- Download detected: Export_Results_2026-03-09T23-54-50-236Z.tab
 -- Menu item selected: Export
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T21-20-37-175Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T23-54-50-236Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\recalculate_ratings.tab
 

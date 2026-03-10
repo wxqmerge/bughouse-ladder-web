@@ -24,10 +24,10 @@ Server started on port 5173
 -- Executing actions: clickMenu, clickButtonByText, pasteResults
 -- Clicking menu: Settings
 -- Menu opened: Settings
--- Clicking button with text: "Clear All Data"
->>> [LOG] >>> [BUTTON PRESSED] Clear All Data
+-- Clicking button with text: "Set Sample Data"
+>>> [LOG] >>> [BUTTON PRESSED] Set Sample Data
 -- Dialog: Are you sure you want to reset all data to sample data? This will clear all loaded players and game results.
--- Button pressed: Clear All Data
+-- Button pressed: Set Sample Data
 >>> [DEBUG] [vite] connecting...
 >>> [DEBUG] [vite] connected.
 >>> [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
@@ -54,10 +54,10 @@ Server started on port 5173
 -- Menu opened: File
 >>> [LOG] >>> [MENU ACTION] export
 >>> [LOG] >>> [BUTTON PRESSED] Export - 14 players
->>> [LOG] Exported 14 players to Export_Results_2026-03-09T21-21-05-378Z.tab
--- Download detected: Export_Results_2026-03-09T21-21-05-378Z.tab
+>>> [LOG] Exported 14 players to Export_Results_2026-03-09T23-55-18-472Z.tab
+-- Download detected: Export_Results_2026-03-09T23-55-18-472Z.tab
 -- Menu item selected: Export
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T21-21-05-378Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\Export_Results_2026-03-09T23-55-18-472Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\paste_results.tab
 
