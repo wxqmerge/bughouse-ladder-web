@@ -5,6 +5,23 @@ import { loadSampleData } from "./components/LadderForm";
 import type { PlayerData } from "./utils/hashUtils";
 import "./css/index.css";
 
+const MINI_GAMES = [
+  "BG_Game",
+  "Bishop_Game",
+  "Pillar_Game",
+  "Kings_Cross",
+  "Pawn_Game",
+  "Queen_Game",
+] as const;
+
+function getNextTitle(currentTitle: string): string {
+  const index = MINI_GAMES.indexOf(currentTitle as any);
+  if (index !== -1) {
+    return MINI_GAMES[(index + 1) % MINI_GAMES.length];
+  }
+  return currentTitle;
+}
+
 function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [triggerWalkthrough, setTriggerWalkthrough] = useState(false);
@@ -28,6 +45,13 @@ function App() {
     if (playersJson) {
       try {
         const players: Record<number, PlayerData> = JSON.parse(playersJson);
+
+        // Get current title and determine next title for mini-games
+        const currentTitle =
+          localStorage.getItem("ladder_project_name") ||
+          "Bughouse Chess Ladder";
+        const nextTitle = getNextTitle(currentTitle);
+
         Object.values(players).forEach((player) => {
           player.rating = player.nRating;
           player.num_games = (player.gameResults || []).filter(
@@ -53,6 +77,9 @@ function App() {
         } else {
           localStorage.setItem("ladder_players", JSON.stringify(players));
         }
+
+        // Update title in localStorage (will be loaded on reload)
+        localStorage.setItem("ladder_project_name", nextTitle);
 
         localStorage.removeItem("ladder_settings");
         window.location.reload();

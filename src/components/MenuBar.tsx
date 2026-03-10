@@ -18,6 +18,7 @@ import {
   Plus,
   ZoomIn,
   ChevronDown,
+  Check,
 } from "lucide-react";
 
 interface MenuBarProps {
@@ -35,14 +36,16 @@ interface MenuBarProps {
   zoomLevel: "70%" | "100%" | "140%";
   projectName?: string;
   onProjectNameChange?: (name: string) => void;
+  onSetTitle?: (title: string) => void;
   playerCount?: number;
 }
 
 interface MenuItem {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   label: string;
   onClick: () => void;
   dataMenuItem: string;
+  hasCheckmark?: boolean;
 }
 
 export default function MenuBar({
@@ -57,6 +60,7 @@ export default function MenuBar({
   zoomLevel,
   projectName,
   onProjectNameChange,
+  onSetTitle,
   playerCount,
 }: MenuBarProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -98,6 +102,28 @@ export default function MenuBar({
       dataMenuItem: "Export",
     },
   ];
+
+  const allTitles = [
+    "Ladder",
+    "Bughouse Ladder",
+    "BG_Game",
+    "Bishop_Game",
+    "Pillar_Game",
+    "Kings_Cross",
+    "Pawn_Game",
+    "Queen_Game",
+  ];
+
+  const titleMenuItems: MenuItem[] = allTitles.map((title) => ({
+    icon: <Type size={16} />,
+    label: title,
+    onClick: () => {
+      onSetTitle?.(title);
+      closeAllMenus();
+    },
+    dataMenuItem: `Title-${title}`,
+    hasCheckmark: projectName === title,
+  }));
 
   const sortMenuItems: MenuItem[] = [
     {
@@ -207,7 +233,7 @@ export default function MenuBar({
     },
   ];
 
-  const renderMenuItems = (items: MenuItem[]) => (
+  const renderMenuItems = (items: MenuItem[], menuType?: string) => (
     <div role="menu" aria-label="Menu items">
       {items.map((item) => (
         <div
@@ -238,14 +264,24 @@ export default function MenuBar({
           }}
         >
           {item.icon}
+          {menuType === "title" && item.hasCheckmark && (
+            <Check size={14} style={{ marginLeft: "auto", color: "#3b82f6" }} />
+          )}
           <span>{item.label}</span>
         </div>
       ))}
     </div>
   );
 
-  const renderDropdown = (menuName: string, items: MenuItem[]) => {
+  const renderDropdown = (
+    menuName: string,
+    items: MenuItem[],
+    menuType?: string,
+  ) => {
     if (openMenu !== menuName) return null;
+
+    const allItems =
+      menuName === "File" ? [...items, ...titleMenuItems] : items;
 
     return (
       <div
@@ -262,7 +298,7 @@ export default function MenuBar({
           overflow: "hidden",
         }}
       >
-        {renderMenuItems(items)}
+        {renderMenuItems(allItems, menuType)}
       </div>
     );
   };
@@ -271,6 +307,7 @@ export default function MenuBar({
     menuName: string,
     icon: React.ReactNode,
     items: MenuItem[],
+    menuType?: string,
   ) => (
     <div style={{ position: "relative", display: "inline-block" }}>
       <button
@@ -292,7 +329,7 @@ export default function MenuBar({
         <span>{menuName}</span>
         <ChevronDown size={14} />
       </button>
-      {renderDropdown(menuName, items)}
+      {renderDropdown(menuName, items, menuType)}
     </div>
   );
 
@@ -328,7 +365,12 @@ export default function MenuBar({
             flex: 1,
           }}
         >
-          {renderMenuTrigger("File", <Folder size={16} />, fileMenuItems)}
+          {renderMenuTrigger(
+            "File",
+            <Folder size={16} />,
+            fileMenuItems,
+            "title",
+          )}
           {renderMenuTrigger("Sort", <ListFilter size={16} />, sortMenuItems)}
           {renderMenuTrigger(
             "Operations",

@@ -4,6 +4,8 @@ import {
   ListFilter,
   Settings as SettingsIcon,
   Eye,
+  Type,
+  Check,
 } from "lucide-react";
 
 interface MobileMenuProps {
@@ -19,12 +21,15 @@ interface MobileMenuProps {
   onSetZoom: (level: "70%" | "100%" | "140%") => void;
   onOpenSettings: () => void;
   isAdmin: boolean;
+  projectName?: string;
+  onSetTitle?: (title: string) => void;
 }
 
 interface MenuItem {
   label: string;
   onClick: () => void;
   dataMenuItem: string;
+  hasCheckmark?: boolean;
 }
 
 export default function MobileMenu({
@@ -38,6 +43,8 @@ export default function MobileMenu({
   onSetZoom,
   onOpenSettings,
   isAdmin,
+  projectName,
+  onSetTitle,
 }: MobileMenuProps) {
   if (!isOpen) return null;
 
@@ -63,6 +70,24 @@ export default function MobileMenu({
       dataMenuItem: "Export",
     },
   ];
+
+  const allTitles = [
+    "Ladder",
+    "Bughouse Ladder",
+    "BG_Game",
+    "Bishop_Game",
+    "Pillar_Game",
+    "Kings_Cross",
+    "Pawn_Game",
+    "Queen_Game",
+  ];
+
+  const titleItems: MenuItem[] = allTitles.map((title) => ({
+    label: title,
+    onClick: () => handleItemClick(() => onSetTitle?.(title)),
+    dataMenuItem: `Title-${title}`,
+    hasCheckmark: projectName === title,
+  }));
 
   const sortItems: MenuItem[] = [
     {
@@ -132,6 +157,7 @@ export default function MobileMenu({
     title: string,
     icon: React.ReactNode,
     items: MenuItem[],
+    showCheckmarks?: boolean,
   ) => (
     <div style={{ marginBottom: "1.5rem" }}>
       <div
@@ -167,6 +193,9 @@ export default function MobileMenu({
               cursor: "pointer",
               borderRadius: "0.25rem",
               marginBottom: "0.25rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "#e2e8f0";
@@ -175,7 +204,10 @@ export default function MobileMenu({
               e.currentTarget.style.backgroundColor = "transparent";
             }}
           >
-            {item.label}
+            <span>{item.label}</span>
+            {showCheckmarks && item.hasCheckmark && (
+              <Check size={18} color="#3b82f6" />
+            )}
           </button>
         ))}
       </div>
@@ -237,6 +269,7 @@ export default function MobileMenu({
 
         <div style={{ padding: "1rem" }}>
           {renderSection("File", <Folder size={18} />, fileItems)}
+          {renderSection("Title", <Type size={18} />, titleItems, true)}
           {renderSection("Sort By", <ListFilter size={18} />, sortItems)}
           {renderSection(
             "Operations",

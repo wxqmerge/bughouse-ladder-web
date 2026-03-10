@@ -1147,8 +1147,9 @@ export default function LadderForm({
     }
 
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const titleWord = projectName.split(/\s+/)[0].replace(/\s+/g, "_");
-    const filename = `${titleWord}_${timestamp}.tab`;
+    // Get everything before first space (handles underscores correctly)
+    const titlePart = projectName.split(" ")[0];
+    const filename = `${titlePart}_${timestamp}.tab`;
 
     const headerLine =
       "Group\tLast Name\tFirst Name\tRating\tRnk\tN Rate\tGr\tGms\tPhone\tInfo\tSchool\tRoom\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\t14\t15\t16\t17\t18\t19\t20\t21\t22\t23\t24\t25\t26\t27\t28\t29\t30\t31\Version 1.21";
@@ -1204,6 +1205,11 @@ export default function LadderForm({
         onSetZoom={handleSetZoom}
         onOpenSettings={() => setShowSettings?.(true)}
         isAdmin={isAdmin}
+        projectName={projectName}
+        onSetTitle={(newTitle) => {
+          setProjectName(newTitle);
+          localStorage.setItem("ladder_project_name", newTitle);
+        }}
       />
 
       {/* Desktop combined header with menu and title */}
@@ -1223,6 +1229,10 @@ export default function LadderForm({
           onProjectNameChange={(name) => {
             setProjectName(name);
             localStorage.setItem("ladder_project_name", name);
+          }}
+          onSetTitle={(newTitle) => {
+            setProjectName(newTitle);
+            localStorage.setItem("ladder_project_name", newTitle);
           }}
           playerCount={players.length}
         />
