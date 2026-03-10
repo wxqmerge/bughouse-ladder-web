@@ -16,9 +16,14 @@ const MINI_GAMES = [
 
 function getNextTitle(currentTitle: string): string {
   // Case-insensitive match to find the mini-game
-  console.log(`>>> [getNextTitle] Looking for: "${currentTitle}"`);
+  const normalizedTitle = String(currentTitle || "")
+    .toLowerCase()
+    .trim();
+  console.log(
+    `>>> [getNextTitle] Looking for: "${currentTitle}" (normalized: "${normalizedTitle}")`,
+  );
   const index = MINI_GAMES.findIndex(
-    (game) => game.toLowerCase() === currentTitle.toLowerCase(),
+    (game) => game.toLowerCase() === normalizedTitle,
   );
   console.log(
     `>>> [getNextTitle] Found at index: ${index}, MINI_GAMES: ${MINI_GAMES.join(", ")}`,

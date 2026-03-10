@@ -17,6 +17,7 @@ Server started on port 5173
 -- Default debug level: 5
 -- Loading input file: kings_cross.tab
 >>> [LOG] [LadderForm] Loading file: kings_cross.tab
+>>> [LOG] >>> [LOAD FILE] Setting title from filename: "kings_cross"
 -- File selected: kings_cross.tab
 -- Player count after load: 26
 -- First player: Cullano Dylan
@@ -298,10 +299,10 @@ Total player result entries: 18
 -- Menu opened: File
 >>> [LOG] >>> [MENU ACTION] export
 >>> [LOG] >>> [BUTTON PRESSED] Export - 26 players
->>> [LOG] Exported 26 players to kings_cross_2026-03-10T15-10-47-855Z.tab
--- Download detected: kings_cross_2026-03-10T15-10-47-855Z.tab
+>>> [LOG] Exported 26 players to kings_cross_2026-03-10T16-28-50-119Z.tab
+-- Download detected: kings_cross_2026-03-10T16-28-50-119Z.tab
 -- Menu item selected: Export
--- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\kings_cross_2026-03-10T15-10-47-855Z.tab
+-- Download saved to: C:\Users\wxqme\Desktop\bughouse-ladder-web\scripts\test-downloads\kings_cross_2026-03-10T16-28-50-119Z.tab
 -- Clicking buttons: none
 -- Expected file: C:\Users\wxqme\Desktop\bughouse-ladder-web\test-cases\kings_cross.tab
 

@@ -523,16 +523,19 @@ export default function LadderForm({
         const currentTitle =
           localStorage.getItem("ladder_project_name") ||
           "Bughouse Chess Ladder";
+        const normalizedTitle = String(currentTitle || "")
+          .toLowerCase()
+          .trim();
         console.log(
-          `>>> [NEW DAY] Current title from localStorage: "${currentTitle}"`,
+          `>>> [NEW DAY] Current title from localStorage: "${currentTitle}" (normalized: "${normalizedTitle}")`,
         );
         console.log(`>>> [NEW DAY] MINI_GAMES array: ${MINI_GAMES.join(", ")}`);
         const nextTitle = (() => {
           const index = MINI_GAMES.findIndex(
-            (game) => game.toLowerCase() === currentTitle.toLowerCase(),
+            (game) => game.toLowerCase() === normalizedTitle,
           );
           console.log(
-            `>>> [NEW DAY] findIndex result: ${index} for "${currentTitle}"`,
+            `>>> [NEW DAY] findIndex result: ${index} for "${currentTitle}" (normalized: "${normalizedTitle}")`,
           );
           if (index !== -1) {
             return MINI_GAMES[(index + 1) % MINI_GAMES.length];
@@ -861,9 +864,12 @@ export default function LadderForm({
         const currentTitle =
           localStorage.getItem("ladder_project_name") ||
           "Bughouse Chess Ladder";
+        const normalizedTitle = String(currentTitle || "")
+          .toLowerCase()
+          .trim();
         const nextTitle = (() => {
           const index = MINI_GAMES.findIndex(
-            (game) => game.toLowerCase() === currentTitle.toLowerCase(),
+            (game) => game.toLowerCase() === normalizedTitle,
           );
           if (index !== -1) {
             return MINI_GAMES[(index + 1) % MINI_GAMES.length];
