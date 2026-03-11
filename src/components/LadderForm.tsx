@@ -227,7 +227,7 @@ export default function LadderForm({
     }
   }, [triggerWalkthrough, setTriggerWalkthrough]);
 
-  // VB6 Line: 894 - Initialize with sample data
+  // VB6 Line: 894 - Initialize with localStorage data or sample data
   useEffect(() => {
     const savedProjectName = localStorage.getItem("ladder_project_name");
     if (savedProjectName) {
@@ -261,16 +261,33 @@ export default function LadderForm({
               `[LadderForm] Loaded ${playersWithResults.length} players from localStorage`,
             );
           }
+
+          // Load settings from localStorage
+          const savedSettings = localStorage.getItem("ladder_settings");
+          if (savedSettings) {
+            try {
+              const parsedSettings = JSON.parse(savedSettings);
+              console.log(
+                `[LadderForm] Loaded settings from localStorage:`,
+                parsedSettings,
+              );
+            } catch (err) {
+              console.error("Failed to parse settings:", err);
+            }
+          }
+
           return;
         }
       } catch (err) {
         console.error("Failed to parse players:", err);
       }
     }
+
+    // No localStorage data - use sample data
     const samplePlayers = loadSampleData();
     if (shouldLog(10)) {
       console.log(
-        `[LadderForm] Loaded ${samplePlayers.length} players from sample data`,
+        `[LadderForm] No localStorage data found. Loaded ${samplePlayers.length} players from sample data`,
       );
     }
     samplePlayers.forEach((player) => {
@@ -1237,7 +1254,43 @@ export default function LadderForm({
   const saveLocalStorage = () => {
     if (players.length === 0) return;
     try {
+      // Save players
       localStorage.setItem("ladder_players", JSON.stringify(players));
+
+      // Save project name
+      if (projectName) {
+        localStorage.setItem("ladder_project_name", projectName);
+      }
+
+      // Save zoom level
+      localStorage.setItem("ladder_zoom", zoomLevel);
+
+      // Save settings from state if Settings component is open
+      const savedSettings = localStorage.getItem("ladder_settings");
+      if (savedSettings) {
+        try {
+          const parsedSettings = JSON.parse(savedSettings);
+          // Ensure settings are properly saved
+          const updatedSettings = {
+            ...parsedSettings,
+            kFactor: Math.max(1, Math.min(100, parsedSettings.kFactor || 20)),
+            debugLevel: Math.max(
+              0,
+              Math.min(20, parsedSettings.debugLevel || 5),
+            ),
+          };
+          localStorage.setItem(
+            "ladder_settings",
+            JSON.stringify(updatedSettings),
+          );
+        } catch (err) {
+          console.error("Failed to parse settings:", err);
+        }
+      }
+
+      console.log(
+        ">>> [SAVE] Saved players, project name, zoom level, and settings to localStorage",
+      );
     } catch (err) {
       console.error("Failed to save to localStorage:", err);
     }
