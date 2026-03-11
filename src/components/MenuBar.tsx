@@ -29,12 +29,12 @@ interface MenuBarProps {
   onRecalculateRatings: () => void;
   onCheckErrors: () => void;
   onToggleAdmin: () => void;
-  onSetZoom: (level: "70%" | "100%" | "140%") => void;
+  onSetZoom: (level: "50%" | "70%" | "100%" | "140%" | "200%") => void;
   onOpenSettings: () => void;
   onAddPlayer?: () => void;
   isAdmin: boolean;
   isWide: boolean;
-  zoomLevel: "70%" | "100%" | "140%";
+  zoomLevel: "50%" | "70%" | "100%" | "140%" | "200%";
   projectName?: string;
   onProjectNameChange?: (name: string) => void;
   onSetTitle?: (title: string) => void;
@@ -221,6 +221,15 @@ export default function MenuBar({
   const viewMenuItems: MenuItem[] = [
     {
       icon: <Minus size={16} />,
+      label: "Zoom 50%",
+      onClick: () => {
+        onSetZoom("50%");
+        closeAllMenus();
+      },
+      dataMenuItem: "Zoom 50%",
+    },
+    {
+      icon: <Minus size={16} />,
       label: "Zoom 70%",
       onClick: () => {
         onSetZoom("70%");
@@ -245,6 +254,15 @@ export default function MenuBar({
         closeAllMenus();
       },
       dataMenuItem: "Zoom 140%",
+    },
+    {
+      icon: <ZoomIn size={16} />,
+      label: "Zoom 200%",
+      onClick: () => {
+        onSetZoom("200%");
+        closeAllMenus();
+      },
+      dataMenuItem: "Zoom 200%",
     },
   ];
 
@@ -350,12 +368,16 @@ export default function MenuBar({
 
   const getFontSize = () => {
     switch (zoomLevel) {
+      case "50%":
+        return "0.5rem";
       case "70%":
         return "0.625rem";
       case "100%":
         return "0.875rem";
       case "140%":
         return "1.25rem";
+      case "200%":
+        return "1.75rem";
       default:
         return "0.875rem";
     }
@@ -430,6 +452,7 @@ export default function MenuBar({
               margin: 0,
               color: "white",
               padding: "0 1rem",
+              fontSize: "0.875rem",
               cursor:
                 isAdmin && onProjectNameChange !== undefined
                   ? "text"
@@ -444,7 +467,7 @@ export default function MenuBar({
           </h1>
         )}
         {playerCount !== undefined && (
-          <div style={{ padding: "0.75rem 1rem" }}>
+          <div style={{ padding: "0.75rem 1rem", fontSize: "0.875rem" }}>
             <span style={{ color: "rgba(255, 255, 255, 0.7)" }}>
               Total Players
             </span>

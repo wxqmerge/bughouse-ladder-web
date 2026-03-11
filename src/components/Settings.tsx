@@ -10,6 +10,7 @@ import {
   Trash2,
   RotateCcw,
   CalendarDays,
+  Eye,
 } from "lucide-react";
 import "../css/index.css";
 
@@ -287,28 +288,6 @@ export default function Settings({
                 Higher = faster rating changes (1-100)
               </p>
             </div>
-
-            {onWalkThroughReports && (
-              <button
-                onClick={() => {
-                  onClose();
-                  onWalkThroughReports();
-                }}
-                style={{
-                  width: "100%",
-                  padding: "0.75rem",
-                  backgroundColor: "#f59e0b",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "0.25rem",
-                  cursor: "pointer",
-                  fontSize: "0.875rem",
-                  fontWeight: "500",
-                }}
-              >
-                Walk Through Reports
-              </button>
-            )}
           </div>
 
           {/* Right Column - Actions */}
@@ -376,6 +355,33 @@ export default function Settings({
                 <CalendarDays size={16} />
                 New Day + Re-rank
               </button>
+
+              {onWalkThroughReports && (
+                <button
+                  onClick={() => {
+                    onClose();
+                    onWalkThroughReports();
+                  }}
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "0.5rem",
+                    padding: "0.75rem",
+                    backgroundColor: "#f59e0b",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "0.25rem",
+                    cursor: "pointer",
+                    fontSize: "0.875rem",
+                    fontWeight: "500",
+                  }}
+                >
+                  <Eye size={16} />
+                  Walk Through Reports
+                </button>
+              )}
 
               <button
                 onClick={handleClearData}

@@ -166,7 +166,9 @@ export default function LadderForm({
   onSetRecalculateRef,
 }: LadderFormProps = {}) {
   const [players, setPlayers] = useState<PlayerData[]>([]);
-  const [zoomLevel, setZoomLevel] = useState<"70%" | "100%" | "140%">("100%");
+  const [zoomLevel, setZoomLevel] = useState<
+    "50%" | "70%" | "100%" | "140%" | "200%"
+  >("100%");
   const [isAdmin, setIsAdmin] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [sortBy, setSortBy] = useState<
@@ -230,6 +232,17 @@ export default function LadderForm({
     const savedProjectName = localStorage.getItem("ladder_project_name");
     if (savedProjectName) {
       setProjectName(savedProjectName);
+    }
+
+    const savedZoom = localStorage.getItem("ladder_zoom") as
+      | "50%"
+      | "70%"
+      | "100%"
+      | "140%"
+      | "200%"
+      | null;
+    if (savedZoom) {
+      setZoomLevel(savedZoom);
     }
 
     const savedPlayers = localStorage.getItem("ladder_players");
@@ -1247,11 +1260,12 @@ export default function LadderForm({
     }
   };
 
-  const handleSetZoom = (level: "70%" | "100%" | "140%") => {
+  const handleSetZoom = (level: "50%" | "70%" | "100%" | "140%" | "200%") => {
     if (shouldLog(10)) {
       console.log(`>>> [MENU ACTION] Set zoom to ${level}`);
     }
     setZoomLevel(level);
+    localStorage.setItem("ladder_zoom", level);
   };
 
   const handleAddPlayer = () => {
@@ -1292,12 +1306,16 @@ export default function LadderForm({
 
   const getFontSize = () => {
     switch (zoomLevel) {
+      case "50%":
+        return "0.5rem";
       case "70%":
         return "0.625rem";
       case "100%":
         return "0.875rem";
       case "140%":
         return "1.25rem";
+      case "200%":
+        return "1.75rem";
       default:
         return "0.875rem";
     }
@@ -1873,7 +1891,7 @@ export default function LadderForm({
                               : rowIndex % 2 >= 1
                                 ? "#f8fafc"
                                 : "transparent",
-                          fontSize: "0.75rem",
+                          fontSize: getFontSize(),
                           cursor: isAdmin ? "default" : "pointer",
                           borderColor:
                             entryCell &&

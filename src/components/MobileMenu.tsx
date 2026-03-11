@@ -18,7 +18,7 @@ interface MobileMenuProps {
   onRecalculateRatings: () => void;
   onCheckErrors: () => void;
   onToggleAdmin: () => void;
-  onSetZoom: (level: "70%" | "100%" | "140%") => void;
+  onSetZoom: (level: "50%" | "70%" | "100%" | "140%" | "200%") => void;
   onOpenSettings: () => void;
   onAddPlayer?: () => void;
   isAdmin: boolean;
@@ -148,6 +148,11 @@ export default function MobileMenu({
 
   const viewItems: MenuItem[] = [
     {
+      label: "Zoom 50%",
+      onClick: () => handleItemClick(() => onSetZoom("50%")),
+      dataMenuItem: "Zoom 50%",
+    },
+    {
       label: "Zoom 70%",
       onClick: () => handleItemClick(() => onSetZoom("70%")),
       dataMenuItem: "Zoom 70%",
@@ -161,6 +166,11 @@ export default function MobileMenu({
       label: "Zoom 140%",
       onClick: () => handleItemClick(() => onSetZoom("140%")),
       dataMenuItem: "Zoom 140%",
+    },
+    {
+      label: "Zoom 200%",
+      onClick: () => handleItemClick(() => onSetZoom("200%")),
+      dataMenuItem: "Zoom 200%",
     },
   ];
 
